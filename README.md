@@ -4,12 +4,13 @@
 
 ### Current Features:
 - 1:1 brc lighting and outlines
-- shadow softness, offset, and custom tint options
+- shadow and light softness, offset, and custom tint options
 - support for normal maps
 - custom rim lighting with optional base texture blending
 - custom colored outline with custom width and optional base texture blending
 - optional extra lighting pass
 - screen space shadow texture overlay
+- screen space base texture options
 - additive cubemap reflections with masking
 - base texture scrolling and rotation with masking
 - emission hue shift, scrolling, rotation, and masking
