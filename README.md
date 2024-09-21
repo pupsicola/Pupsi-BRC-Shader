@@ -7,10 +7,11 @@
 - shadow and light softness, offset, and custom tint options
 - support for normal maps
 - custom rim light/shadow with optional base texture blending
+- optional specular lighting options with masking
 - custom colored outline with custom width and optional base texture blending
 - optional extra lighting pass
 - screen space shadow texture overlay
-- screen space base texture options
+- screen space options with scrolling, emission, and masking
 - additive cubemap reflections with masking
 - base texture scrolling and rotation with masking
 - emission hue shift, scrolling, rotation, and masking
