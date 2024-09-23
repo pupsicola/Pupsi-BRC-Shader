@@ -18,6 +18,8 @@
 - glow masking and cycling
 - flipbook textures and masking
 
+Partial transparencies are not supported at the moment and alpha clipping is based on the alpha of the base texture of a given material.
+
 Feel free to submit suggestions for new features.
 
 #### I hope this helps you with your creations and I hope you enjoy!
