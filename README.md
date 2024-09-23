@@ -20,6 +20,10 @@ Special thanks to Muppo for allowing me to use their glow/scroll implementation 
 - glow masking and cycling
 - flipbook textures and masking
 
+### Instructions for use:
+Simply download and drop the shader file into the project folder of your choice and select "Pupsi BRC Shader" from the shader selection dropdown for the material you're using.
+
+### Important note:
 Partial transparencies are not supported at the moment and alpha clipping is based on the alpha of the base texture of a given material.
 
 Feel free to submit suggestions for new features.
