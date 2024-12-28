@@ -1,6 +1,6 @@
 ![pupsi brc shader logo](https://i.ibb.co/w4zTZtq/pupsibrcshaderlogo.png "pupsi brc shader logo")
 
-Special thanks to Muppo for allowing me to use their glow/scroll implementation as well as StonyOnBRC for testing and feedback!
+Special thanks to Muppo for allowing me to use their glow/scroll implementation as well as StonyOnBRC and the GGs for testing and feedback!
 
 ![examples](https://i.postimg.cc/Jh6Cbg3y/New-Examples.png "examples")
 
