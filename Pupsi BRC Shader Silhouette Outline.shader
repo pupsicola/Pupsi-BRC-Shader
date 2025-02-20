@@ -958,7 +958,443 @@ Shader "Pupsi BRC Shader Silhouette Outline"
 			ENDCG
 		}
 
-	
+		
+		Pass
+		{
+			
+			Name "ShadowCaster"
+			Tags { "LightMode"="ShadowCaster" }
+			ZWrite On
+			ZTest LEqual
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma multi_compile_shadowcaster
+			#include "UnityCG.cginc"
+			#include "UnityStandardUtils.cginc"
+			#include "Lighting.cginc"
+			#include "AutoLight.cginc"
+			#include "UnityShaderVariables.cginc"
+			#include "UnityStandardBRDF.cginc"
+			#define ASE_NEEDS_VERT_NORMAL
+			#pragma shader_feature_local _NORMALMAPTOGGLE_ON
+			#pragma shader_feature_local _NORMALMAPUV_UV0 _NORMALMAPUV_UV1 _NORMALMAPUV_UV2 _NORMALMAPUV_UV3
+			#pragma shader_feature_local _DETAILTEXTUREUV_UV0 _DETAILTEXTUREUV_UV1 _DETAILTEXTUREUV_UV2 _DETAILTEXTUREUV_UV3
+			#pragma shader_feature_local _SPECULARMASKUV_UV0 _SPECULARMASKUV_UV1 _SPECULARMASKUV_UV2 _SPECULARMASKUV_UV3
+			#pragma shader_feature_local _SCROLLTOGGLE_ON
+			#pragma shader_feature_local _GLOWTOGGLE_ON
+
+			//This is a late directive
+			
+			uniform float _SilhouetteOverlay;
+			uniform float _CubemapToggle;
+			uniform float _ScreenSpaceEmit;
+			uniform float _SpecularToggle;
+			uniform float _SilhouetteRimLightToggle;
+			uniform float _RimLightShadowToggle;
+			uniform float _ShadowTextureToggle;
+			uniform float _CustomShadowColorToggle;
+			uniform float4 ShadowColor;
+			uniform float4 _CustomShadowColor;
+			uniform float _CustomLightingColorToggle;
+			uniform float4 LightColor;
+			uniform float4 _CustomLightingColor;
+			uniform float _HalftoneShadowToggle;
+			uniform sampler2D _NormalMap;
+			uniform float _NormalMapIntensity;
+			uniform float _AnimatedShadowOffsetToggle;
+			uniform float _ShadowOffset;
+			uniform float _AnimatedShadowOffsetSpeed;
+			uniform float _AnimatedShadowOffsetMin;
+			uniform float _AnimatedShadowOffsetMax;
+			uniform float _ShadowSoftness;
+			uniform float _HalftoneShadowSoftness;
+			uniform float _HalftoneShadowScale;
+			uniform float _ExtraLightToggle;
+			uniform float _ExtraLightOffset;
+			uniform float _ExtraLightBlend;
+			uniform float _DetailTextureToggle;
+			uniform sampler2D _MainTex;
+			uniform float2 _BaseRotationCenter;
+			uniform float _BaseRotationSpeed;
+			uniform sampler2D RotationMask;
+			uniform float2 _BaseScrollSpeed;
+			uniform sampler2D _DetailTexture;
+			uniform float _DetailTextureBlend;
+			uniform sampler2D RotationMask1;
+			uniform float _ScreenSpaceMaskisScreenSpace;
+			uniform sampler2D _MainTex1;
+			uniform float _ScreenSpaceScrollXSpeed;
+			uniform float _ScreenSpaceScrollYSpeed;
+			uniform float _ScreenSpaceTiling;
+			uniform sampler2D _ShadowTexture;
+			uniform float2 _ShadowTextureTiling;
+			uniform float _ShadowTextureBlend;
+			uniform float _RimShadowOffset;
+			uniform float _RimShadowPower;
+			uniform float _RimShadowOpacity;
+			uniform float _RimLightOffset;
+			uniform float _RimLightPower;
+			uniform float _RimLightBlendBaseTexture;
+			uniform float4 _RimLightColor;
+			uniform float _RimLightBlend;
+			uniform float _SilhouetteRimLightOffset;
+			uniform float _SilhouetteRimLightPower;
+			uniform float _SilhouetteTextureToggle;
+			uniform float4 _SilhouetteColor;
+			uniform sampler2D AuraTexture;
+			uniform float2 _SilhouetteTextureTiling;
+			uniform float2 _SilhouetteTextureScroll;
+			uniform float _SilhouetteRimLightBlend;
+			uniform float _FlipbookToggle;
+			uniform sampler2D _FlipBookTexture;
+			uniform float2 _FlipbookTiling;
+			uniform float2 _FlipbookOffset;
+			uniform float _FlipbookColumns;
+			uniform float _FlipbookRows;
+			uniform float _FlipbookSpeed;
+			uniform sampler2D _FlipBookMask;
+			uniform float _FlipbookEmit;
+			uniform float _SpecularPower;
+			uniform sampler2D _SpecularMask;
+			uniform float _SpecularBrightness;
+			uniform float _SpecularCustomColorToggle;
+			uniform float4 _SpecularCustomColor;
+			uniform samplerCUBE _CubemapTexture;
+			uniform sampler2D cubemapmask;
+			uniform float _CubemapBlend;
+			uniform sampler2D _ScrollMask;
+			uniform float _ScrollHue;
+			uniform sampler2D _ScrollTex;
+			uniform float2 _ScrollSpeed;
+			uniform float2 _ScrollSize;
+			uniform float2 _ScrollOffset;
+			uniform float _ScrollRotation;
+			uniform float _ScrollEmit;
+			uniform float _EmissionHue;
+			uniform sampler2D _Emission;
+			uniform float _EmissionEmit;
+			uniform float _GlowCycle;
+			uniform float4 _GlowColor;
+			uniform float _GlowSpeed;
+			uniform sampler2D _GlowMask;
+			uniform float _GlowEmit;
+			uniform float _SilhouetteOverlayOpacity;
+					float2 voronoihash1480( float2 p )
+					{
+						p = p - 1 * floor( p / 1 );
+						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
+						return frac( sin( p ) *43758.5453);
+					}
+			
+					float voronoi1480( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
+					{
+						float2 n = floor( v );
+						float2 f = frac( v );
+						float F1 = 8.0;
+						float F2 = 8.0; float2 mg = 0;
+						for ( int j = -1; j <= 1; j++ )
+						{
+							for ( int i = -1; i <= 1; i++ )
+						 	{
+						 		float2 g = float2( i, j );
+						 		float2 o = voronoihash1480( n + g );
+								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
+								float d = 0.5 * dot( r, r );
+						 		if( d<F1 ) {
+						 			F2 = F1;
+						 			F1 = d; mg = g; mr = r; id = o;
+						 		} else if( d<F2 ) {
+						 			F2 = d;
+						
+						 		}
+						 	}
+						}
+						return F1;
+					}
+			
+			float3 HSVToRGB( float3 c )
+			{
+				float4 K = float4( 1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0 );
+				float3 p = abs( frac( c.xxx + K.xyz ) * 6.0 - K.www );
+				return c.z * lerp( K.xxx, saturate( p - K.xxx ), c.y );
+			}
+			
+			float3 RGBToHSV(float3 c)
+			{
+				float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+				float4 p = lerp( float4( c.bg, K.wz ), float4( c.gb, K.xy ), step( c.b, c.g ) );
+				float4 q = lerp( float4( p.xyw, c.r ), float4( c.r, p.yzx ), step( p.x, c.r ) );
+				float d = q.x - min( q.w, q.y );
+				float e = 1.0e-10;
+				return float3( abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+			}
+
+
+			struct appdata
+			{
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_texcoord2 : TEXCOORD2;
+				float4 ase_texcoord3 : TEXCOORD3;
+				float4 ase_tangent : TANGENT;
+			};
+
+			struct v2f
+			{
+				V2F_SHADOW_CASTER;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_texcoord2 : TEXCOORD2;
+				float4 ase_texcoord3 : TEXCOORD3;
+				float4 ase_texcoord4 : TEXCOORD4;
+				float4 ase_texcoord5 : TEXCOORD5;
+				float4 ase_texcoord6 : TEXCOORD6;
+				float4 ase_texcoord7 : TEXCOORD7;
+				float4 ase_texcoord8 : TEXCOORD8;
+			};
+
+
+			v2f vert ( appdata v )
+			{
+				v2f o;
+				UNITY_INITIALIZE_OUTPUT(v2f,o);
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+
+				float3 ase_worldNormal = UnityObjectToWorldNormal(v.normal);
+				o.ase_texcoord1.xyz = ase_worldNormal;
+				float3 ase_worldTangent = UnityObjectToWorldDir(v.ase_tangent);
+				o.ase_texcoord5.xyz = ase_worldTangent;
+				float ase_vertexTangentSign = v.ase_tangent.w * ( unity_WorldTransformParams.w >= 0.0 ? 1.0 : -1.0 );
+				float3 ase_worldBitangent = cross( ase_worldNormal, ase_worldTangent ) * ase_vertexTangentSign;
+				o.ase_texcoord6.xyz = ase_worldBitangent;
+				float3 ase_worldPos = mul(unity_ObjectToWorld, float4( (v.vertex).xyz, 1 )).xyz;
+				o.ase_texcoord7.xyz = ase_worldPos;
+				float4 ase_clipPos = UnityObjectToClipPos(v.vertex);
+				float4 screenPos = ComputeScreenPos(ase_clipPos);
+				o.ase_texcoord8 = screenPos;
+				
+				o.ase_texcoord2.xyz = v.ase_texcoord.xyz;
+				o.ase_texcoord3.xy = v.ase_texcoord1.xy;
+				o.ase_texcoord3.zw = v.ase_texcoord2.xy;
+				o.ase_texcoord4.xy = v.ase_texcoord3.xy;
+				
+				//setting value to unused interpolator channels and avoid initialization warnings
+				o.ase_texcoord1.w = 0;
+				o.ase_texcoord2.w = 0;
+				o.ase_texcoord4.zw = 0;
+				o.ase_texcoord5.w = 0;
+				o.ase_texcoord6.w = 0;
+				o.ase_texcoord7.w = 0;
+
+				v.vertex.xyz +=  float3(0,0,0) ;
+				TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+				return o;
+			}
+
+			float4 frag (v2f i ) : SV_Target
+			{
+				float3 outColor;
+				float outAlpha;
+
+				float3 ase_worldNormal = i.ase_texcoord1.xyz;
+				float2 texCoord1515 = i.ase_texcoord2.xyz.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 UV01517 = texCoord1515;
+				float2 texCoord1516 = i.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 UV11518 = texCoord1516;
+				float2 texCoord1519 = i.ase_texcoord3.zw * float2( 1,1 ) + float2( 0,0 );
+				float2 UV21520 = texCoord1519;
+				float2 texCoord1521 = i.ase_texcoord4.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 UV31522 = texCoord1521;
+				#if defined(_NORMALMAPUV_UV0)
+				float2 staticSwitch1525 = UV01517;
+				#elif defined(_NORMALMAPUV_UV1)
+				float2 staticSwitch1525 = UV11518;
+				#elif defined(_NORMALMAPUV_UV2)
+				float2 staticSwitch1525 = UV21520;
+				#elif defined(_NORMALMAPUV_UV3)
+				float2 staticSwitch1525 = UV31522;
+				#else
+				float2 staticSwitch1525 = UV01517;
+				#endif
+				float3 ase_worldTangent = i.ase_texcoord5.xyz;
+				float3 ase_worldBitangent = i.ase_texcoord6.xyz;
+				float3 tanToWorld0 = float3( ase_worldTangent.x, ase_worldBitangent.x, ase_worldNormal.x );
+				float3 tanToWorld1 = float3( ase_worldTangent.y, ase_worldBitangent.y, ase_worldNormal.y );
+				float3 tanToWorld2 = float3( ase_worldTangent.z, ase_worldBitangent.z, ase_worldNormal.z );
+				float3 tanNormal834 = UnpackScaleNormal( tex2D( _NormalMap, staticSwitch1525 ), _NormalMapIntensity );
+				float3 worldNormal834 = float3(dot(tanToWorld0,tanNormal834), dot(tanToWorld1,tanNormal834), dot(tanToWorld2,tanNormal834));
+				#ifdef _NORMALMAPTOGGLE_ON
+				float3 staticSwitch843 = worldNormal834;
+				#else
+				float3 staticSwitch843 = ase_worldNormal;
+				#endif
+				float3 normalizeResult170 = normalize( staticSwitch843 );
+				float3 ase_worldPos = i.ase_texcoord7.xyz;
+				float3 worldSpaceLightDir = UnityWorldSpaceLightDir(ase_worldPos);
+				float dotResult54 = dot( normalizeResult170 , worldSpaceLightDir );
+				float temp_output_57_0 = ( ( dotResult54 + (( _AnimatedShadowOffsetToggle )?( (_AnimatedShadowOffsetMin + (sin( ( _Time.y * _AnimatedShadowOffsetSpeed ) ) - 0.0) * (_AnimatedShadowOffsetMax - _AnimatedShadowOffsetMin) / (1.0 - 0.0)) ):( _ShadowOffset )) ) / _ShadowSoftness );
+				float time1480 = 0.0;
+				float2 voronoiSmoothId1480 = 0;
+				float4 screenPos = i.ase_texcoord8;
+				float4 ase_screenPosNorm = screenPos / screenPos.w;
+				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+				float4 break1494 = ase_screenPosNorm;
+				float4 appendResult1496 = (float4(break1494.x , ( break1494.y / ( _ScreenParams.x / _ScreenParams.y ) ) , 0.0 , 0.0));
+				float2 coords1480 = appendResult1496.xy * _HalftoneShadowScale;
+				float2 id1480 = 0;
+				float2 uv1480 = 0;
+				float voroi1480 = voronoi1480( coords1480, time1480, id1480, uv1480, 0, voronoiSmoothId1480 );
+				float smoothstepResult1481 = smoothstep( ( dotResult54 + _HalftoneShadowSoftness ) , ( 1.0 - voroi1480 ) , dotResult54);
+				float halftone1484 = smoothstepResult1481;
+				float4 lerpResult406 = lerp( (( _CustomShadowColorToggle )?( _CustomShadowColor ):( ShadowColor )) , (( _CustomLightingColorToggle )?( _CustomLightingColor ):( LightColor )) , (( _HalftoneShadowToggle )?( halftone1484 ):( saturate( temp_output_57_0 ) )));
+				float4 lerpResult855 = lerp( float4( 0,0,0,0 ) , LightColor , saturate( ( ( dotResult54 + _ExtraLightOffset ) / _ShadowSoftness ) ));
+				float2 texCoord671 = i.ase_texcoord2.xyz.xy * float2( 1,1 ) + float2( 0,0 );
+				float mulTime358 = _Time.y * _BaseRotationSpeed;
+				float cos356 = cos( mulTime358 );
+				float sin356 = sin( mulTime358 );
+				float2 rotator356 = mul( texCoord671 - _BaseRotationCenter , float2x2( cos356 , -sin356 , sin356 , cos356 )) + _BaseRotationCenter;
+				float2 uvRotationMask667 = i.ase_texcoord2.xyz.xy;
+				float4 tex2DNode667 = tex2D( RotationMask, uvRotationMask667 );
+				float2 texCoord559 = i.ase_texcoord2.xyz.xy * float2( 1,1 ) + ( _Time.y * _BaseScrollSpeed );
+				float4 temp_output_666_0 = ( ( float4( rotator356, 0.0 , 0.0 ) * tex2DNode667 ) + ( float4( texCoord559, 0.0 , 0.0 ) * ( 1.0 - tex2DNode667 ) ) );
+				float4 tex2DNode76 = tex2D( _MainTex, temp_output_666_0.rg );
+				#if defined(_DETAILTEXTUREUV_UV0)
+				float2 staticSwitch1537 = UV01517;
+				#elif defined(_DETAILTEXTUREUV_UV1)
+				float2 staticSwitch1537 = UV11518;
+				#elif defined(_DETAILTEXTUREUV_UV2)
+				float2 staticSwitch1537 = UV21520;
+				#elif defined(_DETAILTEXTUREUV_UV3)
+				float2 staticSwitch1537 = UV31522;
+				#else
+				float2 staticSwitch1537 = UV01517;
+				#endif
+				float4 blendOpSrc1542 = tex2D( _DetailTexture, staticSwitch1537 );
+				float4 blendOpDest1542 = tex2DNode76;
+				float4 lerpBlendMode1542 = lerp(blendOpDest1542,( blendOpSrc1542 * blendOpDest1542 ),_DetailTextureBlend);
+				float4 tex2DNode998 = tex2D( RotationMask1, (( _ScreenSpaceMaskisScreenSpace )?( ase_screenPosNorm ):( temp_output_666_0 )).xy );
+				float4 temp_output_1001_0 = ( 1.0 - tex2DNode998 );
+				float mulTime962 = _Time.y * _ScreenSpaceScrollXSpeed;
+				float mulTime968 = _Time.y * _ScreenSpaceScrollYSpeed;
+				float4 appendResult965 = (float4(mulTime962 , mulTime968 , 0.0 , 0.0));
+				float4 temp_output_964_0 = ( ase_screenPosNorm + appendResult965 );
+				float4 temp_output_1033_0 = ( tex2D( _MainTex1, ( temp_output_964_0 * _ScreenSpaceTiling ).xy ) * tex2DNode998 );
+				float4 temp_output_1034_0 = ( ( (( _DetailTextureToggle )?( ( saturate( lerpBlendMode1542 )) ):( tex2DNode76 )) * temp_output_1001_0 ) + temp_output_1033_0 );
+				float4 temp_output_158_0 = ( ( lerpResult406 + (( _ExtraLightToggle )?( ( lerpResult855 * _ExtraLightBlend ) ):( float4( 0,0,0,0 ) )) ) * temp_output_1034_0 );
+				float4 blendOpSrc822 = saturate( ( 1.0 - ( ( 1.0 - temp_output_57_0 ) * tex2D( _ShadowTexture, ( ase_screenPosNorm * float4( _ShadowTextureTiling, 0.0 , 0.0 ) ).xy ) ) ) );
+				float4 blendOpDest822 = temp_output_158_0;
+				float4 lerpBlendMode822 = lerp(blendOpDest822,( blendOpSrc822 * blendOpDest822 ),_ShadowTextureBlend);
+				#if defined(LIGHTMAP_ON) && ( UNITY_VERSION < 560 || ( defined(LIGHTMAP_SHADOW_MIXING) && !defined(SHADOWS_SHADOWMASK) && defined(SHADOWS_SCREEN) ) )//aselc
+				float4 ase_lightColor = 0;
+				#else //aselc
+				float4 ase_lightColor = _LightColor0;
+				#endif //aselc
+				float4 temp_output_409_0 = ( (( _ShadowTextureToggle )?( ( saturate( lerpBlendMode822 )) ):( temp_output_158_0 )) * ase_lightColor );
+				float3 normalizedWorldNormal = normalize( ase_worldNormal );
+				float3 ase_worldViewDir = UnityWorldSpaceViewDir(ase_worldPos);
+				ase_worldViewDir = Unity_SafeNormalize( ase_worldViewDir );
+				float dotResult992 = dot( normalizedWorldNormal , ase_worldViewDir );
+				float temp_output_981_0 = saturate( ( dotResult992 + _RimShadowOffset ) );
+				float4 blendOpSrc994 = ( pow( temp_output_981_0 , _RimShadowPower ) * temp_output_409_0 );
+				float4 blendOpDest994 = temp_output_409_0;
+				float4 lerpBlendMode994 = lerp(blendOpDest994,min( blendOpSrc994 , blendOpDest994 ),_RimShadowOpacity);
+				float dotResult423 = dot( normalizedWorldNormal , ase_worldViewDir );
+				float dotResult1228 = dot( normalizedWorldNormal , ase_worldViewDir );
+				ase_worldViewDir = normalize(ase_worldViewDir);
+				float2 texCoord1209 = i.ase_texcoord2.xyz.xy * ( ase_worldViewDir * float3( _SilhouetteTextureTiling ,  0.0 ) ).xy + ( _Time.y * _SilhouetteTextureScroll );
+				float4 AuraTex1235 = (( _SilhouetteTextureToggle )?( tex2D( AuraTexture, texCoord1209 ) ):( _SilhouetteColor ));
+				float2 texCoord631 = i.ase_texcoord2.xyz.xy * _FlipbookTiling + _FlipbookOffset;
+				// *** BEGIN Flipbook UV Animation vars ***
+				// Total tiles of Flipbook Texture
+				float fbtotaltiles634 = _FlipbookColumns * _FlipbookRows;
+				// Offsets for cols and rows of Flipbook Texture
+				float fbcolsoffset634 = 1.0f / _FlipbookColumns;
+				float fbrowsoffset634 = 1.0f / _FlipbookRows;
+				// Speed of animation
+				float fbspeed634 = _Time[ 1 ] * _FlipbookSpeed;
+				// UV Tiling (col and row offset)
+				float2 fbtiling634 = float2(fbcolsoffset634, fbrowsoffset634);
+				// UV Offset - calculate current tile linear index, and convert it to (X * coloffset, Y * rowoffset)
+				// Calculate current tile linear index
+				float fbcurrenttileindex634 = round( fmod( fbspeed634 + 0.0, fbtotaltiles634) );
+				fbcurrenttileindex634 += ( fbcurrenttileindex634 < 0) ? fbtotaltiles634 : 0;
+				// Obtain Offset X coordinate from current tile linear index
+				float fblinearindextox634 = round ( fmod ( fbcurrenttileindex634, _FlipbookColumns ) );
+				// Multiply Offset X by coloffset
+				float fboffsetx634 = fblinearindextox634 * fbcolsoffset634;
+				// Obtain Offset Y coordinate from current tile linear index
+				float fblinearindextoy634 = round( fmod( ( fbcurrenttileindex634 - fblinearindextox634 ) / _FlipbookColumns, _FlipbookRows ) );
+				// Reverse Y to get tiles from Top to Bottom
+				fblinearindextoy634 = (int)(_FlipbookRows-1) - fblinearindextoy634;
+				// Multiply Offset Y by rowoffset
+				float fboffsety634 = fblinearindextoy634 * fbrowsoffset634;
+				// UV Offset
+				float2 fboffset634 = float2(fboffsetx634, fboffsety634);
+				// Flipbook UV
+				half2 fbuv634 = texCoord631 * fbtiling634 + fboffset634;
+				// *** END Flipbook UV Animation vars ***
+				float2 uv_FlipBookMask637 = i.ase_texcoord2.xyz.xy;
+				float4 temp_output_642_0 = ( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode994 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( temp_output_409_0 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( ( temp_output_409_0 + temp_output_1033_0 ) )) + ( ( pow( ( 1.0 - saturate( ( dotResult1228 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1235 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode994 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( temp_output_409_0 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( ( temp_output_409_0 + temp_output_1033_0 ) )) )) + float4( (( _FlipbookToggle )?( ( (tex2D( _FlipBookTexture, fbuv634 )).rgb * tex2D( _FlipBookMask, uv_FlipBookMask637 ).r * _FlipbookEmit ) ):( float3( 0,0,0 ) )) , 0.0 ) );
+				float3 normalizeResult1050 = normalize( ( _WorldSpaceCameraPos - ase_worldPos ) );
+				float3 normalizeResult1045 = normalize( ( worldSpaceLightDir + normalizeResult1050 ) );
+				float dotResult1046 = dot( normalizeResult1045 , staticSwitch843 );
+				#if defined(_SPECULARMASKUV_UV0)
+				float2 staticSwitch1532 = UV01517;
+				#elif defined(_SPECULARMASKUV_UV1)
+				float2 staticSwitch1532 = UV11518;
+				#elif defined(_SPECULARMASKUV_UV2)
+				float2 staticSwitch1532 = UV21520;
+				#elif defined(_SPECULARMASKUV_UV3)
+				float2 staticSwitch1532 = UV31522;
+				#else
+				float2 staticSwitch1532 = UV01517;
+				#endif
+				float3 worldRefl877 = reflect( -ase_worldViewDir, float3( dot( tanToWorld0, staticSwitch843 ), dot( tanToWorld1, staticSwitch843 ), dot( tanToWorld2, staticSwitch843 ) ) );
+				float2 uvcubemapmask881 = i.ase_texcoord2.xyz.xy;
+				float2 uv_ScrollMask607 = i.ase_texcoord2.xyz.xy;
+				float2 texCoord599 = i.ase_texcoord2.xyz.xy * _ScrollSize + _ScrollOffset;
+				float cos598 = cos( radians( _ScrollRotation ) );
+				float sin598 = sin( radians( _ScrollRotation ) );
+				float2 rotator598 = mul( texCoord599 - float2( 0.5,0.5 ) , float2x2( cos598 , -sin598 , sin598 , cos598 )) + float2( 0.5,0.5 );
+				float2 panner597 = ( 1.0 * _Time.y * _ScrollSpeed + rotator598);
+				float3 hsvTorgb592 = RGBToHSV( tex2D( _ScrollTex, panner597 ).rgb );
+				float3 hsvTorgb595 = HSVToRGB( float3(( _ScrollHue + hsvTorgb592.x ),hsvTorgb592.y,hsvTorgb592.z) );
+				#ifdef _SCROLLTOGGLE_ON
+				float3 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * hsvTorgb595 * _ScrollEmit );
+				#else
+				float3 staticSwitch591 = float3( 0,0,0 );
+				#endif
+				float2 uv_Emission609 = i.ase_texcoord2.xyz.xy;
+				float3 hsvTorgb584 = RGBToHSV( tex2D( _Emission, uv_Emission609 ).rgb );
+				float3 hsvTorgb585 = HSVToRGB( float3(( _EmissionHue + hsvTorgb584.x ),hsvTorgb584.y,hsvTorgb584.z) );
+				float mulTime619 = _Time.y * _GlowSpeed;
+				float2 uv_GlowMask622 = i.ase_texcoord2.xyz.xy;
+				float4 tex2DNode622 = tex2D( _GlowMask, uv_GlowMask622 );
+				float3 hsvTorgb617 = HSVToRGB( float3(( mulTime619 * 0.1 ),1.0,1.0) );
+				#ifdef _GLOWTOGGLE_ON
+				float3 staticSwitch590 = ( (( _GlowCycle )?( ( hsvTorgb617 * tex2DNode622.r ) ):( ( (_GlowColor).rgb * (0.0 + (sin( mulTime619 ) - -1.0) * (1.0 - 0.0) / (1.0 - -1.0)) * tex2DNode622.r ) )) * _GlowEmit );
+				#else
+				float3 staticSwitch590 = float3( 0,0,0 );
+				#endif
+				float4 temp_output_472_0 = ( (( _CubemapToggle )?( ( (( _ScreenSpaceEmit )?( ( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1532 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) + temp_output_1033_0 ) ):( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1532 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) )) + ( ( texCUBE( _CubemapTexture, worldRefl877 ) * tex2D( cubemapmask, uvcubemapmask881 ) ) * _CubemapBlend ) ) ):( (( _ScreenSpaceEmit )?( ( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1532 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) + temp_output_1033_0 ) ):( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1532 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) )) )) + float4( ( staticSwitch591 + ( hsvTorgb585 * _EmissionEmit ) + staticSwitch590 ) , 0.0 ) );
+				
+
+				outColor = (( _SilhouetteOverlay )?( ( temp_output_472_0 + ( (( _SilhouetteTextureToggle )?( tex2D( AuraTexture, texCoord1209 ) ):( _SilhouetteColor )) * _SilhouetteOverlayOpacity ) ) ):( temp_output_472_0 )).rgb;
+				outAlpha = tex2DNode76.a;
+				clip(outAlpha);
+				SHADOW_CASTER_FRAGMENT(i)
+			}
+			ENDCG
+		}
+		
 	}
 	CustomEditor "ASEMaterialInspector"
 	
@@ -1210,7 +1646,7 @@ Node;AmplifyShaderEditor.CameraDepthFade;1111;2744.531,5174.946;Inherit;False;3;
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1112;3519.015,5069.766;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;1209;2492.016,5016.513;Inherit;True;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1452;3890.828,5020.491;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1457;3884.762,4421.949;Float;False;False;-1;2;ASEMaterialInspector;100;16;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Outline;0;3;Outline;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;1;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;2;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;2;CullMode=Front;RenderType=Transparent=RenderType;True;2;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1457;3884.762,4421.949;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Outline;0;3;Outline;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;1;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;2;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;2;CullMode=Front;RenderType=Transparent=RenderType;True;2;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1210;2306.823,5128.746;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0.1,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PosVertexDataNode;1461;4056.415,4609.904;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleAddOpNode;1462;4237.414,4612.904;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
@@ -1283,12 +1719,12 @@ Node;AmplifyShaderEditor.RangedFloatNode;1544;1207.918,1699.898;Inherit;False;Pr
 Node;AmplifyShaderEditor.WorldSpaceLightDirHlpNode;53;1876.383,1833.578;Inherit;False;False;1;0;FLOAT;0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.Vector4Node;381;2371.549,2616.136;Inherit;False;Global;LightColor;LightColor;11;0;Create;True;0;0;0;False;0;False;0.9,0.7,0.4,0;1,1,1,1;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.LightColorNode;1545;3399.464,2237.535;Inherit;False;0;3;COLOR;0;FLOAT3;1;FLOAT;2
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1458;4071.838,5033.746;Float;False;False;-1;2;ASEMaterialInspector;100;16;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Aura;0;4;Aura;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;2;5;False;;10;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;False;;255;False;;0;False;;2;False;;8;False;;8;False;;8;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1454;6460.949,341.0132;Float;False;True;-1;2;ASEMaterialInspector;100;16;Pupsi BRC Shader Silhouette Outline;c92fbf1a957df824a97c80c48520b74f;True;ForwardBase;0;0;ForwardBase;3;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;2;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Transparent=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;2;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;7;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=ForwardBase;True;2;False;0;;0;0;Standard;0;0;6;True;False;False;True;True;False;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1458;4071.838,5033.746;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Aura;0;4;Aura;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;2;5;False;;10;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;False;;255;False;;0;False;;2;False;;8;False;;8;False;;8;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;1088;5117.457,331.4273;Inherit;False;Property;_SpecularToggle;Specular Toggle;33;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;475;4123.306,356.4348;Inherit;False;Property;_RimLightShadowToggle;Rim Light/Shadow Toggle;43;0;Create;True;0;0;0;False;0;False;1;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;1237;4540.392,336.6;Inherit;False;Property;_SilhouetteRimLightToggle;Silhouette Rim Light Toggle;68;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.StaticSwitch;591;2178.215,-1359.955;Inherit;False;Property;_ScrollToggle;Scroll Toggle;98;0;Create;True;0;0;0;False;0;False;0;0;1;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT3;0,0,0;False;0;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT3;0,0,0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.StaticSwitch;591;2178.215,-1359.955;Inherit;False;Property;_ScrollToggle;Scroll Toggle;98;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT3;0,0,0;False;0;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT3;0,0,0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1454;6460.949,341.0132;Float;False;True;-1;2;ASEMaterialInspector;100;14;Pupsi BRC Shader Silhouette Outline;c92fbf1a957df824a97c80c48520b74f;True;ForwardBase;0;0;ForwardBase;3;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;2;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Transparent=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;2;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;7;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=ForwardBase;True;2;False;0;;0;0;Standard;0;0;6;True;False;False;True;True;True;False;;False;0
 WireConnection;851;0;853;0
 WireConnection;851;1;60;0
 WireConnection;853;0;54;0
@@ -1613,8 +2049,6 @@ WireConnection;1537;2;1535;0
 WireConnection;1537;3;1536;0
 WireConnection;1458;0;1452;0
 WireConnection;1458;2;1112;0
-WireConnection;1454;0;1217;0
-WireConnection;1454;1;76;4
 WireConnection;1088;0;642;0
 WireConnection;1088;1;1087;0
 WireConnection;475;0;1040;0
@@ -1622,5 +2056,7 @@ WireConnection;475;1;860;0
 WireConnection;1237;0;475;0
 WireConnection;1237;1;1238;0
 WireConnection;591;0;588;0
+WireConnection;1454;0;1217;0
+WireConnection;1454;1;76;4
 ASEEND*/
-//CHKSM=F5D05B2E597436E46A124DBD52CA1F9D0FB84823
+//CHKSM=960F511851CF0D9A13911E5E983253EA0608C3C7
