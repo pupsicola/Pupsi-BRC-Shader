@@ -218,6 +218,7 @@ Shader "Pupsi BRC Shader"
 			uniform float _GlowSpeed;
 			uniform sampler2D _GlowMask;
 			uniform float _GlowEmit;
+			uniform float _AlphaClipping;
 			float3 HSVToRGB( float3 c )
 			{
 				float4 K = float4( 1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0 );
@@ -476,9 +477,11 @@ Shader "Pupsi BRC Shader"
 				#endif
 				float4 temp_output_472_0 = ( (( _CubemapToggle )?( ( (( _ScreenSpaceEmit )?( ( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) + temp_output_1033_0 ) ):( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) )) + ( ( texCUBE( _CubemapTexture, worldRefl877 ) * tex2D( cubemapmask, uvcubemapmask881 ) ) * _CubemapBlend ) ) ):( (( _ScreenSpaceEmit )?( ( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) + temp_output_1033_0 ) ):( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) )) )) + float4( ( staticSwitch591 + ( hsvTorgb585 * _EmissionEmit ) + staticSwitch590 ) , 0.0 ) );
 				
+				clip( tex2DNode76.a - _AlphaClipping);
+				
 
 				outColor = temp_output_472_0.rgb;
-				outAlpha = 1;
+				outAlpha = temp_output_472_0.a;
 				clip(outAlpha);
 				return float4(outColor,outAlpha);
 			}
@@ -978,6 +981,7 @@ Shader "Pupsi BRC Shader"
 			uniform float _GlowSpeed;
 			uniform sampler2D _GlowMask;
 			uniform float _GlowEmit;
+			uniform float _AlphaClipping;
 			float3 HSVToRGB( float3 c )
 			{
 				float4 K = float4( 1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0 );
@@ -1237,9 +1241,11 @@ Shader "Pupsi BRC Shader"
 				#endif
 				float4 temp_output_472_0 = ( (( _CubemapToggle )?( ( (( _ScreenSpaceEmit )?( ( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) + temp_output_1033_0 ) ):( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) )) + ( ( texCUBE( _CubemapTexture, worldRefl877 ) * tex2D( cubemapmask, uvcubemapmask881 ) ) * _CubemapBlend ) ) ):( (( _ScreenSpaceEmit )?( ( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) + temp_output_1033_0 ) ):( (( _SpecularToggle )?( ( temp_output_642_0 + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( temp_output_642_0 )) )) )) + float4( ( staticSwitch591 + ( hsvTorgb585 * _EmissionEmit ) + staticSwitch590 ) , 0.0 ) );
 				
+				clip( tex2DNode76.a - _AlphaClipping);
+				
 
 				outColor = temp_output_472_0.rgb;
-				outAlpha = 1;
+				outAlpha = temp_output_472_0.a;
 				clip(outAlpha);
 				SHADOW_CASTER_FRAGMENT(i)
 			}
@@ -1768,7 +1774,8 @@ WireConnection;1140;0;1139;0
 WireConnection;1140;2;1141;0
 WireConnection;1140;3;1142;0
 WireConnection;908;0;472;0
+WireConnection;908;1;1107;3
 WireConnection;1088;0;642;0
 WireConnection;1088;1;1087;0
 ASEEND*/
-//CHKSM=4B3C456C11070E7993D9334BABDA953CF4CECD52
+//CHKSM=9458A46F5E8B6A45EF7B8498BD6C7801239A5AA5
