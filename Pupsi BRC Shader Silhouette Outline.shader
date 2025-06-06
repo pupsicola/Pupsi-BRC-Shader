@@ -5,14 +5,13 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 	Properties 
   { 
       [HideInInspector] shader_is_using_thry_editor("", Float)=0
-			[HideInInspector] shader_is_using_thry_editor("", Float)=0
 		[HideInInspector] shader_master_label("<color=#1fc>Pupsi</color> <color=#ffffff>BRC Shader (Silhouette Outline)</color>", Float) = 0
 		[HideInInspector] footer_github ("{texture:{name:icon-githubpupsi,height:64},action:{type:URL,data:https://github.com/pupsicola/Pupsi-BRC-Shader},hover:Github}", Float) = 0
 		[HideInInspector] footer_kofi ("{texture:{name:icon-kofipupsi,height:64},action:{type:URL,data:https://ko-fi.com/pupsi},hover:Ko-fi}", Float) = 0
-	
+
 		[Enum(UnityEngine.Rendering.CullMode)]_Cull("Cull Mode", Float) = 2.0 // VBESSON CHANGE
 		
-				[HideInInspector] m_start_BaseTexture("Base Texture", Float) = 0 // Starts secondary expandable menu
+			[HideInInspector] m_start_BaseTexture("Base Texture", Float) = 0 // Starts secondary expandable menu
 		
 		_AlphaClipping("Alpha Clipping", Range( 0 , 1)) = 0.5
 		[BigTexture][NoScaleOffset]_MainTex("Base Texture", 2D) = "white" {}
@@ -21,25 +20,24 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_BaseRotationCenter("Base Rotation Center", Vector) = (0,0,0,0)
 		_BaseRotationSpeed("Base Rotation Speed", Float) = 0
 		
-				[HideInInspector] m_end_BaseTexture("Base Texture", Float) = 0 // Declares where the menu should end
-		
-		[HideInInspector] m_start_DetailTexture("Detail Texture", Float) = 0 // Starts secondary expandable menu
+			[HideInInspector] m_end_BaseTexture("Base Texture", Float) = 0 // Declares where the menu should end
+			
+					[HideInInspector] m_start_DetailTexture("Detail Texture", Float) = 0 // Starts secondary expandable menu
 		
 		[Toggle]_DetailTextureToggle("Detail Texture Toggle", Float) = 0
 		[BigTexture][NoScaleOffset]_DetailTexture("Detail Texture", 2D) = "white" {}
 		[KeywordEnum(UV0,UV1,UV2,UV3)] _DetailTextureUV("Detail Texture UV", Float) = 0
 		_DetailTextureBlend("Detail Texture Blend", Range( 0 , 1)) = 1
 		
-				[HideInInspector] m_end_DetailTexture("Detail Texture", Float) = 0 // Declares where the menu should end
-		
-		[HideInInspector] m_start_NormalMap("Normal Map", Float) = 0 // Starts secondary expandable menu
+			  	  	  		[HideInInspector] m_end_DetailTexture("Detail Texture", Float) = 0 // Declares where the menu should end
+						[HideInInspector] m_start_NormalMap("Normal Map", Float) = 0 // Starts secondary expandable menu
 		
 		[Toggle(_NORMALMAPTOGGLE_ON)] _NormalMapToggle("Normal Map Toggle", Float) = 0
 		[BigTexture][NoScaleOffset]_NormalMap("Normal Map", 2D) = "bump" {}
 		[KeywordEnum(UV0,UV1,UV2,UV3)] _NormalMapUV("Normal Map UV", Float) = 0
 		_NormalMapIntensity("Normal Map Intensity", Float) = 1
 		
-				[HideInInspector] m_end_NormalMap("Normal Map", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_NormalMap("Normal Map", Float) = 0 // Declares where the menu should end
 		
 		[HideInInspector] m_start_EmissionTexture("Emission Texture", Float) = 0 // Starts secondary expandable menu
 		
@@ -49,7 +47,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_EmissionHue("Emission Hue", Range( 0 , 1)) = 0
 		_EmissionEmit("Emission Emit", Float) = 1
 		
-				[HideInInspector] m_end_EmissionTexture("Emission Texture", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_EmissionTexture("Emission Texture", Float) = 0 // Declares where the menu should end
 		
 		[HideInInspector] m_start_CustomLighting("Custom Lighting", Float) = 0 // Starts secondary expandable menu
 		
@@ -78,7 +76,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_ExtraLightSoftness("Extra Light Softness", Range( 0.01 , 2)) = 0.01
 		_ExtraLightBlend("Extra Light Blend", Range( 0 , 10)) = 2
 		
-				[HideInInspector] m_end_CustomLighting("Custom Lighting", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_CustomLighting("Custom Lighting", Float) = 0 // Declares where the menu should end
 				
 		[HideInInspector] m_start_RimLight("Rim Light/Shadow", Float) = 0 // Starts secondary expandable menu
 		
@@ -92,7 +90,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_RimLightBlend("Rim Light Blend", Range( 0 , 25)) = 25
 		_RimShadowOpacity("Rim Shadow Opacity", Range( 0 , 1)) = 0.6676344
 		
-				[HideInInspector] m_end_RimLight("Rim Light/Shadow", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_RimLight("Rim Light/Shadow", Float) = 0 // Declares where the menu should end
 		
 		[HideInInspector] m_start_OutlineOptions("Outline Options", Float) = 0 // Starts secondary expandable menu
 		
@@ -106,9 +104,9 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_OutlineTextureTiling("Outline Texture Tiling", Vector) = (1,1,0,0)
 		_OutlineTextureScroll("Outline Texture Scroll", Vector) = (0,0,0,0)
 		
-				[HideInInspector] m_end_OutlineOptions("Outline Options", Float) = 0 // Declares where the menu should end
-		
-		[HideInInspector] m_start_SilhouetteOutlineOptions("Silhouette Outline Options", Float) = 0 // Starts secondary expandable menu
+			  	  	  		[HideInInspector] m_end_OutlineOptions("Outline Options", Float) = 0 // Declares where the menu should end
+			
+		[HideInInspector] m_start_SilhouetteOptions("Silhouette Options", Float) = 0 // Starts secondary expandable menu
 		
 		_SilhouetteColor("Silhouette Color", Color) = (1,1,1,1)
 		[Toggle]_SilhouetteTextureToggle("Silhouette Texture Toggle", Float) = 0
@@ -125,9 +123,9 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_SilhouetteRimLightOffset("Silhouette Rim Light Offset", Range( 0 , 1)) = 0.65
 		_SilhouetteRimLightBlend("Silhouette Rim Light Blend", Range( 0 , 25)) = 25
 		
-				[HideInInspector] m_end_SilhouetteOutlineOptions("Silhouette Outline Options", Float) = 0 // Declares where the menu should end
-				
-						[HideInInspector] m_start_CubemapOptions("Cubemap Options", Float) = 0 // Starts secondary expandable menu
+		[HideInInspector] m_end_SilhouetteOptions("Silhouette Options", Float) = 0 // Declares where the menu should end
+		
+				[HideInInspector] m_start_CubemapOptions("Cubemap Options", Float) = 0 // Starts secondary expandable menu
 		
 		[Toggle]_CubemapToggle("Cubemap Toggle", Float) = 0
 		[BigTexture][NoScaleOffset]_CubemapTexture("Cubemap Texture", CUBE) = "white" {}
@@ -138,7 +136,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_CubemapFresnelScale("Cubemap Fresnel Scale", Float) = 0
 		_CubemapFresnelPower("Cubemap Fresnel Power", Range( 0 , 15)) = 1
 		
-				[HideInInspector] m_end_CubemapOptions("Cubemap Options", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_CubemapOptions("Cubemap Options", Float) = 0 // Declares where the menu should end
 		
 		[HideInInspector] m_start_MuppoGlowOptions("Muppo Glow Options", Float) = 0 // Starts secondary expandable menu
 		
@@ -149,7 +147,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_GlowSpeed("Glow Speed", Float) = 10
 		_GlowEmit("Glow Emit", Float) = 1
 		
-				[HideInInspector] m_end_MuppoGlowOptions("Muppo Glow Options", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_MuppoGlowOptions("Muppo Glow Options", Float) = 0 // Declares where the menu should end
 		
 		[HideInInspector] m_start_MuppoFlipbookOptions("Muppo Flipbook Options", Float) = 0 // Starts secondary expandable menu
 		
@@ -163,7 +161,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_FlipbookSpeed("Flipbook Speed", Float) = 1
 		_FlipbookEmit("Flipbook Emit", Float) = 1
 		
-				[HideInInspector] m_end_MuppoFlipbookOptions("Muppo Flipbook Options", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_MuppoFlipbookOptions("Muppo Flipbook Options", Float) = 0 // Declares where the menu should end
 		
 		[HideInInspector] m_start_MuppoScrollOptions("Muppo Scroll Options", Float) = 0 // Starts secondary expandable menu
 		
@@ -177,8 +175,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		_ScrollRotation("Scroll Rotation", Range( 0 , 360)) = 0
 		_ScrollEmit("Scroll Emit", Float) = 0
 		
-				
-		[HideInInspector] m_end_MuppoScrollOptions("Muppo Scroll Options", Float) = 0 // Declares where the menu should end
+			  	  	  		[HideInInspector] m_end_MuppoScrollOptions("Muppo Scroll Options", Float) = 0 // Declares where the menu should end
 		
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
@@ -274,12 +271,12 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 			uniform float2 _ShadowTextureTiling;
 			uniform float _ShadowTextureBlend;
 			uniform samplerCUBE _CubemapTexture;
-			uniform sampler2D cubemapmask;
 			uniform float _CubemapBlend;
 			uniform float _CubemapColorize;
 			uniform float _CubemapFresnelBias;
 			uniform float _CubemapFresnelScale;
 			uniform float _CubemapFresnelPower;
+			uniform sampler2D cubemapmask;
 			uniform float _RimShadowOffset;
 			uniform float _RimShadowPower;
 			uniform float _RimShadowOpacity;
@@ -545,14 +542,14 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 				ase_worldViewDir = normalize(ase_worldViewDir);
 				float3 ase_worldReflection = reflect(-ase_worldViewDir, ase_worldNormal);
 				float3 normalizedWorldRefl = normalize( ase_worldReflection );
-				float2 uvcubemapmask881 = i.ase_texcoord2.xyz.xy;
 				float4 blendOpSrc1212 = temp_output_409_0;
-				float4 blendOpDest1212 = ( ( texCUBE( _CubemapTexture, normalizedWorldRefl ) * tex2D( cubemapmask, uvcubemapmask881 ) ) * _CubemapBlend );
+				float4 blendOpDest1212 = ( texCUBE( _CubemapTexture, normalizedWorldRefl ) * _CubemapBlend );
 				float4 lerpBlendMode1212 = lerp(blendOpDest1212,( blendOpSrc1212 * blendOpDest1212 ),_CubemapColorize);
 				float3 normalizeWorldNormal = i.ase_texcoord9.xyz;
 				float fresnelNdotV1174 = dot( normalizeWorldNormal, ase_worldViewDir );
 				float fresnelNode1174 = ( _CubemapFresnelBias + _CubemapFresnelScale * pow( max( 1.0 - fresnelNdotV1174 , 0.0001 ), _CubemapFresnelPower ) );
-				float4 lerpResult1173 = lerp( temp_output_409_0 , ( saturate( lerpBlendMode1212 )) , fresnelNode1174);
+				float2 uvcubemapmask881 = i.ase_texcoord2.xyz.xy;
+				float4 lerpResult1173 = lerp( temp_output_409_0 , ( saturate( lerpBlendMode1212 )) , ( fresnelNode1174 * tex2D( cubemapmask, uvcubemapmask881 ) ));
 				float3 normalizedWorldNormal = normalize( ase_worldNormal );
 				ase_worldViewDir = Unity_SafeNormalize( ase_worldViewDir );
 				float dotResult1255 = dot( normalizedWorldNormal , ase_worldViewDir );
@@ -764,12 +761,12 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 			uniform float2 _ShadowTextureTiling;
 			uniform float _ShadowTextureBlend;
 			uniform samplerCUBE _CubemapTexture;
-			uniform sampler2D cubemapmask;
 			uniform float _CubemapBlend;
 			uniform float _CubemapColorize;
 			uniform float _CubemapFresnelBias;
 			uniform float _CubemapFresnelScale;
 			uniform float _CubemapFresnelPower;
+			uniform sampler2D cubemapmask;
 			uniform float _RimShadowOffset;
 			uniform float _RimShadowPower;
 			uniform float _RimShadowOpacity;
@@ -1010,14 +1007,14 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 				float4 temp_output_409_0 = ( (( _ShadowTextureToggle )?( ( saturate( lerpBlendMode822 )) ):( ( temp_output_857_0 * (( _DetailTextureToggle )?( ( saturate( lerpBlendMode1128 )) ):( tex2DNode76 )) ) )) * ase_lightColor );
 				float3 ase_worldReflection = reflect(-ase_worldViewDir, ase_worldNormal);
 				float3 normalizedWorldRefl = normalize( ase_worldReflection );
-				float2 uvcubemapmask881 = i.ase_texcoord.xyz.xy;
 				float4 blendOpSrc1212 = temp_output_409_0;
-				float4 blendOpDest1212 = ( ( texCUBE( _CubemapTexture, normalizedWorldRefl ) * tex2D( cubemapmask, uvcubemapmask881 ) ) * _CubemapBlend );
+				float4 blendOpDest1212 = ( texCUBE( _CubemapTexture, normalizedWorldRefl ) * _CubemapBlend );
 				float4 lerpBlendMode1212 = lerp(blendOpDest1212,( blendOpSrc1212 * blendOpDest1212 ),_CubemapColorize);
 				float3 normalizeWorldNormal = i.ase_texcoord8.xyz;
 				float fresnelNdotV1174 = dot( normalizeWorldNormal, ase_worldViewDir );
 				float fresnelNode1174 = ( _CubemapFresnelBias + _CubemapFresnelScale * pow( max( 1.0 - fresnelNdotV1174 , 0.0001 ), _CubemapFresnelPower ) );
-				float4 lerpResult1173 = lerp( temp_output_409_0 , ( saturate( lerpBlendMode1212 )) , fresnelNode1174);
+				float2 uvcubemapmask881 = i.ase_texcoord.xyz.xy;
+				float4 lerpResult1173 = lerp( temp_output_409_0 , ( saturate( lerpBlendMode1212 )) , ( fresnelNode1174 * tex2D( cubemapmask, uvcubemapmask881 ) ));
 				float3 normalizedWorldNormal = normalize( ase_worldNormal );
 				ase_worldViewDir = Unity_SafeNormalize( ase_worldViewDir );
 				float dotResult1255 = dot( normalizedWorldNormal , ase_worldViewDir );
@@ -1297,12 +1294,12 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 			uniform float2 _ShadowTextureTiling;
 			uniform float _ShadowTextureBlend;
 			uniform samplerCUBE _CubemapTexture;
-			uniform sampler2D cubemapmask;
 			uniform float _CubemapBlend;
 			uniform float _CubemapColorize;
 			uniform float _CubemapFresnelBias;
 			uniform float _CubemapFresnelScale;
 			uniform float _CubemapFresnelPower;
+			uniform sampler2D cubemapmask;
 			uniform float _RimShadowOffset;
 			uniform float _RimShadowPower;
 			uniform float _RimShadowOpacity;
@@ -1569,14 +1566,14 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 				ase_worldViewDir = normalize(ase_worldViewDir);
 				float3 ase_worldReflection = reflect(-ase_worldViewDir, ase_worldNormal);
 				float3 normalizedWorldRefl = normalize( ase_worldReflection );
-				float2 uvcubemapmask881 = i.ase_texcoord2.xyz.xy;
 				float4 blendOpSrc1212 = temp_output_409_0;
-				float4 blendOpDest1212 = ( ( texCUBE( _CubemapTexture, normalizedWorldRefl ) * tex2D( cubemapmask, uvcubemapmask881 ) ) * _CubemapBlend );
+				float4 blendOpDest1212 = ( texCUBE( _CubemapTexture, normalizedWorldRefl ) * _CubemapBlend );
 				float4 lerpBlendMode1212 = lerp(blendOpDest1212,( blendOpSrc1212 * blendOpDest1212 ),_CubemapColorize);
 				float3 normalizeWorldNormal = i.ase_texcoord9.xyz;
 				float fresnelNdotV1174 = dot( normalizeWorldNormal, ase_worldViewDir );
 				float fresnelNode1174 = ( _CubemapFresnelBias + _CubemapFresnelScale * pow( max( 1.0 - fresnelNdotV1174 , 0.0001 ), _CubemapFresnelPower ) );
-				float4 lerpResult1173 = lerp( temp_output_409_0 , ( saturate( lerpBlendMode1212 )) , fresnelNode1174);
+				float2 uvcubemapmask881 = i.ase_texcoord2.xyz.xy;
+				float4 lerpResult1173 = lerp( temp_output_409_0 , ( saturate( lerpBlendMode1212 )) , ( fresnelNode1174 * tex2D( cubemapmask, uvcubemapmask881 ) ));
 				float3 normalizedWorldNormal = normalize( ase_worldNormal );
 				ase_worldViewDir = Unity_SafeNormalize( ase_worldViewDir );
 				float dotResult1255 = dot( normalizedWorldNormal , ase_worldViewDir );
@@ -1674,7 +1671,9 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		}
 		
 	}
-	//originalEditorCustomEditor "ASEMaterialInspector"
+	//originalEditor//originalEditorCustomEditor "ASEMaterialInspector"
+CustomEditor "Thry.ShaderEditor"
+//originalEditorCustomEditor "ASEMaterialInspector"
 CustomEditor "Thry.ShaderEditor"
 	
 	Fallback Off
@@ -1780,7 +1779,6 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1061;3247.397,956.29;Inherit;False
 Node;AmplifyShaderEditor.ToggleSwitchNode;1074;3310.487,1183.248;Inherit;False;Property;_SpecularCustomColorToggle;Specular Custom Color Toggle;33;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1065;3639.809,984.8562;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SamplerNode;1060;2753.072,1170.499;Inherit;True;Property;_SpecularMask;Specular Mask;35;1;[NoScaleOffset];Create;True;0;0;0;False;0;False;-1;None;26ddce9652eff884c898487d29f5196e;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SamplerNode;881;2472.681,2263.267;Inherit;True;Property;cubemapmask;Cubemap Mask;77;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;622;2755.8,-1117.635;Inherit;True;Property;_GlowMask;Glow Mask;84;1;[NoScaleOffset];Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.StaticSwitch;590;3840.299,-909.5723;Inherit;False;Property;_GlowToggle;Glow Toggle;83;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT3;0,0,0;False;0;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT3;0,0,0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RangedFloatNode;1100;1236.263,1687.058;Inherit;False;Property;_NormalMapIntensity;Normal Map Intensity;13;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
@@ -1804,7 +1802,6 @@ Node;AmplifyShaderEditor.CommentaryNode;1150;1912.775,3896.888;Inherit;False;182
 Node;AmplifyShaderEditor.SamplerNode;835;1512.257,1636.757;Inherit;True;Property;_NormalMap;Normal Map;11;1;[NoScaleOffset];Create;True;0;0;0;False;0;False;-1;None;b9275fa190e25044881bdca7115fc875;True;0;True;bump;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.StaticSwitch;843;1994.343,1645.634;Inherit;False;Property;_NormalMapToggle;Normal Map Toggle;10;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT3;0,0,0;False;0;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT3;0,0,0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.WorldReflectionVector;877;2260.083,2076.667;Inherit;True;True;1;0;FLOAT3;0,0,0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;878;2777.182,2095.667;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;971;2840.43,3203.384;Inherit;False;Property;_CustomLightingColorToggle;Custom Lighting Color Toggle;19;0;Create;True;0;0;0;False;1;Shadow Options;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;625;2468.434,2798.943;Inherit;False;Property;_CustomShadowColorToggle;Custom Shadow Color Toggle;21;0;Create;True;0;0;0;False;1;Shadow Options;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ScreenPosInputsNode;702;1987.544,3485.072;Float;False;0;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -1865,9 +1862,6 @@ Node;AmplifyShaderEditor.Vector2Node;561;-419.1431,3418.786;Inherit;False;Proper
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;863;3526.522,480.8262;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;882;2957.417,2103.48;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode;883;2838.013,2224.182;Inherit;False;Property;_CubemapBlend;Cubemap Blend;78;0;Create;True;0;0;0;False;0;False;1;0.016;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1177;3208.084,2408.238;Inherit;False;Property;_CubemapFresnelBias;Cubemap Fresnel Bias;80;0;Create;True;0;0;0;False;0;False;0.5;0.05;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1215;3217.982,2499.056;Inherit;False;Property;_CubemapFresnelScale;Cubemap Fresnel Scale;81;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1179;3230.084,2591.238;Inherit;False;Property;_CubemapFresnelPower;Cubemap Fresnel Power;82;0;Create;True;0;0;0;False;0;False;1;0.05;0;15;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;860;3950.549,366.7159;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.CommentaryNode;1248;2165.021,-104.3563;Inherit;False;1636.984;483.7798;;12;1260;1259;1258;1257;1256;1255;1254;1253;1252;1251;1250;1249;Rim Shadow;1,1,1,1;0;0
 Node;AmplifyShaderEditor.RangedFloatNode;1249;3287.513,233.0792;Inherit;False;Property;_RimShadowOpacity;Rim Shadow Opacity;51;0;Create;True;0;0;0;False;0;False;0.6676344;0.332;0;1;0;1;FLOAT;0
@@ -1883,7 +1877,6 @@ Node;AmplifyShaderEditor.RangedFloatNode;1258;2360.383,293.5399;Inherit;False;Pr
 Node;AmplifyShaderEditor.OneMinusNode;1259;2950.868,143.6488;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.PowerNode;1260;3110.38,-57.46034;Inherit;True;False;2;0;FLOAT;0;False;1;FLOAT;0.01;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;1213;3004.143,2321.712;Inherit;False;Property;_CubemapColorize;Cubemap Colorize;79;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.FresnelNode;1174;3497.386,2354.138;Inherit;True;Standard;WorldNormal;ViewDir;True;True;5;0;FLOAT3;0,0,1;False;4;FLOAT3;0,0,0;False;1;FLOAT;0.05;False;2;FLOAT;1;False;3;FLOAT;5;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;587;2528.248,-595.9348;Inherit;False;Property;_EmissionHue;Emission Hue;17;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.StaticSwitch;591;1672.215,-635.2302;Inherit;False;Property;_ScrollToggle;Scroll Toggle;98;0;Create;True;0;0;0;False;0;False;0;1;1;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT3;0,0,0;False;0;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT3;0,0,0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1263;2322.949,-275.6747;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
@@ -1926,7 +1919,7 @@ Node;AmplifyShaderEditor.ToggleSwitchNode;1272;2538.744,4599.543;Inherit;False;P
 Node;AmplifyShaderEditor.ToggleSwitchNode;924;3447.785,4468.922;Inherit;False;Property;_OutlineBlendBaseTexture;Outline Blend Base Texture;56;0;Create;True;0;0;0;False;0;False;1;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleTimeNode;1276;1773.363,4596.447;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.BlendOpsNode;822;3345.579,3483.154;Inherit;True;Multiply;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0.5;False;1;COLOR;0
-Node;AmplifyShaderEditor.LerpOp;1173;3572.586,2100.637;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp;1173;3572.586,2100.637;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;409;3608.507,2751.897;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;857;3289.184,2846.9;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT4;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;769;3542.383,3055.424;Inherit;False;Property;_ShadowTextureToggle;Shadow Texture Toggle;25;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
@@ -1986,9 +1979,15 @@ Node;AmplifyShaderEditor.SimpleAddOpNode;642;4728.087,356.8759;Inherit;False;2;2
 Node;AmplifyShaderEditor.SimpleAddOpNode;1329;4382.865,474.7703;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1321;3345.595,5696.192;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;1330;4490.865,463.7703;Inherit;False;Property;_SilhouetteRimLightToggle;Silhouette Rim Light Toggle;71;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1281;5867.152,346.1395;Float;False;True;-1;2;ASEMaterialInspector;100;16;Pupsi/Pupsi BRC Shader Silhouette Beta;c92fbf1a957df824a97c80c48520b74f;True;ForwardBase;0;0;ForwardBase;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Transparent=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;2;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;7;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=ForwardBase;True;2;False;0;;0;0;Standard;0;0;6;True;False;False;True;True;True;False;;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1285;3786.251,5102.607;Float;False;False;-1;2;ASEMaterialInspector;100;16;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Aura;0;4;Aura;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;2;5;False;;10;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;False;;255;False;;0;False;;2;False;;8;False;;8;False;;8;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1284;3808.795,4458.85;Float;False;False;-1;2;ASEMaterialInspector;100;16;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Outline;0;3;Outline;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;1;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;2;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1281;5867.152,346.1395;Float;False;True;-1;2;ASEMaterialInspector;100;14;Pupsi/Pupsi BRC Shader (Silhouette Outline);c92fbf1a957df824a97c80c48520b74f;True;ForwardBase;0;0;ForwardBase;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Transparent=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;2;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;7;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=ForwardBase;True;2;False;0;;0;0;Standard;0;0;6;True;False;False;True;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1285;3786.251,5102.607;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Aura;0;4;Aura;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;2;5;False;;10;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;False;;255;False;;0;False;;2;False;;8;False;;8;False;;8;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1284;3808.795,4458.85;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Outline;0;3;Outline;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;1;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;2;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.RangedFloatNode;1177;2952.084,2437.238;Inherit;False;Property;_CubemapFresnelBias;Cubemap Fresnel Bias;80;0;Create;True;0;0;0;False;0;False;0.5;0.05;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1215;2961.982,2528.056;Inherit;False;Property;_CubemapFresnelScale;Cubemap Fresnel Scale;81;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1179;2974.084,2620.238;Inherit;False;Property;_CubemapFresnelPower;Cubemap Fresnel Power;82;0;Create;True;0;0;0;False;0;False;1;0.05;0;15;0;1;FLOAT;0
+Node;AmplifyShaderEditor.FresnelNode;1174;3241.386,2383.138;Inherit;True;Standard;WorldNormal;ViewDir;True;True;5;0;FLOAT3;0,0,1;False;4;FLOAT3;0,0,0;False;1;FLOAT;0.05;False;2;FLOAT;1;False;3;FLOAT;5;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;878;3607.182,2358.667;Inherit;False;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode;881;3479.681,2499.267;Inherit;True;Property;cubemapmask;Cubemap Mask;77;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 WireConnection;589;0;591;0
 WireConnection;589;1;603;0
 WireConnection;589;2;590;0
@@ -2100,8 +2099,6 @@ WireConnection;835;1;1121;0
 WireConnection;835;5;1100;0
 WireConnection;843;1;837;0
 WireConnection;843;0;834;0
-WireConnection;878;0;869;0
-WireConnection;878;1;881;0
 WireConnection;971;0;381;0
 WireConnection;971;1;970;0
 WireConnection;625;0;378;0
@@ -2163,7 +2160,7 @@ WireConnection;560;1;561;0
 WireConnection;559;1;560;0
 WireConnection;863;0;862;0
 WireConnection;863;1;558;0
-WireConnection;882;0;878;0
+WireConnection;882;0;869;0
 WireConnection;882;1;883;0
 WireConnection;860;0;1251;0
 WireConnection;860;1;863;0
@@ -2180,9 +2177,6 @@ WireConnection;1255;1;1254;0
 WireConnection;1259;0;1252;0
 WireConnection;1260;0;1252;0
 WireConnection;1260;1;1257;0
-WireConnection;1174;1;1177;0
-WireConnection;1174;2;1215;0
-WireConnection;1174;3;1179;0
 WireConnection;591;0;588;0
 WireConnection;1263;0;562;0
 WireConnection;1263;1;1262;0
@@ -2224,7 +2218,7 @@ WireConnection;822;1;857;0
 WireConnection;822;2;823;0
 WireConnection;1173;0;409;0
 WireConnection;1173;1;1212;0
-WireConnection;1173;2;1174;0
+WireConnection;1173;2;878;0
 WireConnection;409;0;769;0
 WireConnection;409;1;408;0
 WireConnection;857;0;406;0
@@ -2300,5 +2294,10 @@ WireConnection;1285;2;1292;0
 WireConnection;1284;0;924;0
 WireConnection;1284;1;1148;0
 WireConnection;1284;2;888;0
+WireConnection;1174;1;1177;0
+WireConnection;1174;2;1215;0
+WireConnection;1174;3;1179;0
+WireConnection;878;0;1174;0
+WireConnection;878;1;881;0
 ASEEND*/
-//CHKSM=02E6AE826B3A33F1F2DF5CDDA9FBDB2BD5B5D379
+//CHKSM=D4ACA06311254B98B4B4BF44300AE48B7037F336
