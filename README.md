@@ -1,6 +1,6 @@
 ![pupsi brc shader logo](https://i.ibb.co/w4zTZtq/pupsibrcshaderlogo.png "pupsi brc shader logo")
 
-Special thanks to Muppo for allowing me to use their glow/scroll implementation as well as StonyOnBRC and the GGs for testing and feedback!
+Special thanks to Muppo for allowing me to incorporate their glow/scroll implementation.
 
 ![examples](https://i.postimg.cc/Jh6Cbg3y/New-Examples.png "examples")
 
@@ -12,11 +12,11 @@ Special thanks to Muppo for allowing me to use their glow/scroll implementation 
 - support for normal maps
 - custom rim light/shadow with optional base texture blending
 - optional specular lighting options with masking
-- custom colored outline with custom width and optional base texture blending
+- colored or textured outline with custom width, scrolling, and base texture blending
 - optional extra lighting pass
 - screen space shadow texture overlay
 - screen space options with scrolling, emission, and masking
-- additive cubemap reflections with masking
+- cubemap reflections with fresnel and masking
 - base texture scrolling and rotation with masking
 - emission hue shift, scrolling, rotation, and masking
 - glow masking and cycling
