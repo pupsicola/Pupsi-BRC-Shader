@@ -21,10 +21,10 @@ Special thanks to Muppo for allowing me to incorporate their glow/scroll impleme
 - emission hue shift, scrolling, rotation, and masking
 - glow masking and cycling
 - flipbook textures and masking
-- three shaders are included, the main shader for opaque rendering as well as alpha clipping, the transparent shader for partial transparencies, and the silhouette outline shader for a new secondary outline and additional overlay effects.
+- four shaders are included, the main shader for opaque rendering as well as alpha clipping, the transparent shader for partial transparencies, the silhouette outline shader for a new secondary outline and additional overlay effects, and the silhouette outline transparent shader which combines transparency with the aforementioned shader.
 
 ### Instructions for use:
-Simply download and drop the shader file into the project folder of your choice and select "Pupsi BRC Shader", "Pupsi BRC Shader Transparent", or "Pupsi BRC Shader Silhouette Outline" from the shader selection dropdown for the material you're using.
+Simply download and drop the shader file into the project folder of your choice and select from the Pupsi folder in the shader selection dropdown for the material you're using.
 
 Important Note: If you experience conflicts with Poiyomi or other shaders that use ThryEditor you'll need to delete the ThryEditor folder from either of the conflicting shaders "Scripts" folder. (Unfortunately there isn't a prettier solution at the moment.)
 
