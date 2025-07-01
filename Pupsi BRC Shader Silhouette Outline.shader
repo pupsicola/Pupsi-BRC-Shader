@@ -4,7 +4,7 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 {
 	Properties 
   { 
-      [HideInInspector] shader_is_using_thry_editor("", Float)=0   
+      [HideInInspector] shader_is_using_thry_editor("", Float)=0          
 		[HideInInspector] shader_master_label("<color=#1fc>Pupsi</color> <color=#ffffff>BRC Shader (Silhouette Outline)</color>", Float) = 0
 		[HideInInspector] footer_github ("{texture:{name:icon-githubpupsi,height:64},action:{type:URL,data:https://github.com/pupsicola/Pupsi-BRC-Shader},hover:Github}", Float) = 0
 		[HideInInspector] footer_kofi ("{texture:{name:icon-kofipupsi,height:64},action:{type:URL,data:https://ko-fi.com/pupsi},hover:Ko-fi}", Float) = 0
@@ -1657,6 +1657,8 @@ Shader "Pupsi/Pupsi BRC Shader (Silhouette Outline)"
 		
 	}
 	//originalEditorCustomEditor "ASEMaterialInspector"
+CustomEditor "Thry.ShaderEditor"
+//originalEditorCustomEditor "ASEMaterialInspector"
 CustomEditor "Thry.ShaderEditor"
 	
 	Fallback Off
