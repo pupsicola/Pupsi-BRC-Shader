@@ -10,6 +10,7 @@ Special thanks to Muppo for allowing me to incorporate their glow/scroll impleme
 - custom gui
 - shadow and light softness, offset, halftone, and custom tint options
 - support for normal maps
+- support for vertex colors
 - custom rim light/shadow with optional base texture blending
 - optional specular lighting options with masking
 - colored or textured outline with custom width, scrolling, and base texture blending
