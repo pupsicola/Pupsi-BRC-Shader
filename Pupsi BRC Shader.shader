@@ -52,6 +52,11 @@ Shader "Pupsi/Pupsi BRC Shader"
       _EmissionMaskScrollSpeed("Emission Mask Scroll Speed", Vector) = (0,0,0,0)
       _EmissionHue("Emission Hue", Range( 0 , 1)) = 0
       _EmissionEmit("Emission Emit", Float) = 1
+	  
+	  	  	  	  	  		[HideInInspector] m_end_EmissionTexture("Emission Texture", Float) = 0 // Declares where the menu should end
+		
+		[HideInInspector] m_start_CustomLighting("Custom Lighting", Float) = 0 // Starts secondary expandable menu
+	  
       [Shadow Options][Toggle]_CustomLightingColorToggle("Custom Lighting Color Toggle", Float) = 0
       _CustomLightingColor("Custom Lighting Color", Color) = (1,1,1,0)
       [Shadow Options][Toggle]_CustomShadowColorToggle("Custom Shadow Color Toggle", Float) = 0
