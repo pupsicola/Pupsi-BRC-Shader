@@ -46,21 +46,62 @@ public class PupsiBRCShaderGUI : ShaderGUI
     private static GUIStyle boxStyle;
     private static bool stylesInitialized = false;
 
+    private string GetPackageRootPath()
+    {
+        // Find this script's location and navigate to the package root
+        var script = MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<ScriptableObject>());
+        string[] guids = AssetDatabase.FindAssets("t:Script PupsiBRCShaderGUI");
+        
+        if (guids.Length > 0)
+        {
+            string scriptPath = AssetDatabase.GUIDToAssetPath(guids[0]);
+            // Script is in [PackageRoot]/Scripts/Editor/PupsiBRCShaderGUI.cs
+            // Navigate up to package root
+            string packageRoot = System.IO.Path.GetDirectoryName(scriptPath); // Scripts/Editor
+            packageRoot = System.IO.Path.GetDirectoryName(packageRoot); // Scripts
+            packageRoot = System.IO.Path.GetDirectoryName(packageRoot); // Package Root
+            return packageRoot.Replace("\\", "/");
+        }
+        
+        return null;
+    }
+
     private void LoadTextures()
     {
         if (texturesLoaded) return;
 
-        // Find textures in the shader package
-        string[] logoGuids = AssetDatabase.FindAssets("logo t:Texture2D", new[] { "Assets/Pupsi-BRC-Shader-2.0/Textures/Icons" });
-        string[] githubGuids = AssetDatabase.FindAssets("T_icon-githubpupsi t:Texture2D", new[] { "Assets/Pupsi-BRC-Shader-2.0/Textures/Icons" });
-        string[] kofiGuids = AssetDatabase.FindAssets("T_icon-kofipupsi t:Texture2D", new[] { "Assets/Pupsi-BRC-Shader-2.0/Textures/Icons" });
+        string packageRoot = GetPackageRootPath();
+        
+        if (!string.IsNullOrEmpty(packageRoot))
+        {
+            string iconsPath = packageRoot + "/Textures/Icons";
+            
+            // Find textures relative to the package location
+            string[] logoGuids = AssetDatabase.FindAssets("logo t:Texture2D", new[] { iconsPath });
+            string[] githubGuids = AssetDatabase.FindAssets("T_icon-githubpupsi t:Texture2D", new[] { iconsPath });
+            string[] kofiGuids = AssetDatabase.FindAssets("T_icon-kofipupsi t:Texture2D", new[] { iconsPath });
 
-        if (logoGuids.Length > 0)
-            logoTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(logoGuids[0]));
-        if (githubGuids.Length > 0)
-            githubIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(githubGuids[0]));
-        if (kofiGuids.Length > 0)
-            kofiIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(kofiGuids[0]));
+            if (logoGuids.Length > 0)
+                logoTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(logoGuids[0]));
+            if (githubGuids.Length > 0)
+                githubIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(githubGuids[0]));
+            if (kofiGuids.Length > 0)
+                kofiIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(kofiGuids[0]));
+        }
+        else
+        {
+            // Fallback: search entire project for the textures by name
+            string[] logoGuids = AssetDatabase.FindAssets("logo t:Texture2D");
+            string[] githubGuids = AssetDatabase.FindAssets("T_icon-githubpupsi t:Texture2D");
+            string[] kofiGuids = AssetDatabase.FindAssets("T_icon-kofipupsi t:Texture2D");
+
+            if (logoGuids.Length > 0)
+                logoTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(logoGuids[0]));
+            if (githubGuids.Length > 0)
+                githubIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(githubGuids[0]));
+            if (kofiGuids.Length > 0)
+                kofiIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(kofiGuids[0]));
+        }
 
         texturesLoaded = true;
     }
