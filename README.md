@@ -1,4 +1,4 @@
-![pupsi brc shader logo](https://i.ibb.co/w4zTZtq/pupsibrcshaderlogo.png "pupsi brc shader logo")
+![pupsi brc shader logo](https://i.ibb.co/HpGJF53X/logo.png "pupsi brc shader logo")
 
 Special thanks to Muppo for allowing me to incorporate their glow/scroll implementation.
 
@@ -9,6 +9,7 @@ Special thanks to Muppo for allowing me to incorporate their glow/scroll impleme
 - custom uv options
 - custom gui
 - shadow and light softness, offset, halftone, and custom tint options
+- vertex color based outline/silhouette coverage
 - support for normal maps
 - support for vertex colors
 - custom rim light/shadow with optional base texture blending

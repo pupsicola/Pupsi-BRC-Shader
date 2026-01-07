@@ -2,31 +2,16 @@
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 {
-	Properties 
-  { 
-      [HideInInspector] shader_is_using_thry_editor("", Float)=0 
-      [HideInInspector] shader_is_using_thry_editor("", Float)=0
-	
-				[HideInInspector] shader_master_label("<color=#1fc>Pupsi</color> <color=#ffffff>BRC Ultimate Ninja Shader</color>", Float) = 0
-		[HideInInspector] footer_github ("{texture:{name:icon-githubpupsi,height:64},action:{type:URL,data:https://github.com/pupsicola/Pupsi-BRC-Shader},hover:Github}", Float) = 0
-		[HideInInspector] footer_kofi ("{texture:{name:icon-kofipupsi,height:64},action:{type:URL,data:https://ko-fi.com/pupsi},hover:Ko-fi}", Float) = 0
-	
+	Properties
+	{
 		[Enum(UnityEngine.Rendering.CullMode)]_Cull("Cull Mode", Float) = 2.0 // VBESSON CHANGE
-		
-				[HideInInspector] m_start_BaseTextures("Base Textures", Float) = 0 // Starts secondary expandable menu
-		
 		_AlphaClipping("Alpha Clipping", Range( 0 , 1)) = 0.5
 		_BaseColor("Base Color", Color) = (1,1,1,0)
-		[BigTexture][NoScaleOffset]_MainTex("Base Texture", 2D) = "white" {}
-		[BigTexture][NoScaleOffset]_Emission("Emission Texture", 2D) = "black" {}
-		_EmissionColor("Emission Color", Color) = (1,1,1,1)
-		[BigTexture][NoScaleOffset]_EmissionMask("Emission Mask", 2D) = "white" {}
+		[NoScaleOffset]_MainTex("Base Texture", 2D) = "white" {}
+		[NoScaleOffset]_Emission("Emission Texture", 2D) = "black" {}
+		_EmissionColor("Emission Color", Color) = (0,0,0,0)
+		[NoScaleOffset]_EmissionMask("Emission Mask", 2D) = "white" {}
 		_EmissionEmit("Emission Amount", Float) = 1
-		
-				[HideInInspector] m_end_BaseTextures("Base Textures", Float) = 0 // Declares where the menu should end
-		
-		[HideInInspector] m_start_CustomLighting("Custom Lighting", Float) = 0 // Starts secondary expandable menu
-		
 		[Shadow Options][Toggle]_CustomLightingColorToggle("Custom Lighting Color Toggle", Float) = 0
 		_CustomLightingColor("Custom Lighting Color", Color) = (1,1,1,0)
 		[Shadow Options][Toggle]_CustomShadowColorToggle("Custom Shadow Color Toggle", Float) = 0
@@ -34,7 +19,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 		_ShadowSoftness("Shadow Softness", Range( 0.01 , 2)) = 0.01
 		_ShadowOffset("Shadow Offset", Range( -1 , 1)) = 0
 		[Toggle]_ShadowTextureToggle("Shadow Texture Toggle", Float) = 1
-		[BigTexture][NoScaleOffset]_ShadowTexture("Shadow Texture", 2D) = "white" {}
+		[NoScaleOffset]_ShadowTexture("Shadow Texture", 2D) = "white" {}
 		_ShadowTextureTiling("Shadow Texture Tiling", Vector) = (14,14,0,0)
 		_ShadowTextureSoftness("Shadow Texture Softness", Range( 0.01 , 2)) = 0.1
 		_ShadowTextureOffset("Shadow Texture Offset", Range( -1 , 1)) = -0.1
@@ -49,7 +34,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 		[Toggle]_SpecularToggle("Specular Toggle", Float) = 0
 		[Toggle]_SpecularCustomColorToggle("Specular Custom Color Toggle", Float) = 0
 		_SpecularCustomColor("Specular Custom Color", Color) = (1,1,1,0)
-		[BigTexture][NoScaleOffset]_SpecularMask("Specular Mask", 2D) = "white" {}
+		[NoScaleOffset]_SpecularMask("Specular Mask", 2D) = "white" {}
 		_SpecularBrightness("Specular Brightness", Float) = 1
 		_SpecularPower("Specular Power", Float) = 15
 		[Toggle]_RimLightShadowToggle("Rim Light/Shadow Toggle", Float) = 0
@@ -61,28 +46,19 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 		_RimShadowPower("Rim Shadow Power", Range( 0.01 , 10)) = 10
 		_RimShadowOffset("Rim Shadow Offset", Range( -1 , 1)) = 0.65
 		_RimShadowOpacity("Rim Shadow Opacity", Range( 0 , 1)) = 0.6676344
-		
-				[HideInInspector] m_end_CustomLighting("Custom Lighting", Float) = 0 // Declares where the menu should end
-		
-		[HideInInspector] m_start_OutlineOptions("Outline Options", Float) = 0 // Starts secondary expandable menu
-		
 		_OutlineMultiplier("Outline Multiplier", Float) = 0.005
 		_OutlineMinSize("Outline Min Size", Float) = 0.002
 		_OutlineMaxSize("Outline Max Size", Float) = 0.008
+		[Toggle]_VertexColorsDefineOutlineCoverage("Vertex Colors Define Outline Coverage", Float) = 0
 		_OutlineColor("Outline Color", Color) = (0,0,0,1)
 		[Toggle]_OutlineBlendBaseTexture("Outline Blend Base Texture", Float) = 1
 		[Toggle]_OutlineTextureToggle("Outline Texture Toggle", Float) = 0
-		[BigTexture][NoScaleOffset]OutlineTexture("Outline Texture", 2D) = "white" {}
+		[NoScaleOffset]OutlineTexture("Outline Texture", 2D) = "white" {}
 		_OutlineTextureTiling("Outline Texture Tiling", Vector) = (1,1,0,0)
 		_OutlineTextureScroll("Outline Texture Scroll", Vector) = (0,0,0,0)
-		
-				[HideInInspector] m_end_OutlineOptions("Outline Options", Float) = 0 // Declares where the menu should end
-		
-		[HideInInspector] m_start_SilhouetteOutlineOptions("Silhouette Outline Options", Float) = 0 // Starts secondary expandable menu
-		
 		_SilhouetteColor("Silhouette Color", Color) = (1,1,1,1)
 		[Toggle]_SilhouetteTextureToggle("Silhouette Texture Toggle", Float) = 0
-		[BigTexture][NoScaleOffset]AuraTexture1("Silhouette Texture", 2D) = "white" {}
+		[NoScaleOffset]AuraTexture1("Silhouette Texture", 2D) = "white" {}
 		_SilhouetteTextureTiling("Silhouette Texture Tiling", Vector) = (1,1,0,0)
 		_SilhouetteTextureScroll("Silhouette Texture Scroll", Vector) = (0,0,0,0)
 		[Toggle]_SilhouetteOverlay("Silhouette Overlay", Float) = 0
@@ -90,13 +66,11 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 		_SilhouetteMultiplier("Silhouette Multiplier", Float) = 0.01
 		_SilhouetteMinSize("Silhouette Min Size", Float) = 0.01
 		_SilhouetteMaxSize("Silhouette Max Size", Float) = 0.016
+		[Toggle]_VertexColorsDefineSilhouetteOutlineCoverage("Vertex Colors Define Silhouette Outline Coverage", Float) = 0
 		[Toggle]_SilhouetteRimLightToggle("Silhouette Rim Light Toggle", Float) = 0
 		_SilhouetteRimLightPower("Silhouette Rim Light Power", Range( 0.01 , 10)) = 0.7925499
 		_SilhouetteRimLightOffset("Silhouette Rim Light Offset", Range( 0 , 1)) = 0.65
 		_SilhouetteRimLightBlend("Silhouette Rim Light Opacity", Range( 0 , 25)) = 25
-		
-				[HideInInspector] m_end_SilhouetteOutlineOptions("Silhouette Outline Options", Float) = 0 // Declares where the menu should end
-		
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 	}
@@ -356,6 +330,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_color : COLOR;
 			};
 
 			struct v2f
@@ -366,6 +341,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				float4 ase_texcoord1 : TEXCOORD1;
 				float4 ase_texcoord2 : TEXCOORD2;
 				float4 ase_texcoord3 : TEXCOORD3;
+				float4 ase_color : COLOR;
 			};
 
 			//This is a late directive
@@ -432,6 +408,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 			uniform sampler2D _Emission;
 			uniform sampler2D _EmissionMask;
 			uniform float _EmissionEmit;
+			uniform float _VertexColorsDefineOutlineCoverage;
 			uniform float _AlphaClipping;
 
 
@@ -454,6 +431,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				o.ase_texcoord3 = screenPos;
 				
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
+				o.ase_color = v.ase_color;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord.w = 0;
@@ -519,10 +497,11 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				float4 temp_output_472_0 = ( (( _SilhouetteOverlay )?( ( (( _SpecularToggle )?( ( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) )) + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, uv_SpecularMask1060 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( BaseOutput1401 )) ) ) ):( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) )) )) + ( (( _SilhouetteTextureToggle )?( tex2D( AuraTexture1, ( ( ase_worldViewDir * float3( _SilhouetteTextureTiling ,  0.0 ) ) + float3( ( _Time.y * _SilhouetteTextureScroll ) ,  0.0 ) ).xy ) ):( _SilhouetteColor )) * _SilhouetteOverlayOpacity ) ) ):( (( _SpecularToggle )?( ( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) )) + ( ( ( pow( saturate( dotResult1046 ) , _SpecularPower ) * tex2D( _SpecularMask, uv_SpecularMask1060 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( BaseOutput1401 )) ) ) ):( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( BaseOutput1401 ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( BaseOutput1401 )) )) )) )) + ( ( _EmissionColor * ( tex2D( _Emission, uv_Emission609 ) * tex2D( _EmissionMask, uv_EmissionMask1261 ) ) ) * _EmissionEmit ) );
 				
 				clip( tex2DNode76.a - _AlphaClipping);
+				float4 temp_cast_21 = (1.0).xxxx;
 				
 
 				outOutlineColor = (( _OutlineBlendBaseTexture )?( ( temp_output_472_0 * (( _OutlineTextureToggle )?( tex2D( OutlineTexture, ( ( ase_worldViewDir * float3( _OutlineTextureTiling ,  0.0 ) ) + float3( ( _Time.y * _OutlineTextureScroll ) ,  0.0 ) ).xy ) ):( _OutlineColor )) ) ):( (( _OutlineTextureToggle )?( tex2D( OutlineTexture, ( ( ase_worldViewDir * float3( _OutlineTextureTiling ,  0.0 ) ) + float3( ( _Time.y * _OutlineTextureScroll ) ,  0.0 ) ).xy ) ):( _OutlineColor )) )).rgb;
-				outOutlineAlpha = 1.0;
+				outOutlineAlpha = (( _VertexColorsDefineOutlineCoverage )?( ( i.ase_color * 1.0 ) ):( temp_cast_21 )).r;
 				clip(outOutlineAlpha);
 				return float4(outOutlineColor,outOutlineAlpha);
 			}
@@ -569,6 +548,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_color : COLOR;
 			};
 
 			struct v2f
@@ -577,6 +557,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				UNITY_VERTEX_OUTPUT_STEREO
 				float4 ase_texcoord : TEXCOORD0;
 				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_color : COLOR;
 			};
 
 			uniform float _SilhouetteMultiplier;
@@ -587,6 +568,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 			uniform sampler2D AuraTexture1;
 			uniform float2 _SilhouetteTextureTiling;
 			uniform float2 _SilhouetteTextureScroll;
+			uniform float _VertexColorsDefineSilhouetteOutlineCoverage;
 			uniform sampler2D _MainTex;
 			uniform float _AlphaClipping;
 
@@ -605,6 +587,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				o.ase_texcoord.xyz = ase_worldPos;
 				
 				o.ase_texcoord1.xy = v.ase_texcoord.xy;
+				o.ase_color = v.ase_color;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord.w = 0;
@@ -628,10 +611,11 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 				float2 uv_MainTex76 = i.ase_texcoord1.xy;
 				float4 tex2DNode76 = tex2D( _MainTex, uv_MainTex76 );
 				clip( tex2DNode76.a - _AlphaClipping);
+				float4 temp_cast_4 = (1.0).xxxx;
 				
 
 				outAuraColor = AuraTex1305.rgb;
-				outAuraAlpha = 1.0;
+				outAuraAlpha = (( _VertexColorsDefineSilhouetteOutlineCoverage )?( ( i.ase_color * 1.0 ) ):( temp_cast_4 )).r;
 				clip(outAuraAlpha);
 				return float4(outAuraColor,outAuraAlpha);
 			}
@@ -828,10 +812,7 @@ Shader "Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader"
 		}
 		
 	}
-	//originalEditor//originalEditorCustomEditor "ASEMaterialInspector"
-CustomEditor "Thry.ShaderEditor"
-//originalEditorCustomEditor "ASEMaterialInspector"
-CustomEditor "Thry.ShaderEditor"
+	CustomEditor "PupsiBRCShaderGUI"
 	
 	Fallback Off
 }
@@ -899,12 +880,12 @@ Node;AmplifyShaderEditor.CommentaryNode;1315;1801.716,6898.048;Inherit;False;197
 Node;AmplifyShaderEditor.ToggleSwitchNode;1088;5005.834,342.5815;Inherit;False;Property;_SpecularToggle;Specular Toggle;26;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode;1149;5280.743,832.6833;Inherit;False;Property;_AlphaClipping;Alpha Clipping;0;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1311;5074.196,593.3636;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;1312;4695.196,745.3636;Inherit;False;Property;_SilhouetteOverlayOpacity;Silhouette Overlay Opacity;56;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1312;4695.196,745.3636;Inherit;False;Property;_SilhouetteOverlayOpacity;Silhouette Overlay Opacity;57;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;472;5592.5,362.2181;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;1314;5305.196,362.3637;Inherit;False;Property;_SilhouetteOverlay;Silhouette Overlay;55;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;1314;5305.196,362.3637;Inherit;False;Property;_SilhouetteOverlay;Silhouette Overlay;56;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;1313;5221.181,489.6377;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;1329;4382.865,474.7703;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;1330;4490.865,463.7703;Inherit;False;Property;_SilhouetteRimLightToggle;Silhouette Rim Light Toggle;60;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;1330;4490.865,463.7703;Inherit;False;Property;_SilhouetteRimLightToggle;Silhouette Rim Light Toggle;62;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode;558;3240.87,703.2561;Inherit;False;Property;_RimLightBlend;Rim Light Opacity;37;0;Create;False;0;0;0;False;0;False;25;0;0;25;0;1;FLOAT;0
 Node;AmplifyShaderEditor.WorldSpaceLightDirHlpNode;53;1916.417,1818.647;Inherit;False;False;1;0;FLOAT;0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.NormalizeNode;170;2018.346,1671.201;Inherit;False;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
@@ -923,8 +904,8 @@ Node;AmplifyShaderEditor.ColorNode;624;2134.681,4072.899;Inherit;False;Property;
 Node;AmplifyShaderEditor.Vector4Node;378;2386.029,4068.922;Inherit;False;Global;ShadowColor;ShadowColor;11;0;Create;True;1;Shadow Options;0;0;False;0;False;0.2,0.2,0.2,0;0.5,0.5,0.5,1;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ColorNode;970;2761.677,4466.341;Inherit;False;Property;_CustomLightingColor;Custom Lighting Color;8;0;Create;True;0;0;0;False;0;False;1,1,1,0;1,1,1,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ViewDirInputsCoordNode;1278;1718.666,5881.88;Inherit;False;World;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
-Node;AmplifyShaderEditor.Vector2Node;1277;1737.883,5748.918;Inherit;False;Property;_OutlineTextureTiling;Outline Texture Tiling;48;0;Create;True;0;0;0;False;0;False;1,1;1,1;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
-Node;AmplifyShaderEditor.Vector2Node;1275;1749.269,6036.126;Inherit;False;Property;_OutlineTextureScroll;Outline Texture Scroll;49;0;Create;True;0;0;0;False;0;False;0,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.Vector2Node;1277;1737.883,5748.918;Inherit;False;Property;_OutlineTextureTiling;Outline Texture Tiling;49;0;Create;True;0;0;0;False;0;False;1,1;1,1;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.Vector2Node;1275;1749.269,6036.126;Inherit;False;Property;_OutlineTextureScroll;Outline Texture Scroll;50;0;Create;True;0;0;0;False;0;False;0,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1274;2016.474,5991.959;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0.1,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1279;2004.328,5766.644;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RangedFloatNode;895;3393.454,6116.87;Inherit;False;Property;_OutlineMaxSize;Outline Max Size;43;0;Create;True;0;0;0;False;0;False;0.008;0.003;0;0;0;1;FLOAT;0
@@ -935,8 +916,8 @@ Node;AmplifyShaderEditor.ClampOpNode;893;3598.454,5979.87;Inherit;False;3;0;FLOA
 Node;AmplifyShaderEditor.CameraDepthFade;977;2972.494,6059.292;Inherit;False;3;2;FLOAT3;0,0,0;False;0;FLOAT;1;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;888;3746.979,5954.111;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RangedFloatNode;889;2989.979,5970.111;Inherit;False;Property;_OutlineMultiplier;Outline Multiplier;41;0;Create;True;0;0;0;False;0;False;0.005;0.005;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;1272;2701.991,5900.501;Inherit;False;Property;_OutlineTextureToggle;Outline Texture Toggle;46;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;924;3611.032,5769.88;Inherit;False;Property;_OutlineBlendBaseTexture;Outline Blend Base Texture;45;0;Create;True;0;0;0;False;0;False;1;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;1272;2701.991,5900.501;Inherit;False;Property;_OutlineTextureToggle;Outline Texture Toggle;47;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;924;3611.032,5769.88;Inherit;False;Property;_OutlineBlendBaseTexture;Outline Blend Base Texture;46;0;Create;True;0;0;0;False;0;False;1;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleTimeNode;1276;1936.61,5897.406;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;857;3452.431,4147.857;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT4;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;769;3705.63,4356.381;Inherit;False;Property;_ShadowTextureToggle;Shadow Texture Toggle;13;0;Create;True;0;0;0;False;0;False;1;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
@@ -947,11 +928,11 @@ Node;AmplifyShaderEditor.NormalVertexDataNode;1289;2673.508,6629.967;Inherit;Fal
 Node;AmplifyShaderEditor.ClampOpNode;1290;3055.983,6563.722;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.CameraDepthFade;1291;2430.024,6643.145;Inherit;False;3;2;FLOAT3;0,0,0;False;0;FLOAT;1;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1292;3204.508,6537.964;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.ColorNode;1297;3099.696,6344.377;Inherit;False;Property;_SilhouetteColor;Silhouette Color;50;0;Create;True;0;0;0;False;0;False;1,1,1,1;0,0,0,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;1299;2848.309,6713.313;Inherit;False;Property;_SilhouetteMaxSize;Silhouette Max Size;59;0;Create;True;0;0;0;False;0;False;0.016;0.01;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1300;2390.508,6349.964;Inherit;False;Property;_SilhouetteMultiplier;Silhouette Multiplier;57;0;Create;True;0;0;0;False;0;False;0.01;0.01;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;1302;3313.755,6383.694;Inherit;False;Property;_SilhouetteTextureToggle;Silhouette Texture Toggle;51;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;1306;2845.983,6635.722;Inherit;False;Property;_SilhouetteMinSize;Silhouette Min Size;58;0;Create;True;0;0;0;False;0;False;0.01;0.01;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode;1297;3099.696,6344.377;Inherit;False;Property;_SilhouetteColor;Silhouette Color;51;0;Create;True;0;0;0;False;0;False;1,1,1,1;0,0,0,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;1299;2848.309,6713.313;Inherit;False;Property;_SilhouetteMaxSize;Silhouette Max Size;60;0;Create;True;0;0;0;False;0;False;0.016;0.01;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1300;2390.508,6349.964;Inherit;False;Property;_SilhouetteMultiplier;Silhouette Multiplier;58;0;Create;True;0;0;0;False;0;False;0.01;0.01;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;1302;3313.755,6383.694;Inherit;False;Property;_SilhouetteTextureToggle;Silhouette Texture Toggle;52;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RangedFloatNode;1306;2845.983,6635.722;Inherit;False;Property;_SilhouetteMinSize;Silhouette Min Size;59;0;Create;True;0;0;0;False;0;False;0.01;0.01;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;1305;3590.549,6289.254;Inherit;False;AuraTex;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.OneMinusNode;1316;2584.031,7143.539;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;1317;2424.032,7143.539;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
@@ -961,21 +942,21 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1320;3272.898,6967.416;Inherit;Tru
 Node;AmplifyShaderEditor.ViewDirInputsCoordNode;1322;1832.033,7111.539;Inherit;False;World;True;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.DotProductOpNode;1323;2056.035,7031.539;Inherit;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.WorldNormalVector;1324;1832.033,6951.539;Inherit;False;True;1;0;FLOAT3;0,0,1;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
-Node;AmplifyShaderEditor.RangedFloatNode;1326;2417.171,7242.432;Inherit;False;Property;_SilhouetteRimLightPower;Silhouette Rim Light Power;61;0;Create;True;0;0;0;False;0;False;0.7925499;0.7925499;0.01;10;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1327;1992.034,7287.539;Inherit;False;Property;_SilhouetteRimLightOffset;Silhouette Rim Light Offset;62;0;Create;True;0;0;0;False;0;False;0.65;0.65;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1326;2417.171,7242.432;Inherit;False;Property;_SilhouetteRimLightPower;Silhouette Rim Light Power;63;0;Create;True;0;0;0;False;0;False;0.7925499;0.7925499;0.01;10;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1327;1992.034,7287.539;Inherit;False;Property;_SilhouetteRimLightOffset;Silhouette Rim Light Offset;64;0;Create;True;0;0;0;False;0;False;0.65;0.65;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;1325;2993.932,6991.451;Inherit;False;1305;AuraTex;1;0;OBJECT;;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1321;3508.842,6997.151;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1308;2014.335,6390.984;Inherit;False;2;2;0;FLOAT3;1,1,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.ViewDirInputsCoordNode;1350;1815.361,6340.125;Inherit;False;World;True;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1295;2036.092,6577.49;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0.1,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.Vector2Node;1304;1801.024,6673.442;Inherit;False;Property;_SilhouetteTextureScroll;Silhouette Texture Scroll;54;0;Create;True;0;0;0;False;0;False;0,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.Vector2Node;1304;1801.024,6673.442;Inherit;False;Property;_SilhouetteTextureScroll;Silhouette Texture Scroll;55;0;Create;True;0;0;0;False;0;False;0,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.SimpleTimeNode;1303;1828.166,6597.988;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.Vector2Node;1309;1783.028,6482.361;Inherit;False;Property;_SilhouetteTextureTiling;Silhouette Texture Tiling;53;0;Create;True;0;0;0;False;0;False;1,1;1,1;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.Vector2Node;1309;1783.028,6482.361;Inherit;False;Property;_SilhouetteTextureTiling;Silhouette Texture Tiling;54;0;Create;True;0;0;0;False;0;False;1,1;1,1;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.SimpleAddOpNode;1353;2209.889,6443.526;Inherit;True;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;1354;2209.349,5829.997;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.ColorNode;1355;1265.917,4065.664;Inherit;False;Property;_BaseColor;Base Color;1;0;Create;True;0;0;0;False;0;False;1,1,1,0;1,1,1,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;1328;3209.425,7188.815;Inherit;False;Property;_SilhouetteRimLightBlend;Silhouette Rim Light Opacity;63;0;Create;False;0;0;0;False;0;False;25;25;0;25;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;922;2414.366,6026.125;Inherit;False;Property;_OutlineColor;Outline Color;44;0;Create;True;0;0;0;False;0;False;0,0,0,1;0.4433962,0.4433962,0.4433962,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;1328;3209.425,7188.815;Inherit;False;Property;_SilhouetteRimLightBlend;Silhouette Rim Light Opacity;65;0;Create;False;0;0;0;False;0;False;25;25;0;25;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode;922;2414.366,6026.125;Inherit;False;Property;_OutlineColor;Outline Color;45;0;Create;True;0;0;0;False;0;False;0,0,0,1;0.4433962,0.4433962,0.4433962,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleAddOpNode;58;2425.683,4240.401;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;59;2139.237,4256.226;Float;False;Property;_ShadowOffset;Shadow Offset;12;0;Create;True;1;Shadow Options;0;0;False;0;False;0;0;-1;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;60;2145.312,4337.913;Float;False;Property;_ShadowSoftness;Shadow Softness;11;0;Create;True;1;Shadow Options;0;0;False;0;False;0.01;0.01;0.01;2;0;1;FLOAT;0
@@ -999,8 +980,8 @@ Node;AmplifyShaderEditor.SamplerNode;609;2511.855,-507.4146;Inherit;True;Propert
 Node;AmplifyShaderEditor.SamplerNode;1261;2512.9,-312.8984;Inherit;True;Property;_EmissionMask;Emission Mask;5;1;[NoScaleOffset];Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;76;960.2272,4056.422;Inherit;True;Property;_MainTex;Base Texture;2;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;3bd151116756bea4bad06a7605dcd374;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;676;2488.233,5109.358;Inherit;True;Property;_ShadowTexture;Shadow Texture;14;1;[NoScaleOffset];Create;True;0;0;0;False;0;False;-1;f44b55b61b4ecd848bd691ecb4fcd52d;b9552255b337ed1468609738595c184a;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SamplerNode;1271;2386.088,5788.875;Inherit;True;Property;OutlineTexture;Outline Texture;47;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SamplerNode;1301;2794.433,6341.764;Inherit;True;Property;AuraTexture1;Silhouette Texture;52;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;1;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;1271;2386.088,5788.875;Inherit;True;Property;OutlineTexture;Outline Texture;48;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;1301;2794.433,6341.764;Inherit;True;Property;AuraTexture1;Silhouette Texture;53;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;1;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SaturateNode;74;2748.201,4240.274;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleDivideOpNode;57;2544.746,4237.246;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0.01;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp;1397;3171.231,3440.147;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
@@ -1009,9 +990,9 @@ Node;AmplifyShaderEditor.ClipNode;1148;5418.021,543.919;Inherit;True;3;0;FLOAT;1
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1431;5800.152,478.1395;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;ForwardAdd;0;1;ForwardAdd;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;False;True;4;1;False;;1;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;True;1;LightMode=ForwardAdd;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1435;5800.152,366.1395;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;ShadowCaster;0;5;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1432;6035.01,338.1857;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Deferred;0;2;Deferred;4;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;False;True;0;1;False;;0;False;;0;1;False;;0;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=Deferred;True;2;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1433;4241.308,6082.654;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Outline;0;3;Outline;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;False;True;0;1;False;;0;False;;0;1;False;;0;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;1;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;2;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1434;4241.308,6228.653;Float;False;False;-1;2;ASEMaterialInspector;100;14;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Aura;0;4;Aura;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;2;5;False;;10;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;False;;255;False;;0;False;;2;False;;8;False;;8;False;;8;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1430;5800.152,366.1395;Float;False;True;-1;2;ASEMaterialInspector;100;14;Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader;c92fbf1a957df824a97c80c48520b74f;True;ForwardBase;0;0;ForwardBase;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;0;True;_Cull;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;7;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=ForwardBase;True;2;False;0;;0;0;Standard;0;0;6;True;False;False;True;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1433;4241.308,6082.654;Float;False;False;-1;2;ASEMaterialInspector;100;17;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Outline;0;3;Outline;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;False;True;0;1;False;;0;False;;0;1;False;;0;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;1;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;2;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1434;4241.308,6228.653;Float;False;False;-1;2;ASEMaterialInspector;100;17;New Amplify Shader;c92fbf1a957df824a97c80c48520b74f;True;Aura;0;4;Aura;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;2;5;False;;10;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;False;;255;False;;0;False;;2;False;;8;False;;8;False;;8;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;CullMode=Front;True;2;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1430;5800.152,366.1395;Float;False;True;-1;2;ASEMaterialInspector;100;17;Pupsi/Extras/Pupsi BRC Ultimate Ninja Shader;c92fbf1a957df824a97c80c48520b74f;True;ForwardBase;0;0;ForwardBase;3;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;0;True;_Cull;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;RenderType=Opaque=RenderType;True;2;False;0;True;True;0;1;False;;0;False;;2;5;False;;10;False;;True;0;False;;0;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;0;True;_Cull;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;50;False;;255;False;;255;False;;7;False;;3;False;;3;False;;3;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=ForwardBase;True;2;False;0;;0;0;Standard;0;0;6;True;False;False;True;True;True;False;;False;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;1407;2085.343,2554.763;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.2;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;1392;2202.333,2556.952;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleDivideOpNode;1393;2316.396,2556.796;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0.01;False;1;FLOAT;0
@@ -1043,6 +1024,12 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1437;3229.496,-482.3217;Inherit;Fa
 Node;AmplifyShaderEditor.ColorNode;1438;2911.496,-593.3217;Inherit;False;Property;_EmissionColor;Emission Color;4;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;1439;1746.425,2599.722;Inherit;False;Property;_ShadowRim1Offset;Shadow Rim 1 Offset;20;0;Create;True;0;0;0;False;0;False;0.2;0.2;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;1440;1753.425,2771.722;Inherit;False;Property;_ShadowRim2Offset;Shadow Rim 2 Offset;21;0;Create;True;0;0;0;False;0;False;0.4;0.4;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.VertexColorNode;1441;4008.025,5836.67;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1442;4236.058,5876.193;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;1443;4423.058,5875.193;Inherit;False;Property;_VertexColorsDefineOutlineCoverage;Vertex Colors Define Outline Coverage;44;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.VertexColorNode;1444;3789.645,6426.218;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1445;4017.678,6465.741;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;1446;4204.678,6464.741;Inherit;False;Property;_VertexColorsDefineSilhouetteOutlineCoverage;Vertex Colors Define Silhouette Outline Coverage;61;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 WireConnection;429;0;428;0
 WireConnection;428;0;426;0
 WireConnection;426;0;423;0
@@ -1214,10 +1201,10 @@ WireConnection;1399;1;1436;0
 WireConnection;1148;1;76;4
 WireConnection;1148;2;1149;0
 WireConnection;1433;0;924;0
-WireConnection;1433;1;1148;0
+WireConnection;1433;1;1443;0
 WireConnection;1433;2;888;0
 WireConnection;1434;0;1305;0
-WireConnection;1434;1;1148;0
+WireConnection;1434;1;1446;0
 WireConnection;1434;2;1292;0
 WireConnection;1430;0;472;0
 WireConnection;1430;1;1148;0
@@ -1259,5 +1246,13 @@ WireConnection;1356;0;76;0
 WireConnection;1356;1;1355;0
 WireConnection;1437;0;1438;0
 WireConnection;1437;1;1265;0
+WireConnection;1442;0;1441;0
+WireConnection;1442;1;1148;0
+WireConnection;1443;0;1148;0
+WireConnection;1443;1;1442;0
+WireConnection;1445;0;1444;0
+WireConnection;1445;1;1148;0
+WireConnection;1446;0;1148;0
+WireConnection;1446;1;1445;0
 ASEEND*/
-//CHKSM=F1B51627CDA2DDBCA0D85DC97498A3548B88CCDA
+//CHKSM=D1A878D208660A078D01795FD0FCA2B8465B8CEB
