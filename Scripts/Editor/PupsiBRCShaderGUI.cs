@@ -842,8 +842,10 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUILayout.Space(5);
 
         DrawProperty(editor, properties, "_ScrollToggle", "Enable Scroll");
+        DrawProperty(editor, properties, "_ToggleWorldSpaceUV", "Toggle World Space UV");
         DrawTextureProperty(editor, properties, "_ScrollTex", "Scroll Texture");
         DrawTextureProperty(editor, properties, "_ScrollMask", "Scroll Mask");
+        DrawProperty(editor, properties, "_ScrollColor", "Scroll Color");
         DrawProperty(editor, properties, "_ScrollHue", "Scroll Hue");
         DrawProperty(editor, properties, "_ScrollSize", "Scroll Size");
         DrawProperty(editor, properties, "_ScrollOffset", "Scroll Offset");
