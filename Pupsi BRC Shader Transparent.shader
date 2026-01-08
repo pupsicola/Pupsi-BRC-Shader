@@ -322,6 +322,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float4 ase_texcoord8 : TEXCOORD8;
 				float4 ase_color : COLOR;
 				float4 ase_texcoord9 : TEXCOORD9;
+				float4 ase_texcoord10 : TEXCOORD10;
 			};
 
 			v2f vert ( appdata v )
@@ -352,6 +353,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				o.ase_texcoord2.zw = v.ase_texcoord2.xy;
 				o.ase_texcoord3.xy = v.ase_texcoord3.xy;
 				o.ase_color = v.ase_color;
+				o.ase_texcoord10 = v.vertex;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord1.w = 0;
@@ -530,7 +532,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float2 panner597 = ( 1.0 * _Time.y * _ScrollSpeed + rotator598);
 				float cos1313 = cos( temp_output_604_0 );
 				float sin1313 = sin( temp_output_604_0 );
-				float2 rotator1313 = mul( ( ( ase_worldPos * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
+				float2 rotator1313 = mul( ( ( i.ase_texcoord10.xyz * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
 				float2 panner1314 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1313);
 				#ifdef _SCROLLTOGGLE_ON
 				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleWorldSpaceUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
@@ -622,6 +624,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float4 ase_texcoord7 : TEXCOORD7;
 				float4 ase_color : COLOR;
 				float4 ase_texcoord8 : TEXCOORD8;
+				float4 ase_texcoord9 : TEXCOORD9;
 			};
 
 			//This is a late directive
@@ -806,6 +809,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				o.ase_texcoord2.zw = v.ase_texcoord2.xy;
 				o.ase_texcoord3.xy = v.ase_texcoord3.xy;
 				o.ase_color = v.ase_color;
+				o.ase_texcoord9 = v.vertex;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord.w = 0;
@@ -984,7 +988,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float2 panner597 = ( 1.0 * _Time.y * _ScrollSpeed + rotator598);
 				float cos1313 = cos( temp_output_604_0 );
 				float sin1313 = sin( temp_output_604_0 );
-				float2 rotator1313 = mul( ( ( ase_worldPos * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
+				float2 rotator1313 = mul( ( ( i.ase_texcoord9.xyz * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
 				float2 panner1314 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1313);
 				#ifdef _SCROLLTOGGLE_ON
 				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleWorldSpaceUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
@@ -1210,6 +1214,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float4 ase_texcoord8 : TEXCOORD8;
 				float4 ase_color : COLOR;
 				float4 ase_texcoord9 : TEXCOORD9;
+				float4 ase_texcoord10 : TEXCOORD10;
 			};
 
 
@@ -1241,6 +1246,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				o.ase_texcoord2.zw = v.ase_texcoord2.xy;
 				o.ase_texcoord3.xy = v.ase_texcoord3.xy;
 				o.ase_color = v.ase_color;
+				o.ase_texcoord10 = v.vertex;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord1.w = 0;
@@ -1419,7 +1425,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float2 panner597 = ( 1.0 * _Time.y * _ScrollSpeed + rotator598);
 				float cos1313 = cos( temp_output_604_0 );
 				float sin1313 = sin( temp_output_604_0 );
-				float2 rotator1313 = mul( ( ( ase_worldPos * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
+				float2 rotator1313 = mul( ( ( i.ase_texcoord10.xyz * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
 				float2 panner1314 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1313);
 				#ifdef _SCROLLTOGGLE_ON
 				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleWorldSpaceUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
@@ -1738,7 +1744,6 @@ Node;AmplifyShaderEditor.PannerNode;1314;63.07558,-1000.021;Inherit;True;3;0;FLO
 Node;AmplifyShaderEditor.ToggleSwitchNode;1315;292.3498,-799.9841;Inherit;False;Property;_ToggleWorldSpaceUV;Toggle World Space UV;93;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;1316;-90.25731,-989.6517;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1317;-287.7703,-997.4615;Inherit;True;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.WorldPosInputsNode;1318;-459.1656,-1000.942;Inherit;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.ColorNode;1319;582.1308,-802.8443;Inherit;False;Property;_ScrollColor;Scroll Color;94;0;Create;True;0;0;0;False;0;False;1,1,1,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1320;827.1306,-607.8443;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RangedFloatNode;596;1184.055,-369.0001;Inherit;False;Property;_ScrollEmit;Scroll Emit;101;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
@@ -1747,6 +1752,7 @@ Node;AmplifyShaderEditor.RangedFloatNode;1322;3262.811,4947.673;Inherit;False;Co
 Node;AmplifyShaderEditor.ToggleSwitchNode;1323;3429.88,4982.726;Inherit;False;Property;_VertexColorsDefineOutlineThickness;Vertex Colors Define Outline Thickness;67;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1324;3759.202,4745.553;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;1310;5978.586,1310.828;Inherit;False;Property;_VertexColorsDefineOutlineOpacity;Vertex Colors Define Outline Opacity;63;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.PosVertexDataNode;1325;-568.6523,-852.6102;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 WireConnection;589;0;591;0
 WireConnection;589;1;603;0
 WireConnection;589;2;590;0
@@ -2039,7 +2045,7 @@ WireConnection;1315;0;597;0
 WireConnection;1315;1;1314;0
 WireConnection;1316;0;1317;0
 WireConnection;1316;1;600;0
-WireConnection;1317;0;1318;0
+WireConnection;1317;0;1325;0
 WireConnection;1317;1;601;0
 WireConnection;1320;0;593;0
 WireConnection;1320;1;1319;0
@@ -2050,4 +2056,4 @@ WireConnection;1324;1;1323;0
 WireConnection;1310;0;1287;0
 WireConnection;1310;1;1309;0
 ASEEND*/
-//CHKSM=4E0CC760FFA3C5BE02CE1E1A31E9F124F68190A3
+//CHKSM=C157FC1E6C63AC99C67B8E7EDDC1736408438D7B

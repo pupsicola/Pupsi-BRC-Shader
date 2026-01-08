@@ -6,6 +6,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
 {
     // Foldout states
     private static bool showBaseTextures = true;
+    private static bool showDisplacement = false;
     private static bool showVertexColors = false;
     private static bool showDetailTexture = false;
     private static bool showNormalMap = false;
@@ -35,6 +36,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         Transparent,
         SilhouetteOutline,
         SilhouetteOutlineTransparent,
+        Displacement,
         Riders,
         UltimateNinja,
         Unknown
@@ -108,27 +110,36 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
     private void InitStyles()
     {
-        if (stylesInitialized) return;
-
-        headerStyle = new GUIStyle(EditorStyles.boldLabel)
+        // Re-initialize styles each time to avoid issues with EditorStyles not being ready
+        try
         {
-            fontSize = 13,
-            margin = new RectOffset(0, 0, 10, 5)
-        };
+            headerStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                fontSize = 13,
+                margin = new RectOffset(0, 0, 10, 5)
+            };
 
-        subHeaderStyle = new GUIStyle(EditorStyles.boldLabel)
+            subHeaderStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                fontSize = 11,
+                margin = new RectOffset(0, 0, 5, 3)
+            };
+
+            boxStyle = new GUIStyle("box")
+            {
+                padding = new RectOffset(10, 10, 5, 5),
+                margin = new RectOffset(0, 0, 5, 5)
+            };
+
+            stylesInitialized = true;
+        }
+        catch
         {
-            fontSize = 11,
-            margin = new RectOffset(0, 0, 5, 3)
-        };
-
-        boxStyle = new GUIStyle("box")
-        {
-            padding = new RectOffset(10, 10, 5, 5),
-            margin = new RectOffset(0, 0, 5, 5)
-        };
-
-        stylesInitialized = true;
+            // Fallback to default styles if initialization fails
+            headerStyle = EditorStyles.boldLabel;
+            subHeaderStyle = EditorStyles.boldLabel;
+            boxStyle = GUI.skin.box;
+        }
     }
 
     private ShaderType GetShaderType(Material material)
@@ -139,6 +150,8 @@ public class PupsiBRCShaderGUI : ShaderGUI
             return ShaderType.SilhouetteOutlineTransparent;
         if (shaderName.Contains("Silhouette Outline"))
             return ShaderType.SilhouetteOutline;
+        if (shaderName.Contains("Displacement"))
+            return ShaderType.Displacement;
         if (shaderName.Contains("Transparent"))
             return ShaderType.Transparent;
         if (shaderName.Contains("Riders"))
@@ -153,39 +166,49 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
-        InitStyles();
-        LoadTextures();
-        
-        Material material = materialEditor.target as Material;
-        ShaderType shaderType = GetShaderType(material);
+        try
+        {
+            InitStyles();
+            LoadTextures();
+            
+            Material material = materialEditor.target as Material;
+            ShaderType shaderType = GetShaderType(material);
 
-        // Header with logo
-        EditorGUILayout.Space(5);
-        DrawHeader(shaderType);
-        EditorGUILayout.Space(10);
+            // Header with logo
+            EditorGUILayout.Space(5);
+            DrawHeader(shaderType);
+            EditorGUILayout.Space(10);
 
-        // Draw sections based on shader type
-        DrawBaseTexturesSection(materialEditor, properties, shaderType);
-        DrawVertexColorsSection(materialEditor, properties, shaderType);
-        DrawDetailTextureSection(materialEditor, properties, shaderType);
-        DrawNormalMapSection(materialEditor, properties, shaderType);
-        DrawEmissionSection(materialEditor, properties, shaderType);
-        DrawShadowsLightingSection(materialEditor, properties, shaderType);
-        DrawExtraLightSection(materialEditor, properties, shaderType);
-        DrawSpecularSection(materialEditor, properties, shaderType);
-        DrawRimLightShadowSection(materialEditor, properties, shaderType);
-        DrawOutlineSection(materialEditor, properties, shaderType);
-        DrawSilhouetteSection(materialEditor, properties, shaderType);
-        DrawCubemapSection(materialEditor, properties, shaderType);
-        DrawGlowSection(materialEditor, properties, shaderType);
-        DrawFlipbookSection(materialEditor, properties, shaderType);
-        DrawScrollSection(materialEditor, properties, shaderType);
-        DrawAdvancedSection(materialEditor, properties, shaderType);
+            // Draw sections based on shader type
+            DrawBaseTexturesSection(materialEditor, properties, shaderType);
+            DrawDisplacementSection(materialEditor, properties, shaderType);
+            DrawVertexColorsSection(materialEditor, properties, shaderType);
+            DrawDetailTextureSection(materialEditor, properties, shaderType);
+            DrawNormalMapSection(materialEditor, properties, shaderType);
+            DrawEmissionSection(materialEditor, properties, shaderType);
+            DrawShadowsLightingSection(materialEditor, properties, shaderType);
+            DrawExtraLightSection(materialEditor, properties, shaderType);
+            DrawSpecularSection(materialEditor, properties, shaderType);
+            DrawRimLightShadowSection(materialEditor, properties, shaderType);
+            DrawOutlineSection(materialEditor, properties, shaderType);
+            DrawSilhouetteSection(materialEditor, properties, shaderType);
+            DrawCubemapSection(materialEditor, properties, shaderType);
+            DrawGlowSection(materialEditor, properties, shaderType);
+            DrawFlipbookSection(materialEditor, properties, shaderType);
+            DrawScrollSection(materialEditor, properties, shaderType);
+            DrawAdvancedSection(materialEditor, properties, shaderType);
 
-        EditorGUILayout.Space(10);
-        
-        // Footer links
-        DrawFooter();
+            EditorGUILayout.Space(10);
+            
+            // Footer links
+            DrawFooter();
+        }
+        catch (System.Exception e)
+        {
+            // If custom GUI fails, fall back to default inspector
+            EditorGUILayout.HelpBox($"Custom GUI error: {e.Message}\nFalling back to default inspector.", MessageType.Warning);
+            base.OnGUI(materialEditor, properties);
+        }
     }
 
     private void DrawHeader(ShaderType shaderType)
@@ -196,6 +219,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             ShaderType.Transparent => "Transparent",
             ShaderType.SilhouetteOutline => "Silhouette Outline",
             ShaderType.SilhouetteOutlineTransparent => "Silhouette Outline Transparent",
+            ShaderType.Displacement => "Displacement",
             ShaderType.Riders => "Riders",
             ShaderType.UltimateNinja => "Ultimate Ninja",
             _ => "Unknown"
@@ -422,6 +446,34 @@ public class PupsiBRCShaderGUI : ShaderGUI
         DrawProperty(editor, properties, "_BaseScrollSpeed", "Base Scroll Speed");
         DrawProperty(editor, properties, "_BaseRotationCenter", "Base Rotation Center");
         DrawProperty(editor, properties, "_BaseRotationSpeed", "Base Rotation Speed");
+
+        EditorGUI.indentLevel--;
+        EditorGUILayout.Space(5);
+        EndFoldoutSection();
+    }
+
+    private void DrawDisplacementSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
+    {
+        if (!HasProperty(properties, "_DisplacementTexture")) return;
+
+        showDisplacement = DrawFoldoutHeader("Displacement", showDisplacement, new Color(0.9f, 0.8f, 1f));
+        if (!showDisplacement) return;
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.Space(5);
+
+        DrawProperty(editor, properties, "_ToggleDisplacement", "Enable Displacement");
+        DrawTextureProperty(editor, properties, "_DisplacementTexture", "Displacement Texture");
+        DrawProperty(editor, properties, "_DisplacementTiling", "Displacement Tiling");
+        DrawProperty(editor, properties, "_DisplacementOffset", "Displacement Offset");
+        DrawProperty(editor, properties, "_DisplacementScrolling", "Displacement Scrolling");
+        DrawProperty(editor, properties, "_DisplacementRotation", "Displacement Rotation");
+
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Displacement Size", subHeaderStyle);
+        DrawProperty(editor, properties, "_DisplacementMultiplier", "Displacement Multiplier");
+        DrawProperty(editor, properties, "_DisplacementMinSize", "Displacement Min Size");
+        DrawProperty(editor, properties, "_DisplacementMaxSize", "Displacement Max Size");
 
         EditorGUI.indentLevel--;
         EditorGUILayout.Space(5);
@@ -674,8 +726,8 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUI.indentLevel++;
         EditorGUILayout.Space(5);
 
-        // Transparent variants have outline opacity
-        if (shaderType == ShaderType.Transparent || shaderType == ShaderType.SilhouetteOutlineTransparent)
+        // Transparent variants and Displacement shader have outline opacity
+        if (shaderType == ShaderType.Transparent || shaderType == ShaderType.SilhouetteOutlineTransparent || shaderType == ShaderType.Displacement)
         {
             DrawProperty(editor, properties, "_OutlineOpacity", "Outline Opacity");
             DrawProperty(editor, properties, "_OutlineuseBaseTextureAlpha", "Use Base Texture Alpha");
@@ -702,6 +754,18 @@ public class PupsiBRCShaderGUI : ShaderGUI
         DrawProperty(editor, properties, "_OutlineMinSize", "Outline Min Size");
         DrawProperty(editor, properties, "_OutlineMaxSize", "Outline Max Size");
 
+        // Outline Displacement (Displacement shader variant)
+        if (HasProperty(properties, "_OutlineDisplacementTexture"))
+        {
+            EditorGUILayout.Space(3);
+            EditorGUILayout.LabelField("Outline Displacement", subHeaderStyle);
+            DrawTextureProperty(editor, properties, "_OutlineDisplacementTexture", "Displacement Texture");
+            DrawProperty(editor, properties, "_OutlineDisplacementTiling", "Displacement Tiling");
+            DrawProperty(editor, properties, "_OutlineDisplacementOffset", "Displacement Offset");
+            DrawProperty(editor, properties, "_OutlineDisplacementRotation", "Displacement Rotation");
+            DrawProperty(editor, properties, "_OutlineDisplacementScrolling", "Displacement Scrolling");
+        }
+
         EditorGUILayout.Space(3);
         EditorGUILayout.LabelField("Vertex Color Controls", subHeaderStyle);
         // Different shaders use different vertex color property names
@@ -718,6 +782,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
     {
         if (shaderType != ShaderType.SilhouetteOutline && 
             shaderType != ShaderType.SilhouetteOutlineTransparent &&
+            shaderType != ShaderType.Displacement &&
             shaderType != ShaderType.Riders &&
             shaderType != ShaderType.UltimateNinja) return;
 
@@ -735,12 +800,29 @@ public class PupsiBRCShaderGUI : ShaderGUI
             DrawProperty(editor, properties, "_SilhouetteOutlineOpacity", "Silhouette Opacity");
             DrawProperty(editor, properties, "_SilhouetteOutlineuseBaseTextureAlpha", "Use Base Texture Alpha");
         }
+        // Displacement shader has silhouette opacity (different property name)
+        else if (shaderType == ShaderType.Displacement)
+        {
+            DrawProperty(editor, properties, "_SilhouetteOpacity", "Silhouette Opacity");
+            DrawProperty(editor, properties, "_SilhouetteEmit", "Silhouette Emit");
+        }
 
         DrawProperty(editor, properties, "_SilhouetteColor", "Silhouette Color");
         DrawProperty(editor, properties, "_SilhouetteTextureToggle", "Enable Silhouette Texture");
         DrawTextureProperty(editor, properties, "AuraTexture1", "Silhouette Texture");
         DrawProperty(editor, properties, "_SilhouetteTextureTiling", "Silhouette Texture Tiling");
         DrawProperty(editor, properties, "_SilhouetteTextureScroll", "Silhouette Texture Scroll");
+        DrawProperty(editor, properties, "_UseSilhouetteTextureasAlphaMask", "Use Texture as Alpha Mask");
+
+        // Silhouette Opacity Fresnel (Displacement shader)
+        if (HasProperty(properties, "_SilhouetteOpacityFresnelScale"))
+        {
+            EditorGUILayout.Space(3);
+            EditorGUILayout.LabelField("Silhouette Opacity Fresnel", subHeaderStyle);
+            DrawProperty(editor, properties, "_SilhouetteOpacityFresnelScale", "Fresnel Scale");
+            DrawProperty(editor, properties, "_SilhouetteOpacityFresnelPower", "Fresnel Power");
+            DrawProperty(editor, properties, "_InvertSilhouetteOpacityFresnel", "Invert Fresnel");
+        }
 
         EditorGUILayout.Space(3);
         EditorGUILayout.LabelField("Silhouette Overlay", subHeaderStyle);
@@ -752,6 +834,18 @@ public class PupsiBRCShaderGUI : ShaderGUI
         DrawProperty(editor, properties, "_SilhouetteMultiplier", "Silhouette Multiplier");
         DrawProperty(editor, properties, "_SilhouetteMinSize", "Silhouette Min Size");
         DrawProperty(editor, properties, "_SilhouetteMaxSize", "Silhouette Max Size");
+
+        // Silhouette Displacement (Displacement shader variant)
+        if (HasProperty(properties, "_SilhouetteDisplacementTexture"))
+        {
+            EditorGUILayout.Space(3);
+            EditorGUILayout.LabelField("Silhouette Displacement", subHeaderStyle);
+            DrawTextureProperty(editor, properties, "_SilhouetteDisplacementTexture", "Displacement Texture");
+            DrawProperty(editor, properties, "_SilhouetteDisplacementTiling", "Displacement Tiling");
+            DrawProperty(editor, properties, "_SilhouetteDisplacementOffset", "Displacement Offset");
+            DrawProperty(editor, properties, "_SilhouetteDisplacementRotation", "Displacement Rotation");
+            DrawProperty(editor, properties, "_SilhouetteDisplacementScrolling", "Displacement Scrolling");
+        }
 
         EditorGUILayout.Space(3);
         EditorGUILayout.LabelField("Vertex Color Controls", subHeaderStyle);
@@ -906,6 +1000,9 @@ public class PupsiBRCShaderGUI : ShaderGUI
         {
             "_Cull", "_Opacity", "_AlphaClipping", "_BaseColor", "_MainTex", "RotationMask",
             "_BaseScrollSpeed", "_BaseRotationCenter", "_BaseRotationSpeed",
+            // Global Displacement properties
+            "_ToggleDisplacement", "_DisplacementTexture", "_DisplacementTiling", "_DisplacementOffset", "_DisplacementScrolling", "_DisplacementRotation",
+            "_DisplacementMultiplier", "_DisplacementMinSize", "_DisplacementMaxSize",
             "_VertexColorsToggle", "_VertexColorsOpacity", "_VertexColorsDefineOutlineCoverage",
             "_VertexColorsDefineOutlineOpacity", "_VertexColorsDefineOutlineThickness",
             "_VertexColorsDefineSilhouetteOutlineCoverage", "_VertexColorsDefineSilhouetteOutlineCoverage1",
@@ -925,11 +1022,21 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_OutlineOpacity", "_OutlineuseBaseTextureAlpha", "_OutlineMultiplier", "_OutlineMinSize",
             "_OutlineMaxSize", "_OutlineColor", "_OutlineBlendBaseTexture", "_OutlineTextureToggle",
             "AuraTexture", "OutlineTexture", "_OutlineTextureTiling", "_OutlineTextureScroll",
-            "_SilhouetteOutlineOpacity", "_SilhouetteOutlineuseBaseTextureAlpha", "_SilhouetteColor",
+            // Outline Displacement properties
+            "_OutlineDisplacementTexture", "_OutlineDisplacementTiling", "_OutlineDisplacementOffset",
+            "_OutlineDisplacementRotation", "_OutlineDisplacementScrolling",
+            // Silhouette properties
+            "_SilhouetteOpacity", "_SilhouetteEmit", "_SilhouetteOutlineOpacity", "_SilhouetteOutlineuseBaseTextureAlpha", "_SilhouetteColor",
             "_SilhouetteTextureToggle", "AuraTexture1", "_SilhouetteTextureTiling", "_SilhouetteTextureScroll",
+            "_UseSilhouetteTextureasAlphaMask",
+            "_SilhouetteOpacityFresnelScale", "_SilhouetteOpacityFresnelPower", "_InvertSilhouetteOpacityFresnel",
             "_SilhouetteOverlay", "_SilhouetteOverlayOpacity", "_SilhouetteMultiplier",
             "_SilhouetteMinSize", "_SilhouetteMaxSize", "_SilhouetteRimLightToggle",
             "_SilhouetteRimLightPower", "_SilhouetteRimLightOffset", "_SilhouetteRimLightBlend",
+            // Silhouette Displacement properties
+            "_SilhouetteDisplacementTexture", "_SilhouetteDisplacementTiling", "_SilhouetteDisplacementOffset",
+            "_SilhouetteDisplacementRotation", "_SilhouetteDisplacementScrolling",
+            // Cubemap properties
             "_CubemapToggle", "_CubemapTexture", "cubemapmask", "_CubemapBlend", "_CubemapColorize",
             "_CubemapFresnelBias", "_CubemapFresnelScale", "_CubemapFresnelPower",
             "_GlowToggle", "_GlowMask", "_GlowColor", "_GlowCycle", "_GlowSpeed", "_GlowEmit",
@@ -945,10 +1052,17 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
         foreach (var prop in properties)
         {
-            if (!handledProperties.Contains(prop.name) && 
-                (prop.flags & MaterialProperty.PropFlags.HideInInspector) == 0)
+            try
             {
-                editor.ShaderProperty(prop, prop.displayName);
+                if (!handledProperties.Contains(prop.name) && 
+                    (prop.flags & MaterialProperty.PropFlags.HideInInspector) == 0)
+                {
+                    editor.ShaderProperty(prop, prop.displayName);
+                }
+            }
+            catch (System.Exception e)
+            {
+                EditorGUILayout.HelpBox($"Error drawing property '{prop.name}': {e.Message}", MessageType.Warning);
             }
         }
 
