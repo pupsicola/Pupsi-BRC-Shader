@@ -612,8 +612,14 @@ public class PupsiBRCShaderGUI : ShaderGUI
         DrawProperty(editor, properties, "_SpecularToggle", "Enable Specular");
         DrawProperty(editor, properties, "_SpecularCustomColorToggle", "Custom Color Toggle");
         DrawProperty(editor, properties, "_SpecularCustomColor", "Specular Custom Color");
-        DrawTextureProperty(editor, properties, "_SpecularMask", "Specular Mask");
-        DrawProperty(editor, properties, "_SpecularMaskUV", "Specular Mask UV");
+        
+        // Specular mask is not available in all shader variants (e.g., Silhouette Outline Transparent)
+        if (HasProperty(properties, "_SpecularMask"))
+        {
+            DrawTextureProperty(editor, properties, "_SpecularMask", "Specular Mask");
+            DrawProperty(editor, properties, "_SpecularMaskUV", "Specular Mask UV");
+        }
+        
         DrawProperty(editor, properties, "_SpecularBrightness", "Specular Brightness");
         DrawProperty(editor, properties, "_SpecularSoftness", "Specular Softness");
         DrawProperty(editor, properties, "_SpecularOffset", "Specular Offset");
@@ -675,10 +681,6 @@ public class PupsiBRCShaderGUI : ShaderGUI
             DrawProperty(editor, properties, "_OutlineuseBaseTextureAlpha", "Use Base Texture Alpha");
         }
 
-        DrawProperty(editor, properties, "_OutlineMultiplier", "Outline Multiplier");
-        DrawProperty(editor, properties, "_OutlineMinSize", "Outline Min Size");
-        DrawProperty(editor, properties, "_OutlineMaxSize", "Outline Max Size");
-        DrawProperty(editor, properties, "_VertexColorsDefineOutlineCoverage", "Vertex Colors Define Coverage");
         DrawProperty(editor, properties, "_OutlineColor", "Outline Color");
         DrawProperty(editor, properties, "_OutlineBlendBaseTexture", "Blend Base Texture");
 
@@ -693,6 +695,19 @@ public class PupsiBRCShaderGUI : ShaderGUI
             
         DrawProperty(editor, properties, "_OutlineTextureTiling", "Outline Texture Tiling");
         DrawProperty(editor, properties, "_OutlineTextureScroll", "Outline Texture Scroll");
+
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Outline Size", subHeaderStyle);
+        DrawProperty(editor, properties, "_OutlineMultiplier", "Outline Multiplier");
+        DrawProperty(editor, properties, "_OutlineMinSize", "Outline Min Size");
+        DrawProperty(editor, properties, "_OutlineMaxSize", "Outline Max Size");
+
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Vertex Color Controls", subHeaderStyle);
+        // Different shaders use different vertex color property names
+        DrawProperty(editor, properties, "_VertexColorsDefineOutlineCoverage", "Vertex Colors Define Coverage");
+        DrawProperty(editor, properties, "_VertexColorsDefineOutlineOpacity", "Vertex Colors Define Opacity");
+        DrawProperty(editor, properties, "_VertexColorsDefineOutlineThickness", "Vertex Colors Define Thickness");
 
         EditorGUI.indentLevel--;
         EditorGUILayout.Space(5);
@@ -728,16 +743,23 @@ public class PupsiBRCShaderGUI : ShaderGUI
         DrawProperty(editor, properties, "_SilhouetteTextureScroll", "Silhouette Texture Scroll");
 
         EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Silhouette Overlay", subHeaderStyle);
         DrawProperty(editor, properties, "_SilhouetteOverlay", "Enable Silhouette Overlay");
         DrawProperty(editor, properties, "_SilhouetteOverlayOpacity", "Silhouette Overlay Opacity");
 
         EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Silhouette Size", subHeaderStyle);
         DrawProperty(editor, properties, "_SilhouetteMultiplier", "Silhouette Multiplier");
         DrawProperty(editor, properties, "_SilhouetteMinSize", "Silhouette Min Size");
         DrawProperty(editor, properties, "_SilhouetteMaxSize", "Silhouette Max Size");
-        // Vertex color coverage - different property names across shaders
+
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Vertex Color Controls", subHeaderStyle);
+        // Vertex color properties - different property names across shaders
         DrawProperty(editor, properties, "_VertexColorsDefineSilhouetteOutlineCoverage", "Vertex Colors Define Coverage");
         DrawProperty(editor, properties, "_VertexColorsDefineSilhouetteOutlineCoverage1", "Vertex Colors Define Coverage");
+        DrawProperty(editor, properties, "_VertexColorsDefineSilhouetteOutlineOpacity", "Vertex Colors Define Opacity");
+        DrawProperty(editor, properties, "_VertexColorsDefineSilhouetteOutlineThickness", "Vertex Colors Define Thickness");
 
         EditorGUILayout.Space(3);
         EditorGUILayout.LabelField("Silhouette Rim Light", subHeaderStyle);
@@ -846,7 +868,6 @@ public class PupsiBRCShaderGUI : ShaderGUI
         DrawTextureProperty(editor, properties, "_ScrollTex", "Scroll Texture");
         DrawTextureProperty(editor, properties, "_ScrollMask", "Scroll Mask");
         DrawProperty(editor, properties, "_ScrollColor", "Scroll Color");
-        DrawProperty(editor, properties, "_ScrollHue", "Scroll Hue");
         DrawProperty(editor, properties, "_ScrollSize", "Scroll Size");
         DrawProperty(editor, properties, "_ScrollOffset", "Scroll Offset");
         DrawProperty(editor, properties, "_ScrollSpeed", "Scroll Speed");
@@ -886,7 +907,9 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_Cull", "_Opacity", "_AlphaClipping", "_BaseColor", "_MainTex", "RotationMask",
             "_BaseScrollSpeed", "_BaseRotationCenter", "_BaseRotationSpeed",
             "_VertexColorsToggle", "_VertexColorsOpacity", "_VertexColorsDefineOutlineCoverage",
+            "_VertexColorsDefineOutlineOpacity", "_VertexColorsDefineOutlineThickness",
             "_VertexColorsDefineSilhouetteOutlineCoverage", "_VertexColorsDefineSilhouetteOutlineCoverage1",
+            "_VertexColorsDefineSilhouetteOutlineOpacity", "_VertexColorsDefineSilhouetteOutlineThickness",
             "_DetailTextureToggle", "_DetailTexture", "_DetailTextureUV", "_DetailTextureBlend",
             "_NormalMap", "_NormalMapUV", "_NormalMapIntensity",
             "_Emission", "_EmissionMask", "_EmissionMaskScrollSpeed", "_EmissionHue", "_EmissionEmit", "_EmissionColor",
@@ -912,7 +935,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_GlowToggle", "_GlowMask", "_GlowColor", "_GlowCycle", "_GlowSpeed", "_GlowEmit",
             "_FlipbookToggle", "_FlipBookTexture", "_FlipBookMask", "_FlipbookTiling",
             "_FlipbookOffset", "_FlipbookColumns", "_FlipbookRows", "_FlipbookSpeed", "_FlipbookEmit",
-            "_ScrollToggle", "_ScrollTex", "_ScrollMask", "_ScrollHue", "_ScrollSize",
+            "_ScrollToggle", "_ToggleWorldSpaceUV", "_ScrollTex", "_ScrollMask", "_ScrollColor", "_ScrollSize",
             "_ScrollOffset", "_ScrollSpeed", "_ScrollRotation", "_ScrollEmit",
             "_texcoord", "_AddViewDirectionalLight", "_ShadowColor", "_ShadowOutlineThickness",
             "_ShadowOutlineCustomColorToggle", "_ShadowOutlineCustomColor", "_ShadowMask",
