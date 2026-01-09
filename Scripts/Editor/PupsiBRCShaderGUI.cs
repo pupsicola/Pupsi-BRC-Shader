@@ -6,6 +6,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
 {
     // Foldout states
     private static bool showBaseTextures = true;
+    private static bool showScreenColor = false;
     private static bool showDisplacement = false;
     private static bool showVertexColors = false;
     private static bool showDetailTexture = false;
@@ -37,6 +38,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         SilhouetteOutline,
         SilhouetteOutlineTransparent,
         Displacement,
+        DisplacementTransparent,
         Riders,
         UltimateNinja,
         Unknown
@@ -150,6 +152,8 @@ public class PupsiBRCShaderGUI : ShaderGUI
             return ShaderType.SilhouetteOutlineTransparent;
         if (shaderName.Contains("Silhouette Outline"))
             return ShaderType.SilhouetteOutline;
+        if (shaderName.Contains("Displacement Transparent"))
+            return ShaderType.DisplacementTransparent;
         if (shaderName.Contains("Displacement"))
             return ShaderType.Displacement;
         if (shaderName.Contains("Transparent"))
@@ -181,6 +185,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
             // Draw sections based on shader type
             DrawBaseTexturesSection(materialEditor, properties, shaderType);
+            DrawScreenColorSection(materialEditor, properties, shaderType);
             DrawDisplacementSection(materialEditor, properties, shaderType);
             DrawVertexColorsSection(materialEditor, properties, shaderType);
             DrawDetailTextureSection(materialEditor, properties, shaderType);
@@ -220,6 +225,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             ShaderType.SilhouetteOutline => "Silhouette Outline",
             ShaderType.SilhouetteOutlineTransparent => "Silhouette Outline Transparent",
             ShaderType.Displacement => "Displacement",
+            ShaderType.DisplacementTransparent => "Displacement Transparent",
             ShaderType.Riders => "Riders",
             ShaderType.UltimateNinja => "Ultimate Ninja",
             _ => "Unknown"
@@ -428,7 +434,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         DrawProperty(editor, properties, "_Cull", "Cull Mode");
         
         // Opacity for transparent variants
-        if (shaderType == ShaderType.Transparent || shaderType == ShaderType.SilhouetteOutlineTransparent)
+        if (shaderType == ShaderType.Transparent || shaderType == ShaderType.SilhouetteOutlineTransparent || shaderType == ShaderType.DisplacementTransparent)
         {
             DrawProperty(editor, properties, "_Opacity", "Opacity");
         }
@@ -452,6 +458,27 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EndFoldoutSection();
     }
 
+    private void DrawScreenColorSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
+    {
+        if (!HasProperty(properties, "_ToggleScreenColorasBaseTexture")) return;
+
+        showScreenColor = DrawFoldoutHeader("Screen Color", showScreenColor, new Color(0.8f, 1f, 0.9f));
+        if (!showScreenColor) return;
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.Space(5);
+
+        DrawProperty(editor, properties, "_ToggleScreenColorasBaseTexture", "Use Screen Color as Base Texture");
+        DrawTextureProperty(editor, properties, "_ScreenColorDistortionTexture", "Distortion Texture");
+        DrawProperty(editor, properties, "_ScreenColorDistortionAmount", "Distortion Amount");
+        DrawProperty(editor, properties, "_ScreenColorDistortionTiling", "Distortion Tiling");
+        DrawProperty(editor, properties, "_ScreenColorDistortionScrolling", "Distortion Scrolling");
+
+        EditorGUI.indentLevel--;
+        EditorGUILayout.Space(5);
+        EndFoldoutSection();
+    }
+
     private void DrawDisplacementSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
     {
         if (!HasProperty(properties, "_DisplacementTexture")) return;
@@ -463,6 +490,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUILayout.Space(5);
 
         DrawProperty(editor, properties, "_ToggleDisplacement", "Enable Displacement");
+        DrawProperty(editor, properties, "_DisplacementusesVertexPositionUV", "Use Vertex Position UV");
         DrawTextureProperty(editor, properties, "_DisplacementTexture", "Displacement Texture");
         DrawProperty(editor, properties, "_DisplacementTiling", "Displacement Tiling");
         DrawProperty(editor, properties, "_DisplacementOffset", "Displacement Offset");
@@ -727,7 +755,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUILayout.Space(5);
 
         // Transparent variants and Displacement shader have outline opacity
-        if (shaderType == ShaderType.Transparent || shaderType == ShaderType.SilhouetteOutlineTransparent || shaderType == ShaderType.Displacement)
+        if (shaderType == ShaderType.Transparent || shaderType == ShaderType.SilhouetteOutlineTransparent || shaderType == ShaderType.Displacement || shaderType == ShaderType.DisplacementTransparent)
         {
             DrawProperty(editor, properties, "_OutlineOpacity", "Outline Opacity");
             DrawProperty(editor, properties, "_OutlineuseBaseTextureAlpha", "Use Base Texture Alpha");
@@ -783,6 +811,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         if (shaderType != ShaderType.SilhouetteOutline && 
             shaderType != ShaderType.SilhouetteOutlineTransparent &&
             shaderType != ShaderType.Displacement &&
+            shaderType != ShaderType.DisplacementTransparent &&
             shaderType != ShaderType.Riders &&
             shaderType != ShaderType.UltimateNinja) return;
 
@@ -958,7 +987,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUILayout.Space(5);
 
         DrawProperty(editor, properties, "_ScrollToggle", "Enable Scroll");
-        DrawProperty(editor, properties, "_ToggleWorldSpaceUV", "Toggle World Space UV");
+        DrawProperty(editor, properties, "_ToggleVertexPositionUV", "Use Vertex Position UV");
         DrawTextureProperty(editor, properties, "_ScrollTex", "Scroll Texture");
         DrawTextureProperty(editor, properties, "_ScrollMask", "Scroll Mask");
         DrawProperty(editor, properties, "_ScrollColor", "Scroll Color");
@@ -1001,7 +1030,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_Cull", "_Opacity", "_AlphaClipping", "_BaseColor", "_MainTex", "RotationMask",
             "_BaseScrollSpeed", "_BaseRotationCenter", "_BaseRotationSpeed",
             // Global Displacement properties
-            "_ToggleDisplacement", "_DisplacementTexture", "_DisplacementTiling", "_DisplacementOffset", "_DisplacementScrolling", "_DisplacementRotation",
+            "_ToggleDisplacement", "_DisplacementusesVertexPositionUV", "_DisplacementTexture", "_DisplacementTiling", "_DisplacementOffset", "_DisplacementScrolling", "_DisplacementRotation",
             "_DisplacementMultiplier", "_DisplacementMinSize", "_DisplacementMaxSize",
             "_VertexColorsToggle", "_VertexColorsOpacity", "_VertexColorsDefineOutlineCoverage",
             "_VertexColorsDefineOutlineOpacity", "_VertexColorsDefineOutlineThickness",
@@ -1042,8 +1071,11 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_GlowToggle", "_GlowMask", "_GlowColor", "_GlowCycle", "_GlowSpeed", "_GlowEmit",
             "_FlipbookToggle", "_FlipBookTexture", "_FlipBookMask", "_FlipbookTiling",
             "_FlipbookOffset", "_FlipbookColumns", "_FlipbookRows", "_FlipbookSpeed", "_FlipbookEmit",
-            "_ScrollToggle", "_ToggleWorldSpaceUV", "_ScrollTex", "_ScrollMask", "_ScrollColor", "_ScrollSize",
+            "_ScrollToggle", "_ToggleVertexPositionUV", "_ScrollTex", "_ScrollMask", "_ScrollColor", "_ScrollSize",
             "_ScrollOffset", "_ScrollSpeed", "_ScrollRotation", "_ScrollEmit",
+            // Screen Color properties
+            "_ToggleScreenColorasBaseTexture", "_ScreenColorDistortionTexture", "_ScreenColorDistortionAmount",
+            "_ScreenColorDistortionTiling", "_ScreenColorDistortionScrolling",
             "_texcoord", "_AddViewDirectionalLight", "_ShadowColor", "_ShadowOutlineThickness",
             "_ShadowOutlineCustomColorToggle", "_ShadowOutlineCustomColor", "_ShadowMask",
             "_RimLightOpacity", "_ShadowTextureSoftness", "_ShadowTextureOffset",

@@ -98,7 +98,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
       _FlipbookSpeed("Flipbook Speed", Float) = 1
       _FlipbookEmit("Flipbook Emit", Float) = 1
       [Toggle(_SCROLLTOGGLE_ON)] _ScrollToggle("Scroll Toggle", Float) = 0
-      [Toggle]_ToggleWorldSpaceUV("Toggle World Space UV", Float) = 0
+      [Toggle]_ToggleVertexPositionUV("Toggle Vertex Position UV", Float) = 0
       _ScrollColor("Scroll Color", Color) = (1,1,1,0)
       [NoScaleOffset][BigTexture]_ScrollTex("Scroll Tex", 2D) = "white" {}
       [NoScaleOffset][BigTexture]_ScrollMask("Scroll Mask", 2D) = "white" {}
@@ -225,7 +225,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 			uniform float4 _SpecularCustomColor;
 			uniform sampler2D _ScrollMask;
 			uniform sampler2D _ScrollTex;
-			uniform float _ToggleWorldSpaceUV;
+			uniform float _ToggleVertexPositionUV;
 			uniform float2 _ScrollSpeed;
 			uniform float2 _ScrollSize;
 			uniform float2 _ScrollOffset;
@@ -535,7 +535,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float2 rotator1313 = mul( ( ( i.ase_texcoord10.xyz * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
 				float2 panner1314 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1313);
 				#ifdef _SCROLLTOGGLE_ON
-				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleWorldSpaceUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
+				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleVertexPositionUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
 				#else
 				float4 staticSwitch591 = float4( 0,0,0,0 );
 				#endif
@@ -707,7 +707,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 			uniform float4 _SpecularCustomColor;
 			uniform sampler2D _ScrollMask;
 			uniform sampler2D _ScrollTex;
-			uniform float _ToggleWorldSpaceUV;
+			uniform float _ToggleVertexPositionUV;
 			uniform float2 _ScrollSpeed;
 			uniform float2 _ScrollSize;
 			uniform float2 _ScrollOffset;
@@ -991,7 +991,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float2 rotator1313 = mul( ( ( i.ase_texcoord9.xyz * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
 				float2 panner1314 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1313);
 				#ifdef _SCROLLTOGGLE_ON
-				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleWorldSpaceUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
+				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleVertexPositionUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
 				#else
 				float4 staticSwitch591 = float4( 0,0,0,0 );
 				#endif
@@ -1117,7 +1117,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 			uniform float4 _SpecularCustomColor;
 			uniform sampler2D _ScrollMask;
 			uniform sampler2D _ScrollTex;
-			uniform float _ToggleWorldSpaceUV;
+			uniform float _ToggleVertexPositionUV;
 			uniform float2 _ScrollSpeed;
 			uniform float2 _ScrollSize;
 			uniform float2 _ScrollOffset;
@@ -1428,7 +1428,7 @@ Shader "Pupsi/Pupsi BRC Shader (Transparent)"
 				float2 rotator1313 = mul( ( ( i.ase_texcoord10.xyz * float3( _ScrollSize ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1313 , -sin1313 , sin1313 , cos1313 )) + float2( 0.5,0.5 );
 				float2 panner1314 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1313);
 				#ifdef _SCROLLTOGGLE_ON
-				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleWorldSpaceUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
+				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ToggleVertexPositionUV )?( panner1314 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
 				#else
 				float4 staticSwitch591 = float4( 0,0,0,0 );
 				#endif
@@ -1741,7 +1741,6 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1309;5797.586,1340.828;Inherit;Fal
 Node;AmplifyShaderEditor.ClampOpNode;1312;3427.524,2364.671;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RotatorNode;1313;26.13058,-1161.844;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;2;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.PannerNode;1314;63.07558,-1000.021;Inherit;True;3;0;FLOAT2;0,0;False;2;FLOAT2;0,1;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;1315;292.3498,-799.9841;Inherit;False;Property;_ToggleWorldSpaceUV;Toggle World Space UV;93;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;1316;-90.25731,-989.6517;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1317;-287.7703,-997.4615;Inherit;True;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.ColorNode;1319;582.1308,-802.8443;Inherit;False;Property;_ScrollColor;Scroll Color;94;0;Create;True;0;0;0;False;0;False;1,1,1,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -1753,6 +1752,7 @@ Node;AmplifyShaderEditor.ToggleSwitchNode;1323;3429.88,4982.726;Inherit;False;Pr
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1324;3759.202,4745.553;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;1310;5978.586,1310.828;Inherit;False;Property;_VertexColorsDefineOutlineOpacity;Vertex Colors Define Outline Opacity;63;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.PosVertexDataNode;1325;-568.6523,-852.6102;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ToggleSwitchNode;1315;292.3498,-799.9841;Inherit;False;Property;_ToggleVertexPositionUV;Toggle Vertex Position UV;93;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
 WireConnection;589;0;591;0
 WireConnection;589;1;603;0
 WireConnection;589;2;590;0
@@ -2041,8 +2041,6 @@ WireConnection;1313;0;1316;0
 WireConnection;1313;2;604;0
 WireConnection;1314;0;1313;0
 WireConnection;1314;2;605;0
-WireConnection;1315;0;597;0
-WireConnection;1315;1;1314;0
 WireConnection;1316;0;1317;0
 WireConnection;1316;1;600;0
 WireConnection;1317;0;1325;0
@@ -2055,5 +2053,7 @@ WireConnection;1324;0;888;0
 WireConnection;1324;1;1323;0
 WireConnection;1310;0;1287;0
 WireConnection;1310;1;1309;0
+WireConnection;1315;0;597;0
+WireConnection;1315;1;1314;0
 ASEEND*/
-//CHKSM=C157FC1E6C63AC99C67B8E7EDDC1736408438D7B
+//CHKSM=EBF05B89DAFDAABA35FCEB0F19FB4D4737BC5D5C
