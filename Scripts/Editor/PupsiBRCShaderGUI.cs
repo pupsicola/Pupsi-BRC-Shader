@@ -1000,12 +1000,12 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUILayout.Space(5);
 
         DrawProperty(editor, properties, "_ScrollToggle", "Enable Scroll");
+        DrawProperty(editor, properties, "_ScrollingUV", "Scrolling UV");
         DrawProperty(editor, properties, "_ScrollToggleVertexPositionUV", "Use Vertex Position UV");
         DrawTextureProperty(editor, properties, "_ScrollTex", "Scroll Texture");
         DrawTextureProperty(editor, properties, "_ScrollMask", "Scroll Mask");
         DrawProperty(editor, properties, "_ScrollColor", "Scroll Color");
         DrawProperty(editor, properties, "_ScrollTiling", "Scroll Tiling");
-        DrawProperty(editor, properties, "_ScrollOffset", "Scroll Offset");
         DrawProperty(editor, properties, "_ScrollSpeed", "Scroll Speed");
         DrawProperty(editor, properties, "_ScrollRotation", "Scroll Rotation");
         DrawProperty(editor, properties, "_ScrollEmit", "Scroll Intensity");
@@ -1086,7 +1086,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_FlipbookToggle", "_FlipBookTexture", "_FlipBookMask", "_FlipbookTiling",
             "_FlipbookOffset", "_FlipbookColumns", "_FlipbookRows", "_FlipbookSpeed", "_FlipbookEmit",
             "_ScrollToggle", "_ScrollToggleVertexPositionUV", "_ScrollTex", "_ScrollMask", "_ScrollColor", "_ScrollSize",
-            "_ScrollOffset", "_ScrollSpeed", "_ScrollRotation", "_ScrollEmit", "_ScrollTiling",
+            "_ScrollingUV", "_ScrollOffset", "_ScrollSpeed", "_ScrollRotation", "_ScrollEmit", "_ScrollTiling",
             "_DisableWorldLightColor", "_OutlineTextureVertexPositionUV", "_OutlineEmit",
             "_OutlineDisplacementVertexPositionUV", "_SilhouetteTextureVertexPositionUV", "_SilhouetteDisplacementVertexPositionUV",
             // Screen Color properties

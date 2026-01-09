@@ -133,12 +133,12 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 		_CubemapFresnelScale("Cubemap Fresnel Scale", Float) = 0
 		_CubemapFresnelPower("Cubemap Fresnel Power", Range( 0 , 15)) = 1
 		[Toggle(_SCROLLTOGGLE_ON)] _ScrollToggle("Scroll Toggle", Float) = 0
+		[KeywordEnum(UV0,UV1,UV2,UV3)] _ScrollingUV("Scrolling UV", Float) = 0
 		[Toggle]_ScrollToggleVertexPositionUV("Scroll Toggle Vertex Position UV", Float) = 1
 		_ScrollColor("Scroll Color", Color) = (1,1,1,0)
 		[NoScaleOffset][BigTexture]_ScrollTex("Scroll Tex", 2D) = "white" {}
 		[NoScaleOffset][BigTexture]_ScrollMask("Scroll Mask", 2D) = "white" {}
 		_ScrollTiling("Scroll Tiling", Vector) = (1,1,0,0)
-		_ScrollOffset("Scroll Offset", Vector) = (0,0,0,0)
 		_ScrollSpeed("Scroll Speed", Vector) = (0,1,0,0)
 		_ScrollRotation("Scroll Rotation", Range( 0 , 360)) = 0
 		_ScrollEmit("Scroll Emit", Float) = 1
@@ -204,6 +204,7 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 			#pragma shader_feature_local _DETAILTEXTUREUV_UV0 _DETAILTEXTUREUV_UV1 _DETAILTEXTUREUV_UV2 _DETAILTEXTUREUV_UV3
 			#pragma shader_feature_local _SPECULARMASKUV_UV0 _SPECULARMASKUV_UV1 _SPECULARMASKUV_UV2 _SPECULARMASKUV_UV3
 			#pragma shader_feature_local _SCROLLTOGGLE_ON
+			#pragma shader_feature_local _SCROLLINGUV_UV0 _SCROLLINGUV_UV1 _SCROLLINGUV_UV2 _SCROLLINGUV_UV3
 
 			//This is a late directive
 			
@@ -298,7 +299,6 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 			uniform float _ScrollToggleVertexPositionUV;
 			uniform float2 _ScrollSpeed;
 			uniform float2 _ScrollTiling;
-			uniform float2 _ScrollOffset;
 			uniform float _ScrollRotation;
 			uniform float4 _ScrollColor;
 			uniform float _ScrollEmit;
@@ -592,15 +592,25 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 				float2 staticSwitch1140 = UV01113;
 				#endif
 				float2 uv_ScrollMask607 = i.ase_texcoord1.xyz.xy;
-				float2 texCoord599 = i.ase_texcoord1.xyz.xy * _ScrollTiling + _ScrollOffset;
+				#if defined(_SCROLLINGUV_UV0)
+				float2 staticSwitch1598 = UV01113;
+				#elif defined(_SCROLLINGUV_UV1)
+				float2 staticSwitch1598 = UV11114;
+				#elif defined(_SCROLLINGUV_UV2)
+				float2 staticSwitch1598 = UV21115;
+				#elif defined(_SCROLLINGUV_UV3)
+				float2 staticSwitch1598 = UV31136;
+				#else
+				float2 staticSwitch1598 = UV01113;
+				#endif
 				float temp_output_604_0 = radians( _ScrollRotation );
 				float cos598 = cos( temp_output_604_0 );
 				float sin598 = sin( temp_output_604_0 );
-				float2 rotator598 = mul( texCoord599 - float2( 0.5,0.5 ) , float2x2( cos598 , -sin598 , sin598 , cos598 )) + float2( 0.5,0.5 );
+				float2 rotator598 = mul( ( staticSwitch1598 * _ScrollTiling ) - float2( 0.5,0.5 ) , float2x2( cos598 , -sin598 , sin598 , cos598 )) + float2( 0.5,0.5 );
 				float2 panner597 = ( 1.0 * _Time.y * _ScrollSpeed + rotator598);
 				float cos1443 = cos( temp_output_604_0 );
 				float sin1443 = sin( temp_output_604_0 );
-				float2 rotator1443 = mul( ( ( i.ase_texcoord10.xyz * float3( _ScrollTiling ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1443 , -sin1443 , sin1443 , cos1443 )) + float2( 0.5,0.5 );
+				float2 rotator1443 = mul( ( i.ase_texcoord10.xyz * float3( _ScrollTiling ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1443 , -sin1443 , sin1443 , cos1443 )) + float2( 0.5,0.5 );
 				float2 panner1437 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1443);
 				#ifdef _SCROLLTOGGLE_ON
 				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ScrollToggleVertexPositionUV )?( panner1437 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
@@ -667,6 +677,7 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 			#pragma shader_feature_local _DETAILTEXTUREUV_UV0 _DETAILTEXTUREUV_UV1 _DETAILTEXTUREUV_UV2 _DETAILTEXTUREUV_UV3
 			#pragma shader_feature_local _SPECULARMASKUV_UV0 _SPECULARMASKUV_UV1 _SPECULARMASKUV_UV2 _SPECULARMASKUV_UV3
 			#pragma shader_feature_local _SCROLLTOGGLE_ON
+			#pragma shader_feature_local _SCROLLINGUV_UV0 _SCROLLINGUV_UV1 _SCROLLINGUV_UV2 _SCROLLINGUV_UV3
 
 
 			struct appdata
@@ -799,7 +810,6 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 			uniform float _ScrollToggleVertexPositionUV;
 			uniform float2 _ScrollSpeed;
 			uniform float2 _ScrollTiling;
-			uniform float2 _ScrollOffset;
 			uniform float _ScrollRotation;
 			uniform float4 _ScrollColor;
 			uniform float _ScrollEmit;
@@ -1059,15 +1069,25 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 				float2 staticSwitch1140 = UV01113;
 				#endif
 				float2 uv_ScrollMask607 = i.ase_texcoord.xyz.xy;
-				float2 texCoord599 = i.ase_texcoord.xyz.xy * _ScrollTiling + _ScrollOffset;
+				#if defined(_SCROLLINGUV_UV0)
+				float2 staticSwitch1598 = UV01113;
+				#elif defined(_SCROLLINGUV_UV1)
+				float2 staticSwitch1598 = UV11114;
+				#elif defined(_SCROLLINGUV_UV2)
+				float2 staticSwitch1598 = UV21115;
+				#elif defined(_SCROLLINGUV_UV3)
+				float2 staticSwitch1598 = UV31136;
+				#else
+				float2 staticSwitch1598 = UV01113;
+				#endif
 				float temp_output_604_0 = radians( _ScrollRotation );
 				float cos598 = cos( temp_output_604_0 );
 				float sin598 = sin( temp_output_604_0 );
-				float2 rotator598 = mul( texCoord599 - float2( 0.5,0.5 ) , float2x2( cos598 , -sin598 , sin598 , cos598 )) + float2( 0.5,0.5 );
+				float2 rotator598 = mul( ( staticSwitch1598 * _ScrollTiling ) - float2( 0.5,0.5 ) , float2x2( cos598 , -sin598 , sin598 , cos598 )) + float2( 0.5,0.5 );
 				float2 panner597 = ( 1.0 * _Time.y * _ScrollSpeed + rotator598);
 				float cos1443 = cos( temp_output_604_0 );
 				float sin1443 = sin( temp_output_604_0 );
-				float2 rotator1443 = mul( ( ( i.ase_texcoord1.xyz * float3( _ScrollTiling ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1443 , -sin1443 , sin1443 , cos1443 )) + float2( 0.5,0.5 );
+				float2 rotator1443 = mul( ( i.ase_texcoord1.xyz * float3( _ScrollTiling ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1443 , -sin1443 , sin1443 , cos1443 )) + float2( 0.5,0.5 );
 				float2 panner1437 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1443);
 				#ifdef _SCROLLTOGGLE_ON
 				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ScrollToggleVertexPositionUV )?( panner1437 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
@@ -1080,11 +1100,11 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 				float4 temp_output_472_0 = ( (( _SilhouetteOverlay )?( ( (( _SpecularToggle )?( ( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) )) + ( ( ( saturate( ( ( _SpecularOffset + dotResult1046 ) / _SpecularSoftness ) ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) )) )) + ( (( _SilhouetteTextureToggle )?( tex2DNode1301 ):( _SilhouetteColor )) * _SilhouetteOverlayOpacity ) ) ):( (( _SpecularToggle )?( ( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) )) + ( ( ( saturate( ( ( _SpecularOffset + dotResult1046 ) / _SpecularSoftness ) ) * tex2D( _SpecularMask, staticSwitch1140 ) ) * _SpecularBrightness ) * (( _SpecularCustomColorToggle )?( _SpecularCustomColor ):( temp_output_409_0 )) ) ) ):( (( _SilhouetteRimLightToggle )?( ( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) + ( ( pow( ( 1.0 - saturate( ( dotResult1323 + _SilhouetteRimLightOffset ) ) ) , _SilhouetteRimLightPower ) * AuraTex1305 ) * _SilhouetteRimLightBlend ) ) ):( (( _RimLightShadowToggle )?( ( ( saturate( lerpBlendMode1251 )) + ( ( pow( ( 1.0 - saturate( ( dotResult423 + _RimLightOffset ) ) ) , _RimLightPower ) * (( _RimLightBlendBaseTexture )?( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) ):( _RimLightColor )) ) * _RimLightBlend ) ) ):( (( _CubemapToggle )?( lerpResult1173 ):( temp_output_409_0 )) )) )) )) )) + ( staticSwitch591 + float4( ( hsvTorgb585 * _EmissionEmit ) , 0.0 ) ) );
 				
 				float temp_output_1488_0 = ( (( _OutlineOpacityuseBaseTextureOpacity )?( tex2DNode76.a ):( 1.0 )) * _OutlineOpacity );
-				float4 temp_cast_73 = (temp_output_1488_0).xxxx;
+				float4 temp_cast_72 = (temp_output_1488_0).xxxx;
 				
 
 				outOutlineColor = (( _OutlineBlendBaseTexture )?( ( temp_output_472_0 * (( _OutlineTextureToggle )?( tex2DNode1271 ):( _OutlineColor )) ) ):( (( _OutlineTextureToggle )?( tex2DNode1271 ):( _OutlineColor )) )).rgb;
-				outOutlineAlpha = ( (( _VertexColorsDefineOutlineOpacity )?( ( i.ase_color * temp_output_1488_0 ) ):( temp_cast_73 )) * tex2DNode1271.a ).r;
+				outOutlineAlpha = ( (( _VertexColorsDefineOutlineOpacity )?( ( i.ase_color * temp_output_1488_0 ) ):( temp_cast_72 )) * tex2DNode1271.a ).r;
 				clip(outOutlineAlpha);
 				return float4(outOutlineColor,outOutlineAlpha);
 			}
@@ -1280,6 +1300,7 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 			#pragma shader_feature_local _DETAILTEXTUREUV_UV0 _DETAILTEXTUREUV_UV1 _DETAILTEXTUREUV_UV2 _DETAILTEXTUREUV_UV3
 			#pragma shader_feature_local _SPECULARMASKUV_UV0 _SPECULARMASKUV_UV1 _SPECULARMASKUV_UV2 _SPECULARMASKUV_UV3
 			#pragma shader_feature_local _SCROLLTOGGLE_ON
+			#pragma shader_feature_local _SCROLLINGUV_UV0 _SCROLLINGUV_UV1 _SCROLLINGUV_UV2 _SCROLLINGUV_UV3
 
 			//This is a late directive
 			
@@ -1374,7 +1395,6 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 			uniform float _ScrollToggleVertexPositionUV;
 			uniform float2 _ScrollSpeed;
 			uniform float2 _ScrollTiling;
-			uniform float2 _ScrollOffset;
 			uniform float _ScrollRotation;
 			uniform float4 _ScrollColor;
 			uniform float _ScrollEmit;
@@ -1669,15 +1689,25 @@ Shader "Pupsi/Pupsi BRC Shader (Displacement Transparent)"
 				float2 staticSwitch1140 = UV01113;
 				#endif
 				float2 uv_ScrollMask607 = i.ase_texcoord1.xyz.xy;
-				float2 texCoord599 = i.ase_texcoord1.xyz.xy * _ScrollTiling + _ScrollOffset;
+				#if defined(_SCROLLINGUV_UV0)
+				float2 staticSwitch1598 = UV01113;
+				#elif defined(_SCROLLINGUV_UV1)
+				float2 staticSwitch1598 = UV11114;
+				#elif defined(_SCROLLINGUV_UV2)
+				float2 staticSwitch1598 = UV21115;
+				#elif defined(_SCROLLINGUV_UV3)
+				float2 staticSwitch1598 = UV31136;
+				#else
+				float2 staticSwitch1598 = UV01113;
+				#endif
 				float temp_output_604_0 = radians( _ScrollRotation );
 				float cos598 = cos( temp_output_604_0 );
 				float sin598 = sin( temp_output_604_0 );
-				float2 rotator598 = mul( texCoord599 - float2( 0.5,0.5 ) , float2x2( cos598 , -sin598 , sin598 , cos598 )) + float2( 0.5,0.5 );
+				float2 rotator598 = mul( ( staticSwitch1598 * _ScrollTiling ) - float2( 0.5,0.5 ) , float2x2( cos598 , -sin598 , sin598 , cos598 )) + float2( 0.5,0.5 );
 				float2 panner597 = ( 1.0 * _Time.y * _ScrollSpeed + rotator598);
 				float cos1443 = cos( temp_output_604_0 );
 				float sin1443 = sin( temp_output_604_0 );
-				float2 rotator1443 = mul( ( ( i.ase_texcoord10.xyz * float3( _ScrollTiling ,  0.0 ) ) + float3( _ScrollOffset ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1443 , -sin1443 , sin1443 , cos1443 )) + float2( 0.5,0.5 );
+				float2 rotator1443 = mul( ( i.ase_texcoord10.xyz * float3( _ScrollTiling ,  0.0 ) ).xy - float2( 0.5,0.5 ) , float2x2( cos1443 , -sin1443 , sin1443 , cos1443 )) + float2( 0.5,0.5 );
 				float2 panner1437 = ( 1.0 * _Time.y * _ScrollSpeed + rotator1443);
 				#ifdef _SCROLLTOGGLE_ON
 				float4 staticSwitch591 = ( tex2D( _ScrollMask, uv_ScrollMask607 ).r * ( tex2D( _ScrollTex, (( _ScrollToggleVertexPositionUV )?( panner1437 ):( panner597 )) ) * _ScrollColor ) * _ScrollEmit );
@@ -1709,7 +1739,7 @@ Node;AmplifyShaderEditor.CommentaryNode;361;-826.0327,3069.306;Inherit;False;148
 Node;AmplifyShaderEditor.CommentaryNode;226;1205.992,1592.955;Inherit;False;1266.631;394.3788;;6;1100;53;54;835;834;170;Normals, Base Light;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;242;1951.908,2726.178;Inherit;False;1855.488;608.4642;;24;970;406;408;857;625;60;59;971;624;409;769;57;74;58;378;381;1164;1165;1280;1368;1369;1370;1371;1593;Shadows and Lighting;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;550;1833.16,412.4896;Inherit;False;1976.592;475.3736;;11;427;858;423;420;426;428;424;558;430;429;863;Rim Lighting;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;582;-427.4952,-647.8214;Inherit;False;2084.161;706.9561;;18;1440;1431;593;607;596;588;605;601;600;606;604;599;598;597;1437;1439;1442;1441;ScrollingMasked;0.9008027,1,0,1;0;0
+Node;AmplifyShaderEditor.CommentaryNode;582;-427.4952,-647.8214;Inherit;False;2084.161;706.9561;;17;1431;593;607;596;588;605;601;606;604;598;597;1437;1439;1442;1441;1517;1599;ScrollingMasked;0.9008027,1,0,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;583;1935.712,-658.9301;Inherit;False;1931.061;541.7088;;8;609;587;586;584;603;602;589;585;Emission;0.6419381,0.9433962,0.4850481,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;844;2665.375,1395.669;Inherit;False;1142.913;327.8334;;8;867;856;855;866;852;854;853;851;Extra Lighting Pass;1,1,1,1;0;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;589;3652.362,-525.8543;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT3;0,0,0;False;1;COLOR;0
@@ -2052,22 +2082,15 @@ Node;AmplifyShaderEditor.ToggleSwitchNode;1374;4776.133,4302.017;Inherit;False;P
 Node;AmplifyShaderEditor.ToggleSwitchNode;1579;3841.535,4229.969;Inherit;False;Property;_OutlineOpacityuseBaseTextureOpacity;Outline Opacity use Base Texture Opacity;71;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;1;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.StaticSwitch;591;1672.215,-635.2302;Inherit;False;Property;_ScrollToggle;Scroll Toggle;127;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;588;1411.18,-357.1161;Inherit;True;3;3;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SamplerNode;607;1035.823,-431.4196;Inherit;True;Property;_ScrollMask;Scroll Mask;131;1;[NoScaleOffset];Create;True;0;0;0;False;1;BigTexture;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;607;1035.823,-431.4196;Inherit;True;Property;_ScrollMask;Scroll Mask;132;1;[NoScaleOffset];Create;True;0;0;0;False;1;BigTexture;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;596;1167.599,-221.808;Inherit;False;Property;_ScrollEmit;Scroll Emit;136;0;Create;True;0;0;0;False;0;False;1;0.38;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;1442;628.1938,-373.926;Inherit;False;Property;_ScrollColor;Scroll Color;129;0;Create;True;0;0;0;False;0;False;1,1,1,0;1,0.8744493,0.7877358,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;1442;628.1938,-373.926;Inherit;False;Property;_ScrollColor;Scroll Color;130;0;Create;True;0;0;0;False;0;False;1,1,1,0;1,0.8744493,0.7877358,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1441;873.1938,-178.926;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RadiansOpNode;604;-109.4944,-98.39233;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;606;-394.6348,-97.39154;Inherit;False;Property;_ScrollRotation;Scroll Rotation;135;0;Create;True;0;0;0;False;0;False;0;0;0;360;0;1;FLOAT;0
-Node;AmplifyShaderEditor.Vector2Node;600;-379.1793,-218.5206;Inherit;False;Property;_ScrollOffset;Scroll Offset;133;0;Create;True;0;0;0;False;0;False;0,0;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.Vector2Node;605;74.52506,-116.8549;Inherit;False;Property;_ScrollSpeed;Scroll Speed;134;0;Create;True;0;0;0;False;0;False;0,1;0,-0.5;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.RotatorNode;1443;72.19379,-732.926;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;2;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.PannerNode;1437;109.1388,-571.103;Inherit;True;3;0;FLOAT2;0,0;False;2;FLOAT2;0,1;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;1440;-44.19415,-560.7334;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1439;-241.7071,-568.5433;Inherit;True;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SamplerNode;593;512.1016,-187.7853;Inherit;True;Property;_ScrollTex;Scroll Tex;130;1;[NoScaleOffset];Create;True;0;0;0;False;1;BigTexture;False;-1;None;3c8cc44fb4eabd64a9138c767fa00e2b;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.PosVertexDataNode;1517;-456.2456,-567.2236;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.TextureCoordinatesNode;599;-164.4463,-311.219;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RotatorNode;598;82.66949,-310.537;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;2;FLOAT;1;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.SamplerNode;593;512.1016,-187.7853;Inherit;True;Property;_ScrollTex;Scroll Tex;131;1;[NoScaleOffset];Create;True;0;0;0;False;1;BigTexture;False;-1;None;3c8cc44fb4eabd64a9138c767fa00e2b;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.PannerNode;597;285.1138,-142.8278;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;1164;2742.178,2929.047;Inherit;False;Property;_HalftoneShadowToggle;Halftone Shadow Toggle;46;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;1369;2580.257,3053.286;Inherit;False;Property;_ShadowIntensity;Shadow Intensity;40;0;Create;True;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0
@@ -2096,9 +2119,19 @@ Node;AmplifyShaderEditor.ToggleSwitchNode;1590;2025.892,5058.165;Inherit;False;P
 Node;AmplifyShaderEditor.ToggleSwitchNode;1586;1540.707,4279.479;Inherit;False;Property;_OutlineTextureVertexPositionUV;Outline Texture Vertex Position UV;75;0;Create;True;0;0;0;False;0;False;1;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.LightColorNode;408;3398.78,2755.295;Inherit;False;0;3;COLOR;0;FLOAT3;1;FLOAT;2
 Node;AmplifyShaderEditor.ToggleSwitchNode;1593;3527.894,2920.04;Inherit;False;Property;_DisableWorldLightColor;Disable World Light Color;36;0;Create;True;0;0;0;False;0;False;0;True;2;0;COLOR;1,1,1,0;False;1;COLOR;1,1,1,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;1431;398.4131,-391.0658;Inherit;False;Property;_ScrollToggleVertexPositionUV;Scroll Toggle Vertex Position UV;128;0;Create;True;0;0;0;False;0;False;1;True;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.Vector2Node;601;-349.8132,-342.2057;Inherit;False;Property;_ScrollTiling;Scroll Tiling;132;0;Create;True;0;0;0;False;0;False;1,1;1,1;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.ToggleSwitchNode;1431;398.4131,-391.0658;Inherit;False;Property;_ScrollToggleVertexPositionUV;Scroll Toggle Vertex Position UV;129;0;Create;True;0;0;0;False;0;False;1;True;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.Vector2Node;601;-349.8132,-342.2057;Inherit;False;Property;_ScrollTiling;Scroll Tiling;133;0;Create;True;0;0;0;False;0;False;1,1;1,1;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.ToggleSwitchNode;1580;2322.801,6814.604;Inherit;False;Property;_SilhouetteDisplacementVertexPositionUV;Silhouette Displacement Vertex Position UV;107;0;Create;True;0;0;0;False;0;False;1;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.PannerNode;1437;158.1388,-587.103;Inherit;True;3;0;FLOAT2;0,0;False;2;FLOAT2;0,1;False;1;FLOAT;1;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1439;-126.7071,-456.5433;Inherit;True;2;2;0;FLOAT3;0,0,0;False;1;FLOAT2;0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.PosVertexDataNode;1517;-370.2456,-499.2236;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RotatorNode;598;111.6695,-308.537;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;2;FLOAT;1;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.StaticSwitch;1598;-585.2454,-269.906;Inherit;False;Property;_ScrollingUV;Scrolling UV;128;0;Create;True;0;0;0;False;0;False;0;0;0;True;;KeywordEnum;4;UV0;UV1;UV2;UV3;Create;True;True;All;9;1;FLOAT2;0,0;False;0;FLOAT2;0,0;False;2;FLOAT2;0,0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT2;0,0;False;6;FLOAT2;0,0;False;7;FLOAT2;0,0;False;8;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.GetLocalVarNode;1594;-799.2455,-317.906;Inherit;False;1113;UV0;1;0;OBJECT;;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.GetLocalVarNode;1595;-804.2455,-236.906;Inherit;False;1114;UV1;1;0;OBJECT;;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.GetLocalVarNode;1596;-802.2455,-158.906;Inherit;False;1115;UV2;1;0;OBJECT;;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.GetLocalVarNode;1597;-795.1005,-83.71002;Inherit;False;1136;UV3;1;0;OBJECT;;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1599;-101.4162,-234.867;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
 WireConnection;589;0;591;0
 WireConnection;589;1;603;0
 WireConnection;429;0;428;0
@@ -2463,19 +2496,9 @@ WireConnection;588;2;596;0
 WireConnection;1441;0;593;0
 WireConnection;1441;1;1442;0
 WireConnection;604;0;606;0
-WireConnection;1443;0;1440;0
+WireConnection;1443;0;1439;0
 WireConnection;1443;2;604;0
-WireConnection;1437;0;1443;0
-WireConnection;1437;2;605;0
-WireConnection;1440;0;1439;0
-WireConnection;1440;1;600;0
-WireConnection;1439;0;1517;0
-WireConnection;1439;1;601;0
 WireConnection;593;1;1431;0
-WireConnection;599;0;601;0
-WireConnection;599;1;600;0
-WireConnection;598;0;599;0
-WireConnection;598;2;604;0
 WireConnection;597;0;598;0
 WireConnection;597;2;605;0
 WireConnection;1164;0;74;0
@@ -2508,5 +2531,17 @@ WireConnection;1431;0;597;0
 WireConnection;1431;1;1437;0
 WireConnection;1580;0;1581;0
 WireConnection;1580;1;1514;0
+WireConnection;1437;0;1443;0
+WireConnection;1437;2;605;0
+WireConnection;1439;0;1517;0
+WireConnection;1439;1;601;0
+WireConnection;598;0;1599;0
+WireConnection;598;2;604;0
+WireConnection;1598;1;1594;0
+WireConnection;1598;0;1595;0
+WireConnection;1598;2;1596;0
+WireConnection;1598;3;1597;0
+WireConnection;1599;0;1598;0
+WireConnection;1599;1;601;0
 ASEEND*/
-//CHKSM=2C0697FFDCF70393270154CF6D6EDD96C5E79EBF
+//CHKSM=3FDE556888DB7235950B3EADC690957E70F29966
