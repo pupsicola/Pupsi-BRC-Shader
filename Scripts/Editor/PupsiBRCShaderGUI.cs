@@ -18,6 +18,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
     private static bool showRimLightShadow = false;
     private static bool showOutline = true;
     private static bool showSilhouette = false;
+    private static bool showAura = false;
     private static bool showCubemap = false;
     private static bool showGlow = false;
     private static bool showFlipbook = false;
@@ -39,6 +40,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
         SilhouetteOutlineTransparent,
         Displacement,
         DisplacementTransparent,
+        Aura,
         Riders,
         UltimateNinja,
         Unknown
@@ -152,6 +154,8 @@ public class PupsiBRCShaderGUI : ShaderGUI
             return ShaderType.SilhouetteOutlineTransparent;
         if (shaderName.Contains("Silhouette Outline"))
             return ShaderType.SilhouetteOutline;
+        if (shaderName.Contains("Shader Aura"))
+            return ShaderType.Aura;
         if (shaderName.Contains("Displacement Transparent"))
             return ShaderType.DisplacementTransparent;
         if (shaderName.Contains("Displacement"))
@@ -197,6 +201,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             DrawRimLightShadowSection(materialEditor, properties, shaderType);
             DrawOutlineSection(materialEditor, properties, shaderType);
             DrawSilhouetteSection(materialEditor, properties, shaderType);
+            DrawAuraSection(materialEditor, properties, shaderType);
             DrawCubemapSection(materialEditor, properties, shaderType);
             DrawGlowSection(materialEditor, properties, shaderType);
             DrawFlipbookSection(materialEditor, properties, shaderType);
@@ -226,6 +231,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             ShaderType.SilhouetteOutlineTransparent => "Silhouette Outline Transparent",
             ShaderType.Displacement => "Displacement",
             ShaderType.DisplacementTransparent => "Displacement Transparent",
+            ShaderType.Aura => "Aura",
             ShaderType.Riders => "Riders",
             ShaderType.UltimateNinja => "Ultimate Ninja",
             _ => "Unknown"
@@ -599,7 +605,14 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUI.indentLevel++;
         EditorGUILayout.Space(5);
 
+        // Light Strength
+        EditorGUILayout.LabelField("Light Strength", subHeaderStyle);
+        DrawProperty(editor, properties, "_WorldLightStrength", "World Light Strength");
+        DrawProperty(editor, properties, "_GameLightStrength", "Game Light Strength");
+        DrawProperty(editor, properties, "_GameShadowStrength", "Game Shadow Strength");
+
         // Custom lighting colors
+        EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Custom Colors", subHeaderStyle);
         DrawProperty(editor, properties, "_CustomLightingColorToggle", "Custom Light Color Toggle");
         DrawProperty(editor, properties, "_CustomLightingColor", "Custom Lighting Color");
@@ -769,6 +782,14 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
         EditorGUILayout.Space(3);
         DrawProperty(editor, properties, "_OutlineTextureToggle", "Enable Outline Texture");
+        
+        // New UV selection system
+        if (HasProperty(properties, "_OutlineTextureUVSelection"))
+        {
+            DrawProperty(editor, properties, "_OutlineTextureUVSelection", "Outline Texture UV Selection");
+            DrawProperty(editor, properties, "_OutlineTextureBaseUVMap", "Outline Texture Base UV Map");
+        }
+        // Legacy vertex position UV toggle (for older displacement shaders)
         DrawProperty(editor, properties, "_OutlineTextureVertexPositionUV", "Outline Texture Vertex Position UV");
         
         // Different shaders use different property names for outline texture
@@ -845,7 +866,16 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
         DrawProperty(editor, properties, "_SilhouetteColor", "Silhouette Color");
         DrawProperty(editor, properties, "_SilhouetteTextureToggle", "Enable Silhouette Texture");
+        
+        // New UV selection system
+        if (HasProperty(properties, "_SilhouetteTextureUVSelection"))
+        {
+            DrawProperty(editor, properties, "_SilhouetteTextureUVSelection", "Silhouette Texture UV Selection");
+            DrawProperty(editor, properties, "_SilhouetteTextureBaseUVMap", "Silhouette Texture Base UV Map");
+        }
+        // Legacy vertex position UV toggle (for older displacement shaders)
         DrawProperty(editor, properties, "_SilhouetteTextureVertexPositionUV", "Silhouette Texture Vertex Position UV");
+        
         DrawTextureProperty(editor, properties, "AuraTexture1", "Silhouette Texture");
         DrawProperty(editor, properties, "_SilhouetteTextureTiling", "Silhouette Texture Tiling");
         DrawProperty(editor, properties, "_SilhouetteTextureScroll", "Silhouette Texture Scroll");
@@ -903,6 +933,62 @@ public class PupsiBRCShaderGUI : ShaderGUI
             DrawProperty(editor, properties, "_SilhouetteRimLightBlend", "Rim Light Opacity");
         else
             DrawProperty(editor, properties, "_SilhouetteRimLightOpacity", "Rim Light Opacity");
+
+        EditorGUI.indentLevel--;
+        EditorGUILayout.Space(5);
+        EndFoldoutSection();
+    }
+
+    private void DrawAuraSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
+    {
+        // Only show for Aura shader type
+        if (shaderType != ShaderType.Aura) return;
+        if (!HasProperty(properties, "_SilhouetteColor")) return;
+
+        showAura = DrawFoldoutHeader("Aura Effect", showAura, new Color(0.7f, 0.85f, 1f));
+        if (!showAura) return;
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.Space(5);
+
+        // Aura Colors
+        EditorGUILayout.LabelField("Colors", subHeaderStyle);
+        DrawProperty(editor, properties, "_SilhouetteColor", "Main Color");
+        DrawProperty(editor, properties, "_SilhouetteRimColor", "Rim Color");
+
+        // Aura Noise Texture
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Noise Texture", subHeaderStyle);
+        DrawTextureProperty(editor, properties, "AuraTexture1", "Texture");
+        DrawProperty(editor, properties, "_SilhouetteScale", "Scale");
+        DrawProperty(editor, properties, "_SilhouetteSpeedX", "Speed X");
+        DrawProperty(editor, properties, "_SilhouetteSpeedY", "Speed Y");
+        DrawProperty(editor, properties, "_SilhouetteOpacity", "Opacity");
+
+        // Aura Rim Appearance
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Rim Appearance", subHeaderStyle);
+        DrawProperty(editor, properties, "_SilhouetteRimPower", "Rim Power");
+        DrawProperty(editor, properties, "_SilhouetteEdge", "Rim Edge");
+        DrawProperty(editor, properties, "_SilhouetteBrightness", "Brightness");
+
+        // Aura Outline Size
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Outline Size", subHeaderStyle);
+        DrawProperty(editor, properties, "_SilhouetteMultiplier", "Multiplier");
+        DrawProperty(editor, properties, "_SilhouetteMinSize", "Min Size");
+        DrawProperty(editor, properties, "_SilhouetteMaxSize", "Max Size");
+        DrawProperty(editor, properties, "_VertexColorsDefineSilhouetteOutlineThickness", "Vertex Colors Define Thickness");
+
+        // Aura Overlay (on character body)
+        EditorGUILayout.Space(3);
+        EditorGUILayout.LabelField("Overlay (on body)", subHeaderStyle);
+        DrawProperty(editor, properties, "_SilhouetteOverlay", "Enable");
+        DrawProperty(editor, properties, "_SilhouetteOverlayOpacity", "Opacity");
+        DrawProperty(editor, properties, "_SilhouetteRimLightToggle", "Enable Rim Light");
+        DrawProperty(editor, properties, "_SilhouetteRimLightPower", "Rim Power");
+        DrawProperty(editor, properties, "_SilhouetteRimLightOffset", "Rim Offset");
+        DrawProperty(editor, properties, "_SilhouetteRimLightBlend", "Rim Blend");
 
         EditorGUI.indentLevel--;
         EditorGUILayout.Space(5);
@@ -1000,12 +1086,24 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUILayout.Space(5);
 
         DrawProperty(editor, properties, "_ScrollToggle", "Enable Scroll");
+        
+        // New UV selection system
+        if (HasProperty(properties, "_ScrollingUVSelection"))
+        {
+            DrawProperty(editor, properties, "_ScrollingUVSelection", "Scrolling UV Selection");
+            DrawProperty(editor, properties, "_ScrollingBaseUVMap", "Scrolling Base UV Map");
+        }
+        // Legacy UV options
         DrawProperty(editor, properties, "_ScrollingUV", "Scrolling UV");
         DrawProperty(editor, properties, "_ScrollToggleVertexPositionUV", "Use Vertex Position UV");
+        DrawProperty(editor, properties, "_ToggleWorldSpaceUV", "Toggle World Space UV");
+        
         DrawTextureProperty(editor, properties, "_ScrollTex", "Scroll Texture");
         DrawTextureProperty(editor, properties, "_ScrollMask", "Scroll Mask");
         DrawProperty(editor, properties, "_ScrollColor", "Scroll Color");
         DrawProperty(editor, properties, "_ScrollTiling", "Scroll Tiling");
+        DrawProperty(editor, properties, "_ScrollSize", "Scroll Size");
+        DrawProperty(editor, properties, "_ScrollOffset", "Scroll Offset");
         DrawProperty(editor, properties, "_ScrollSpeed", "Scroll Speed");
         DrawProperty(editor, properties, "_ScrollRotation", "Scroll Rotation");
         DrawProperty(editor, properties, "_ScrollEmit", "Scroll Intensity");
@@ -1087,7 +1185,11 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_FlipbookOffset", "_FlipbookColumns", "_FlipbookRows", "_FlipbookSpeed", "_FlipbookEmit",
             "_ScrollToggle", "_ScrollToggleVertexPositionUV", "_ScrollTex", "_ScrollMask", "_ScrollColor", "_ScrollSize",
             "_ScrollingUV", "_ScrollOffset", "_ScrollSpeed", "_ScrollRotation", "_ScrollEmit", "_ScrollTiling",
+            "_ScrollingUVSelection", "_ScrollingBaseUVMap", "_ToggleWorldSpaceUV", "_ScrollSize",
             "_DisableWorldLightColor", "_OutlineTextureVertexPositionUV", "_OutlineEmit",
+            "_OutlineTextureUVSelection", "_OutlineTextureBaseUVMap",
+            "_SilhouetteTextureUVSelection", "_SilhouetteTextureBaseUVMap",
+            "_WorldLightStrength", "_GameLightStrength", "_GameShadowStrength",
             "_OutlineDisplacementVertexPositionUV", "_SilhouetteTextureVertexPositionUV", "_SilhouetteDisplacementVertexPositionUV",
             // Screen Color properties
             "_ToggleScreenColorasBaseTexture", "_ScreenColorDistortionTexture", "_ScreenColorDistortionAmount",
