@@ -13,6 +13,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
     private static bool showNormalMap = false;
     private static bool showEmission = false;
     private static bool showShadowsLighting = true;
+    private static bool showRealtimeLighting = true;
     private static bool showExtraLight = false;
     private static bool showSpecular = false;
     private static bool showRimLightShadow = false;
@@ -28,7 +29,6 @@ public class PupsiBRCShaderGUI : ShaderGUI
     // Cached textures
     private static Texture2D logoTexture;
     private static Texture2D githubIcon;
-    private static Texture2D kofiIcon;
     private static bool texturesLoaded = false;
 
     // Shader type detection
@@ -43,6 +43,8 @@ public class PupsiBRCShaderGUI : ShaderGUI
         Aura,
         Riders,
         UltimateNinja,
+        Environment,
+        RealtimeLighting,
         Unknown
     }
 
@@ -85,28 +87,22 @@ public class PupsiBRCShaderGUI : ShaderGUI
             // Find textures relative to the package location
             string[] logoGuids = AssetDatabase.FindAssets("logo t:Texture2D", new[] { iconsPath });
             string[] githubGuids = AssetDatabase.FindAssets("T_icon-githubpupsi t:Texture2D", new[] { iconsPath });
-            string[] kofiGuids = AssetDatabase.FindAssets("T_icon-kofipupsi t:Texture2D", new[] { iconsPath });
 
             if (logoGuids.Length > 0)
                 logoTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(logoGuids[0]));
             if (githubGuids.Length > 0)
                 githubIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(githubGuids[0]));
-            if (kofiGuids.Length > 0)
-                kofiIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(kofiGuids[0]));
         }
         else
         {
             // Fallback: search entire project for the textures by name
             string[] logoGuids = AssetDatabase.FindAssets("logo t:Texture2D");
             string[] githubGuids = AssetDatabase.FindAssets("T_icon-githubpupsi t:Texture2D");
-            string[] kofiGuids = AssetDatabase.FindAssets("T_icon-kofipupsi t:Texture2D");
 
             if (logoGuids.Length > 0)
                 logoTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(logoGuids[0]));
             if (githubGuids.Length > 0)
                 githubIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(githubGuids[0]));
-            if (kofiGuids.Length > 0)
-                kofiIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(kofiGuids[0]));
         }
 
         texturesLoaded = true;
@@ -166,6 +162,10 @@ public class PupsiBRCShaderGUI : ShaderGUI
             return ShaderType.Riders;
         if (shaderName.Contains("Ultimate Ninja"))
             return ShaderType.UltimateNinja;
+        if (shaderName.Contains("Environment Shader (Realtime Lighting)"))
+            return ShaderType.RealtimeLighting;
+        if (shaderName.Contains("Pupsi BRC Environment Shader"))
+            return ShaderType.Environment;
         if (shaderName.Contains("Pupsi BRC Shader"))
             return ShaderType.Standard;
             
@@ -196,6 +196,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             DrawNormalMapSection(materialEditor, properties, shaderType);
             DrawEmissionSection(materialEditor, properties, shaderType);
             DrawShadowsLightingSection(materialEditor, properties, shaderType);
+            DrawRealtimeLightingSection(materialEditor, properties, shaderType);
             DrawExtraLightSection(materialEditor, properties, shaderType);
             DrawSpecularSection(materialEditor, properties, shaderType);
             DrawRimLightShadowSection(materialEditor, properties, shaderType);
@@ -234,6 +235,8 @@ public class PupsiBRCShaderGUI : ShaderGUI
             ShaderType.Aura => "Aura",
             ShaderType.Riders => "Riders",
             ShaderType.UltimateNinja => "Ultimate Ninja",
+            ShaderType.Environment => "Environment",
+            ShaderType.RealtimeLighting => "Environment Realtime Lighting",
             _ => "Unknown"
         };
 
@@ -308,29 +311,6 @@ public class PupsiBRCShaderGUI : ShaderGUI
             }
         }
 
-        GUILayout.Space(10);
-
-        // Ko-fi icon button
-        if (kofiIcon != null)
-        {
-            GUIStyle iconButtonStyle = new GUIStyle(GUI.skin.button)
-            {
-                padding = new RectOffset(4, 4, 4, 4)
-            };
-            
-            if (GUILayout.Button(new GUIContent(kofiIcon, "Support on Ko-fi"), iconButtonStyle, GUILayout.Width(40), GUILayout.Height(40)))
-            {
-                Application.OpenURL("https://ko-fi.com/pupsi");
-            }
-        }
-        else
-        {
-            if (GUILayout.Button("Ko-fi", GUILayout.Width(80)))
-            {
-                Application.OpenURL("https://ko-fi.com/pupsi");
-            }
-        }
-        
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
     }
@@ -429,6 +409,11 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
     #region Section Drawing Methods
 
+    private bool IsEnvironmentShader(ShaderType shaderType)
+    {
+        return shaderType == ShaderType.Environment || shaderType == ShaderType.RealtimeLighting;
+    }
+
     private void DrawBaseTexturesSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
     {
         showBaseTextures = DrawFoldoutHeader("Base Textures", showBaseTextures, new Color(0.8f, 0.9f, 1f));
@@ -444,17 +429,30 @@ public class PupsiBRCShaderGUI : ShaderGUI
         {
             DrawProperty(editor, properties, "_Opacity", "Opacity");
         }
+        else if (shaderType == ShaderType.Environment)
+        {
+            DrawProperty(editor, properties, "_Cutoff", "Alpha Cutoff");
+        }
         else
         {
             DrawProperty(editor, properties, "_AlphaClipping", "Alpha Clipping");
         }
 
         EditorGUILayout.Space(3);
-        DrawProperty(editor, properties, "_BaseColor", "Base Color");
+        if (IsEnvironmentShader(shaderType))
+        {
+            DrawProperty(editor, properties, "_BaseTextureColor", "Base Texture Color");
+        }
+        else
+        {
+            DrawProperty(editor, properties, "_BaseColor", "Base Color");
+        }
+
         DrawTextureProperty(editor, properties, "_MainTex", "Base Texture");
         DrawTextureProperty(editor, properties, "RotationMask", "Base Rotation Mask");
         
         EditorGUILayout.Space(3);
+        DrawProperty(editor, properties, "_BaseTextureTiling", "Base Texture Tiling");
         DrawProperty(editor, properties, "_BaseScrollSpeed", "Base Scroll Speed");
         DrawProperty(editor, properties, "_BaseRotationCenter", "Base Rotation Center");
         DrawProperty(editor, properties, "_BaseRotationSpeed", "Base Rotation Speed");
@@ -516,7 +514,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
     private void DrawVertexColorsSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
     {
-        if (!HasProperty(properties, "_VertexColorsToggle")) return;
+        if (!HasProperty(properties, "_VertexColorsToggle") && !HasProperty(properties, "_VertexColorIntensity")) return;
 
         showVertexColors = DrawFoldoutHeader("Vertex Colors", showVertexColors);
         if (!showVertexColors) return;
@@ -524,8 +522,15 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUI.indentLevel++;
         EditorGUILayout.Space(5);
 
-        DrawProperty(editor, properties, "_VertexColorsToggle", "Enable Vertex Colors");
-        DrawProperty(editor, properties, "_VertexColorsOpacity", "Vertex Colors Opacity");
+        if (IsEnvironmentShader(shaderType))
+        {
+            DrawProperty(editor, properties, "_VertexColorIntensity", "Vertex Color Intensity");
+        }
+        else
+        {
+            DrawProperty(editor, properties, "_VertexColorsToggle", "Enable Vertex Colors");
+            DrawProperty(editor, properties, "_VertexColorsOpacity", "Vertex Colors Opacity");
+        }
 
         EditorGUI.indentLevel--;
         EditorGUILayout.Space(5);
@@ -573,7 +578,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
     private void DrawEmissionSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
     {
-        if (!HasProperty(properties, "_Emission")) return;
+        if (!HasProperty(properties, "_Emission") && !HasProperty(properties, "_EmissionMap")) return;
 
         showEmission = DrawFoldoutHeader("Emission", showEmission, new Color(1f, 0.9f, 0.7f));
         if (!showEmission) return;
@@ -581,16 +586,25 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EditorGUI.indentLevel++;
         EditorGUILayout.Space(5);
 
-        DrawTextureProperty(editor, properties, "_Emission", "Emission Texture");
-        DrawTextureProperty(editor, properties, "_EmissionMask", "Emission Mask");
-        DrawProperty(editor, properties, "_EmissionMaskScrollSpeed", "Emission Mask Scroll Speed");
-        DrawProperty(editor, properties, "_EmissionHue", "Emission Hue");
-        
-        // Different shaders use different emission property names
-        if (HasProperty(properties, "_EmissionEmit"))
-            DrawProperty(editor, properties, "_EmissionEmit", "Emission Intensity");
-        if (HasProperty(properties, "_EmissionColor"))
+        if (IsEnvironmentShader(shaderType))
+        {
+            DrawTextureProperty(editor, properties, "_EmissionMap", "Emission Texture");
             DrawProperty(editor, properties, "_EmissionColor", "Emission Color");
+            DrawProperty(editor, properties, "_EmissionIntensity", "Emission Intensity");
+        }
+        else
+        {
+            DrawTextureProperty(editor, properties, "_Emission", "Emission Texture");
+            DrawTextureProperty(editor, properties, "_EmissionMask", "Emission Mask");
+            DrawProperty(editor, properties, "_EmissionMaskScrollSpeed", "Emission Mask Scroll Speed");
+            DrawProperty(editor, properties, "_EmissionHue", "Emission Hue");
+            
+            // Different shaders use different emission property names
+            if (HasProperty(properties, "_EmissionEmit"))
+                DrawProperty(editor, properties, "_EmissionEmit", "Emission Intensity");
+            if (HasProperty(properties, "_EmissionColor"))
+                DrawProperty(editor, properties, "_EmissionColor", "Emission Color");
+        }
 
         EditorGUI.indentLevel--;
         EditorGUILayout.Space(5);
@@ -614,25 +628,41 @@ public class PupsiBRCShaderGUI : ShaderGUI
         // Custom lighting colors
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Custom Colors", subHeaderStyle);
-        DrawProperty(editor, properties, "_CustomLightingColorToggle", "Custom Light Color Toggle");
-        DrawProperty(editor, properties, "_CustomLightingColor", "Custom Lighting Color");
-        DrawProperty(editor, properties, "_DisableWorldLightColor", "Disable World Light Color");
-        DrawProperty(editor, properties, "_CustomShadowColorToggle", "Custom Shadow Color Toggle");
-        DrawProperty(editor, properties, "_CustomShadowColor", "Custom Shadow Color");
+        if (IsEnvironmentShader(shaderType))
+        {
+            DrawProperty(editor, properties, "_CustomWorldLightColor", "Custom World Light Color");
+            DrawProperty(editor, properties, "_CustomLightingColor1", "Custom Lighting Color");
+            DrawProperty(editor, properties, "_CustomShadowColor1", "Custom Shadow Color");
+        }
+        else
+        {
+            DrawProperty(editor, properties, "_CustomLightingColorToggle", "Custom Light Color Toggle");
+            DrawProperty(editor, properties, "_CustomLightingColor", "Custom Lighting Color");
+            DrawProperty(editor, properties, "_DisableWorldLightColor", "Disable World Light Color");
+            DrawProperty(editor, properties, "_CustomShadowColorToggle", "Custom Shadow Color Toggle");
+            DrawProperty(editor, properties, "_CustomShadowColor", "Custom Shadow Color");
+        }
 
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Shadow Settings", subHeaderStyle);
         DrawProperty(editor, properties, "_ShadowSoftness", "Shadow Softness");
+        DrawProperty(editor, properties, "_ShadowSoftness1", "Shadow Softness");
         DrawProperty(editor, properties, "_ShadowIntensity", "Shadow Intensity");
         DrawProperty(editor, properties, "_ShadowOffset", "Shadow Offset");
+        DrawProperty(editor, properties, "_ShadowOffset1", "Shadow Offset");
 
-        // Shadow Texture
-        EditorGUILayout.Space(5);
-        EditorGUILayout.LabelField("Shadow Texture", subHeaderStyle);
-        DrawProperty(editor, properties, "_ShadowTextureToggle", "Enable Shadow Texture");
-        DrawTextureProperty(editor, properties, "_ShadowTexture", "Shadow Texture");
-        DrawProperty(editor, properties, "_ShadowTextureTiling", "Shadow Texture Tiling");
-        DrawProperty(editor, properties, "_ShadowTextureBlend", "Shadow Texture Blend");
+        if (HasProperty(properties, "_ShadowTextureToggle") ||
+            HasProperty(properties, "_ShadowTexture") ||
+            HasProperty(properties, "_ShadowTextureTiling") ||
+            HasProperty(properties, "_ShadowTextureBlend"))
+        {
+            EditorGUILayout.Space(5);
+            EditorGUILayout.LabelField("Shadow Texture", subHeaderStyle);
+            DrawProperty(editor, properties, "_ShadowTextureToggle", "Enable Shadow Texture");
+            DrawTextureProperty(editor, properties, "_ShadowTexture", "Shadow Texture");
+            DrawProperty(editor, properties, "_ShadowTextureTiling", "Shadow Texture Tiling");
+            DrawProperty(editor, properties, "_ShadowTextureBlend", "Shadow Texture Blend");
+        }
 
         // Halftone Shadow
         if (HasProperty(properties, "_HalftoneShadowToggle"))
@@ -673,6 +703,26 @@ public class PupsiBRCShaderGUI : ShaderGUI
         EndFoldoutSection();
     }
 
+    private void DrawRealtimeLightingSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
+    {
+        if (shaderType != ShaderType.RealtimeLighting) return;
+
+        showRealtimeLighting = DrawFoldoutHeader("Realtime Lighting", showRealtimeLighting, new Color(1f, 0.85f, 0.7f));
+        if (!showRealtimeLighting) return;
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.Space(5);
+
+        DrawProperty(editor, properties, "_AddPassEnabled", "Enable Realtime Lighting");
+        DrawProperty(editor, properties, "_AddRampThreshold", "Light Threshold");
+        DrawProperty(editor, properties, "_AddRampSmooth", "Light Smoothness");
+        DrawProperty(editor, properties, "_AddLightMultiplier", "Light Multiplier");
+
+        EditorGUI.indentLevel--;
+        EditorGUILayout.Space(5);
+        EndFoldoutSection();
+    }
+
     private void DrawExtraLightSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
     {
         if (!HasProperty(properties, "_ExtraLightToggle")) return;
@@ -695,7 +745,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
 
     private void DrawSpecularSection(MaterialEditor editor, MaterialProperty[] properties, ShaderType shaderType)
     {
-        if (!HasProperty(properties, "_SpecularToggle")) return;
+        if (!HasProperty(properties, "_SpecularToggle") && !HasProperty(properties, "_SpecularCustomColorToggle")) return;
 
         showSpecular = DrawFoldoutHeader("Specular", showSpecular, new Color(1f, 1f, 0.8f));
         if (!showSpecular) return;
@@ -1138,21 +1188,22 @@ public class PupsiBRCShaderGUI : ShaderGUI
         // List of properties we've already handled
         HashSet<string> handledProperties = new HashSet<string>
         {
-            "_Cull", "_Opacity", "_AlphaClipping", "_BaseColor", "_MainTex", "RotationMask",
-            "_BaseScrollSpeed", "_BaseRotationCenter", "_BaseRotationSpeed",
+            "_Cull", "_Opacity", "_AlphaClipping", "_Cutoff", "_BaseColor", "_BaseTextureColor", "_MainTex", "RotationMask",
+            "_BaseTextureTiling", "_BaseScrollSpeed", "_BaseRotationCenter", "_BaseRotationSpeed",
             // Global Displacement properties
             "_ToggleDisplacement", "_DisplacementusesVertexPositionUV", "_DisplacementTexture", "_DisplacementTiling", "_DisplacementOffset", "_DisplacementScrolling", "_DisplacementRotation",
             "_DisplacementMultiplier", "_DisplacementMinSize", "_DisplacementMaxSize",
-            "_VertexColorsToggle", "_VertexColorsOpacity", "_VertexColorsDefineOutlineCoverage",
+            "_VertexColorsToggle", "_VertexColorsOpacity", "_VertexColorIntensity", "_VertexColorsDefineOutlineCoverage",
             "_VertexColorsDefineOutlineOpacity", "_VertexColorsDefineOutlineThickness",
             "_VertexColorsDefineSilhouetteOutlineCoverage", "_VertexColorsDefineSilhouetteOutlineCoverage1",
             "_VertexColorsDefineSilhouetteOutlineOpacity", "_VertexColorsDefineSilhouetteOutlineThickness",
             "_DetailTextureToggle", "_DetailTexture", "_DetailTextureUV", "_DetailTextureBlend",
             "_NormalMap", "_NormalMapUV", "_NormalMapIntensity",
-            "_Emission", "_EmissionMask", "_EmissionMaskScrollSpeed", "_EmissionHue", "_EmissionEmit", "_EmissionColor",
+            "_Emission", "_EmissionMap", "_EmissionMask", "_EmissionMaskScrollSpeed", "_EmissionHue", "_EmissionEmit", "_EmissionColor", "_EmissionIntensity",
             "_OutlineOpacityuseBaseTextureOpacity", "_ToggleWorldSpaceUV", "_SilhouetteRimLightOpacity",
-            "_CustomLightingColorToggle", "_CustomLightingColor", "_CustomShadowColorToggle", "_CustomShadowColor",
-            "_ShadowSoftness", "_ShadowIntensity", "_ShadowOffset",
+            "_CustomLightingColorToggle", "_CustomLightingColor", "_CustomLightingColor1", "_CustomWorldLightColor",
+            "_CustomShadowColorToggle", "_CustomShadowColor", "_CustomShadowColor1",
+            "_ShadowSoftness", "_ShadowSoftness1", "_ShadowIntensity", "_ShadowOffset", "_ShadowOffset1",
             "_ShadowTextureToggle", "_ShadowTexture", "_ShadowTextureTiling", "_ShadowTextureBlend",
             "_HalftoneShadowToggle", "_HalftoneShadowSoftness", "_HalftoneShadowScale",
             "_ExtraLightToggle", "_ExtraLightOffset", "_ExtraLightSoftness", "_ExtraLightBlend",
@@ -1190,6 +1241,7 @@ public class PupsiBRCShaderGUI : ShaderGUI
             "_OutlineTextureUVSelection", "_OutlineTextureBaseUVMap",
             "_SilhouetteTextureUVSelection", "_SilhouetteTextureBaseUVMap",
             "_WorldLightStrength", "_GameLightStrength", "_GameShadowStrength",
+            "_AddPassEnabled", "_AddRampThreshold", "_AddRampSmooth", "_AddLightMultiplier",
             "_OutlineDisplacementVertexPositionUV", "_SilhouetteTextureVertexPositionUV", "_SilhouetteDisplacementVertexPositionUV",
             // Screen Color properties
             "_ToggleScreenColorasBaseTexture", "_ScreenColorDistortionTexture", "_ScreenColorDistortionAmount",

@@ -23,12 +23,11 @@ Special thanks to Muppo for allowing me to incorporate their glow/scroll impleme
 - emission hue shift, scrolling, rotation, and masking
 - glow masking and cycling
 - flipbook textures and masking
-- four main shaders are included, the base shader for opaque rendering as well as alpha clipping, the transparent shader for partial transparencies, the silhouette outline shader for a new secondary outline and additional overlay effects, and the silhouette outline transparent shader which combines transparency with the aforementioned shader.
-- new extra shaders mimicking the look of Sonic Riders official art style and Naruto Ultimate Ninja visuals
-
+- extra shaders mimicking the look of Sonic Riders official art style and Naruto Ultimate Ninja visuals
+- environment shaders including a variant with realtime lighting
 
 ### Instructions for use:
-Simply download and drop the shader file into the project folder of your choice and select from the Pupsi folder in the shader selection dropdown for the material you're using.
+Simply download and drop the zipped folder into the project folder of your choice and select from the Pupsi folder in the shader selection dropdown for the material you're using.
 
 Important Note: If you experience conflicts with Poiyomi or other shaders that use ThryEditor you'll need to delete the ThryEditor folder from either of the conflicting shaders "Scripts" folder. (Unfortunately there isn't a prettier solution at the moment.)
 
