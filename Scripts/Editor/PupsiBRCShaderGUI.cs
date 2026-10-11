@@ -162,9 +162,9 @@ public class PupsiBRCShaderGUI : ShaderGUI
             return ShaderType.Riders;
         if (shaderName.Contains("Ultimate Ninja"))
             return ShaderType.UltimateNinja;
-        if (shaderName.Contains("Environment Shader (Realtime Lighting)"))
+        if (shaderName.Contains("Pupsi BRC Shader Environment (Realtime Lighting)"))
             return ShaderType.RealtimeLighting;
-        if (shaderName.Contains("Pupsi BRC Environment Shader"))
+        if (shaderName.Contains("Pupsi BRC Shader Environment"))
             return ShaderType.Environment;
         if (shaderName.Contains("Pupsi BRC Shader"))
             return ShaderType.Standard;

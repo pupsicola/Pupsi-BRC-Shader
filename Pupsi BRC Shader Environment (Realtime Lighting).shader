@@ -1,6 +1,6 @@
 // Made with Amplify Shader Editor v1.9.9.8
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "Pupsi/Pupsi BRC Environment Shader (Realtime Lighting)"
+Shader "Pupsi/Pupsi BRC Shader Environment (Realtime Lighting)"
 {
 	Properties
 	{
